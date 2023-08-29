@@ -14,6 +14,7 @@ namespace MyFlix
 
         public List<string> GetVideosInDirRecursively(string dirFilepath)
         {
+            if (String.IsNullOrEmpty(dirFilepath)) return _videos;
             DirectoryInfo rootDirectory = new DirectoryInfo(dirFilepath);
             StepThroughDirectory(rootDirectory);
             return _videos;

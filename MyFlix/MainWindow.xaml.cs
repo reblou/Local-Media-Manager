@@ -22,18 +22,26 @@ namespace MyFlix
     /// </summary>
     public partial class MainWindow : Window
     {
-        string rootFilePath = @"F:\Videos\";
+        string rootFilePath = "";
 
         public MainWindow()
         {
             InitializeComponent();
 
-            FileSystemSearcher searcher = new FileSystemSearcher();
+            PopulateMedia();
+        }
+
+        private void PopulateMedia()
+        {
+            FileSystemSearcher searcher = new();
             List<string> videos = searcher.GetVideosInDirRecursively(rootFilePath);
 
             AddMultipleObjectsToListBox(videos.ToArray(), lstVideos);
+        }
 
-            lstVideos.Items.Add("Test");
+        private void ClearMedia()
+        {
+            lstVideos.Items.Clear();
         }
 
         private void AddMultipleObjectsToListBox(object[] list, ListBox control)
@@ -47,16 +55,16 @@ namespace MyFlix
         private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new() { 
-
+                //options here
             };
-            //dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 rootFilePath = dialog.SelectedPath;
             }
 
-
+            ClearMedia();
+            PopulateMedia();
         }
     }
 }
