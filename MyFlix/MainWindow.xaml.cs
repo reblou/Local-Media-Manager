@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Win32;
 
 namespace MyFlix
 {
@@ -20,18 +22,41 @@ namespace MyFlix
     /// </summary>
     public partial class MainWindow : Window
     {
+        string rootFilePath = @"F:\Videos\";
+
         public MainWindow()
         {
             InitializeComponent();
+
+            FileSystemSearcher searcher = new FileSystemSearcher();
+            List<string> videos = searcher.GetVideosInDirRecursively(rootFilePath);
+
+            AddMultipleObjectsToListBox(videos.ToArray(), lstVideos);
+
+            lstVideos.Items.Add("Test");
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private void AddMultipleObjectsToListBox(object[] list, ListBox control)
         {
-            if (!string.IsNullOrWhiteSpace(txtName.Text) && !lstNames.Items.Contains(txtName.Text))
+            foreach(object item in list)
             {
-                lstNames.Items.Add(txtName.Text);
-                txtName.Clear();
+                control.Items.Add(item);
             }
+        }
+
+        private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog dialog = new() { 
+
+            };
+            //dialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                rootFilePath = dialog.SelectedPath;
+            }
+
+
         }
     }
 }

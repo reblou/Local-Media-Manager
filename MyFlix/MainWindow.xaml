@@ -6,23 +6,31 @@
         xmlns:local="clr-namespace:MyFlix"
         mc:Ignorable="d"
         Title="MyFlix" Height="850" Width="1500">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Options">
+                <MenuItem Header="Set Root Media Folder..." Click="SetMediaFolder_Click"/>
+            </MenuItem>
+        </Menu>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="1">Hello world</Label>
-        <ListBox x:Name="lstNames" Grid.Row="1"></ListBox>
+        <Grid DockPanel.Dock="Top" Margin="10" Height="auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-            <TextBox x:Name="txtName" />
-            <Button x:Name="btnAdd" Margin="0,5,0,0" Click="btnAdd_Click">Add Name</Button>
-        </StackPanel>
-    </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0">Media</Label>
+            <ListBox x:Name="lstVideos" Grid.Row="1" MaxHeight="800" ></ListBox>
+
+        </Grid>
+    </DockPanel>
+
 </Window>
