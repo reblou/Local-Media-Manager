@@ -10,14 +10,14 @@ namespace MyFlix
     internal class FileSystemSearcher
     {
         private readonly string[] _acceptedExtensions = { ".mkv", ".mp4", ".avi" };
-        private List<string> _videos = new();
+        public List<Video> videos = new();
 
-        public List<string> GetVideosInDirRecursively(string dirFilepath)
+        public void GetVideosInDirRecursively(string dirFilepath)
         {
-            if (String.IsNullOrEmpty(dirFilepath)) return _videos;
+            if (String.IsNullOrEmpty(dirFilepath)) return;
+
             DirectoryInfo rootDirectory = new DirectoryInfo(dirFilepath);
             StepThroughDirectory(rootDirectory);
-            return _videos;
         }
         
         private void StepThroughDirectory(DirectoryInfo directory)
@@ -26,7 +26,11 @@ namespace MyFlix
             {
                 if (!IsVideoFileExtension(file.Extension)) continue;
 
-                _videos.Add(file.Name);
+                videos.Add(new Video() {
+                    title = file.Name,
+                    filePath = file.FullName
+                }
+                );
             }
 
             foreach (DirectoryInfo dir in directory.GetDirectories())

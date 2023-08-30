@@ -28,7 +28,8 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0">Media</Label>
-            <ListBox x:Name="lstVideos" Grid.Row="1" MaxHeight="800" ></ListBox>
+            <ListBox x:Name="lstVideos" Grid.Row="1" MaxHeight="800" SelectionMode="Single" SelectionChanged="lstVideos_SelectionChanged" ></ListBox>
+            <MediaElement x:Name="mediaElement" Grid.Column="1" HorizontalAlignment="Left" Height="auto" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="auto"/>
 
         </Grid>
     </DockPanel>

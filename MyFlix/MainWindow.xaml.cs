@@ -34,9 +34,9 @@ namespace MyFlix
         private void PopulateMedia()
         {
             FileSystemSearcher searcher = new();
-            List<string> videos = searcher.GetVideosInDirRecursively(rootFilePath);
+            searcher.GetVideosInDirRecursively(rootFilePath);
 
-            AddMultipleObjectsToListBox(videos.ToArray(), lstVideos);
+            AddMultipleVideosToListBox(searcher.videos, lstVideos);
         }
 
         private void ClearMedia()
@@ -44,11 +44,11 @@ namespace MyFlix
             lstVideos.Items.Clear();
         }
 
-        private void AddMultipleObjectsToListBox(object[] list, ListBox control)
+        private void AddMultipleVideosToListBox(List<Video> videos, ListBox control)
         {
-            foreach(object item in list)
+            foreach(Video video in videos)
             {
-                control.Items.Add(item);
+                control.Items.Add(video);
             }
         }
 
@@ -65,6 +65,18 @@ namespace MyFlix
 
             ClearMedia();
             PopulateMedia();
+        }
+
+        private void lstVideos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Launch media player
+            Video video = (Video)((ListBox)sender).SelectedItem;
+            PlayVideo(video);
+        }
+
+        private void PlayVideo(Video video)
+        {
+            mediaElement.Source = new Uri(video.filePath);
         }
     }
 }
