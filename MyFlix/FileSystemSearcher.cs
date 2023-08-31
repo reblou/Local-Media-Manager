@@ -27,7 +27,8 @@ namespace MyFlix
                 if (!IsVideoFileExtension(file.Extension)) continue;
 
                 videos.Add(new Video() {
-                    title = file.Name,
+                    title = TitleParser.ParseTitleFromFilename(file.Name),
+                    fileName = file.Name,
                     filePath = file.FullName
                 }
                 );

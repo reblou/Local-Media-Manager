@@ -10,6 +10,7 @@ namespace MyFlix
     {
         public string filePath {  get; set; }
         public string title { get; set; }
+        public string fileName { get; set; }
 
         public override string ToString()
         {
