@@ -23,11 +23,13 @@ namespace MyFlix
     public partial class MainWindow : Window
     {
         string rootFilePath = "";
+        UserSettingsManager userSettingsManager;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            userSettingsManager = new UserSettingsManager();
+            rootFilePath = userSettingsManager.settings.RootFilePath
             PopulateMedia();
         }
 
@@ -61,6 +63,7 @@ namespace MyFlix
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 rootFilePath = dialog.SelectedPath;
+                userSettingsManager.SetRootFilePath(rootFilePath);
             }
 
             ClearMedia();
@@ -76,7 +79,11 @@ namespace MyFlix
 
         private void PlayVideo(Video video)
         {
-            mediaElement.Source = new Uri(video.filePath);
+            try
+            {
+                mediaElement.Source = new Uri(video.filePath);
+            }
+            catch (NullReferenceException) { }
         }
     }
 }

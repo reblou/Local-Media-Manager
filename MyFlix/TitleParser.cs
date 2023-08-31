@@ -7,30 +7,17 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    internal class FilmTitleParser
+    internal static class TitleParser
     {
-        bool squareBrackets;
-
-        public string title;
-        string filename;
-
-        public FilmTitleParser(string filename)
+        public static string ParseTitleFromFilename(string filename)
         {
-            squareBrackets = false;
-            brackets = false;
-            this.filename = filename;
-            title = "";
-        }
-
-        public void ParseTitle()
-        {
-            // replace . ( [ etc with space
-            //
+            bool squareBrackets = false;
+            string title = "";
 
             string currentWord = "";
             foreach (char c in filename)
             {
-                if (squareBrackets)
+                if (squareBrackets) // ignore anything contained in []
                 {
                     if (c == ']') squareBrackets = false;
 
@@ -45,14 +32,14 @@ namespace MyFlix
                     currentWord += ' ';
                     if (WordIsYear(currentWord) && title.Length > 0)
                     {
-                        // We have title hopefully
+                        // We have full title hopefully
                         title += currentWord;
                         break;
                     }
                     title += currentWord;
                     currentWord = "";
                 }
-                else if (c=='(' || c==')')
+                else if (c == '(' || c == ')')
                 {
                     continue;
                 }
@@ -61,23 +48,13 @@ namespace MyFlix
                     currentWord += c;
                 }
             }
-        }
 
-        public bool WordIsYear(string word)
+            return title;
+        }
+        public static bool WordIsYear(string word)
         {
             Regex re = new Regex(@"[0-9]{4}");
             return re.IsMatch(word);
-        }
-    }
-
-    internal static class TitleParser
-    {
-        public static string ParseTitleFromFilename(string filename)
-        {
-            FilmTitleParser parser = new FilmTitleParser(filename);
-            parser.ParseTitle();
-
-            return parser.title;
         }
     }
 }
