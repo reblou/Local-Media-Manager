@@ -16,6 +16,10 @@ namespace MyFlix
         {
             return title;
         }
+    }
 
+    internal class Folder
+    {
+        List<Video> videos { get; set; }
     }
 }

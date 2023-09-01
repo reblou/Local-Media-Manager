@@ -12,24 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using Microsoft.Win32;
 
 namespace MyFlix
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TileView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TileView : Page
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
 
-        public MainWindow()
+        public TileView()
         {
             InitializeComponent();
             userSettingsManager = new UserSettingsManager();
-            rootFilePath = userSettingsManager.settings.RootFilePath
+            rootFilePath = userSettingsManager.settings.RootFilePath;
             PopulateMedia();
         }
 
@@ -48,7 +46,7 @@ namespace MyFlix
 
         private void AddMultipleVideosToListBox(List<Video> videos, ListBox control)
         {
-            foreach(Video video in videos)
+            foreach (Video video in videos)
             {
                 control.Items.Add(video);
             }
@@ -56,7 +54,8 @@ namespace MyFlix
 
         private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.FolderBrowserDialog dialog = new() { 
+            System.Windows.Forms.FolderBrowserDialog dialog = new()
+            {
                 //options here
             };
 
@@ -74,7 +73,9 @@ namespace MyFlix
         {
             // Launch media player
             Video video = (Video)((ListBox)sender).SelectedItem;
-            PlayVideo(video);
+
+
+            //PlayVideo(video);
         }
 
         private void PlayVideo(Video video)
@@ -84,6 +85,12 @@ namespace MyFlix
                 mediaElement.Source = new Uri(video.filePath);
             }
             catch (NullReferenceException) { }
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new Uri("MediaDetailsView.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }
