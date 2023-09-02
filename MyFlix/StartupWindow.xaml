@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:MyFlix"
         mc:Ignorable="d"
         ShowsNavigationUI="False"
-        Title="StartupWindow" Height="450" Width="800"
+        Title="StartupWindow" Height="800" Width="1000"
         Source="TileView.xaml"> 
 </NavigationWindow>

@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    internal class Video
+    public class MediaList : ObservableCollection<Video>
+    {
+        public MediaList() : base() { }
+    }
+
+    public class Video
     {
         public string filePath {  get; set; }
         public string title { get; set; }
@@ -18,7 +24,7 @@ namespace MyFlix
         }
     }
 
-    internal class Folder
+    public class Folder
     {
         List<Video> videos { get; set; }
     }

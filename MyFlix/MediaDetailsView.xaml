@@ -9,7 +9,7 @@
       Title="MediaDetailsView">
 
     <DockPanel LastChildFill="False">
-        <Image DockPanel.Dock="Left" Width="auto" Height="auto" Source="TESTIMG.jpg"/>
+        <Image DockPanel.Dock="Left" Width="auto" Height="auto" Source="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kG4AZLcWilPYIixowm8pnE3DqfI.jpg"/>
         <Label DockPanel.Dock="Top" Foreground="black" FontSize="23">TEST Title</Label>
         <TextBox Background="Transparent" Foreground="black" BorderThickness="0">Lorum Ipsum Lorum Ipsum Lorum Ipsum etc etc etc etc</TextBox>
     </DockPanel>

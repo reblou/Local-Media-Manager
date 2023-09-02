@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,14 @@ namespace MyFlix
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
+        List<Video> videosList = new List<Video>() { new Video { title = "Hello World!" } };
+        public ObservableCollection<Video> videos = new() { new Video { title = "Hello World!" } };
 
         public TileView()
         {
             InitializeComponent();
+
+            mediaItemsControl.ItemsSource = videos;
             userSettingsManager = new UserSettingsManager();
             rootFilePath = userSettingsManager.settings.RootFilePath;
             PopulateMedia();

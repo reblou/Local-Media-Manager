@@ -5,9 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyFlix"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="700" d:DesignWidth="1000"
       Title="TileView">
-
+    <Page.Resources>
+        <local:MediaList x:Key="MediaList"/>
+    </Page.Resources>
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Options">
@@ -16,24 +19,23 @@
         </Menu>
 
 
-        <Grid DockPanel.Dock="Top" Margin="10" Height="auto">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <ItemsControl x:Name="mediaItemsControl" ItemsSource="{Binding Source={StaticResource MediaList}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="5" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-            <Label Grid.Column="0">Media</Label>
-            <ListBox x:Name="lstVideos" Grid.Row="1" MaxHeight="700" SelectionMode="Single" SelectionChanged="lstVideos_SelectionChanged" ></ListBox>
-            <TextBlock Grid.Column="1" >
-                <Hyperlink Click="Hyperlink_Click">Go To Details</Hyperlink>
-            </TextBlock>
-            <MediaElement x:Name="mediaElement" Grid.Column="1" HorizontalAlignment="Left" Height="auto" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="auto"/>
+            <!-- ItemTemplate -->
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding title}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        </Grid>
+        <ListBox Visibility="Hidden" x:Name="lstVideos" Grid.Row="1" MaxHeight="700" SelectionMode="Single" SelectionChanged="lstVideos_SelectionChanged" ></ListBox>
+        <MediaElement Visibility="Hidden" x:Name="mediaElement" Grid.Column="1" HorizontalAlignment="Left" Height="auto" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="auto"/>
     </DockPanel>
 </Page>

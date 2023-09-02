@@ -28,7 +28,6 @@ namespace MyFlix
         public void ReadSettingsFromFile()
         {
             settings = new UserSettings();
-            // settings == parse xml
 
             //TODO: errorhandling - no file, invalid file etc
             using (var reader = new StreamReader(configFileName))
