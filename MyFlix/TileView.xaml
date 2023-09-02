@@ -20,17 +20,27 @@
 
 
 
-        <ItemsControl x:Name="mediaItemsControl" ItemsSource="{Binding Source={StaticResource MediaList}}">
+        <ItemsControl x:Name="mediaItemsControl" 
+                      ItemsSource="{Binding Source={StaticResource MediaList}}"
+                      DockPanel.Dock="Top"
+                      >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" />
+                    <UniformGrid Columns="5"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <!-- ItemTemplate -->
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding title}" />
+                    <DockPanel MaxHeight="300">
+                        <Button DockPanel.Dock="Top"  Content="{Binding title}">
+                            <Button.Background>
+                                <ImageBrush/>
+                            </Button.Background>
+                        </Button>
+                        <Label DockPanel.Dock="Bottom" Content="{Binding fileName}"/>
+                    </DockPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

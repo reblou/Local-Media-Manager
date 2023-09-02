@@ -10,6 +10,14 @@ namespace MyFlix
     public class MediaList : ObservableCollection<Video>
     {
         public MediaList() : base() { }
+
+        public void AddList(List<Video> list)
+        {
+            foreach (Video video in list)
+            {
+                this.Add(video);
+            }
+        }
     }
 
     public class Video

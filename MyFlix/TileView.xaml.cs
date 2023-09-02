@@ -23,17 +23,18 @@ namespace MyFlix
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
-        List<Video> videosList = new List<Video>() { new Video { title = "Hello World!" } };
-        public ObservableCollection<Video> videos = new() { new Video { title = "Hello World!" } };
+        public MediaList videos = new() { new Video { title = "Hello World!", fileName= "Test"} };
 
         public TileView()
         {
             InitializeComponent();
 
-            mediaItemsControl.ItemsSource = videos;
+
             userSettingsManager = new UserSettingsManager();
             rootFilePath = userSettingsManager.settings.RootFilePath;
             PopulateMedia();
+
+            mediaItemsControl.ItemsSource = videos;
         }
 
         private void PopulateMedia()
@@ -41,7 +42,9 @@ namespace MyFlix
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(rootFilePath);
 
-            AddMultipleVideosToListBox(searcher.videos, lstVideos);
+            videos.AddList(searcher.videos);
+
+            //AddMultipleVideosToListBox(searcher.videos, lstVideos);
         }
 
         private void ClearMedia()
