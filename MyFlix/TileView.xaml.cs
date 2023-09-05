@@ -49,7 +49,7 @@ namespace MyFlix
 
         private void ClearMedia()
         {
-            lstVideos.Items.Clear();
+            videos.Clear();
         }
 
         private void AddMultipleVideosToListBox(List<Video> videos, ListBox control)
@@ -99,6 +99,12 @@ namespace MyFlix
         {
             NavigationService nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new Uri("MediaDetailsView.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void Tile_Click(object sender, RoutedEventArgs e)
+        {
+            TMDBApiHandler api = new TMDBApiHandler();
+            api.SearchMovie("Perfect Blue");
         }
     }
 }

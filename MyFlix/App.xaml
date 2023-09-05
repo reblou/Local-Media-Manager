@@ -4,5 +4,6 @@
              xmlns:local="clr-namespace:MyFlix"
              StartupUri="StartupWindow.xaml">
     <Application.Resources>
+        
     </Application.Resources>
 </Application>

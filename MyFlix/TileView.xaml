@@ -33,10 +33,10 @@
             <!-- ItemTemplate -->
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel MaxHeight="300">
-                        <Button DockPanel.Dock="Top"  Content="{Binding title}">
+                    <DockPanel Height="300" Width="200">
+                        <Button DockPanel.Dock="Top"  Content="{Binding title}" Height="300" Click="Tile_Click">
                             <Button.Background>
-                                <ImageBrush/>
+                                <ImageBrush ImageSource="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kG4AZLcWilPYIixowm8pnE3DqfI.jpg" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                         <Label DockPanel.Dock="Bottom" Content="{Binding fileName}"/>
