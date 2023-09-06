@@ -23,7 +23,7 @@ namespace MyFlix
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
-        public MediaList videos = new() { new Video { title = "Hello World!", fileName= "Test"} };
+        public MediaList videos = new();
 
         public TileView()
         {
@@ -103,8 +103,7 @@ namespace MyFlix
 
         private void Tile_Click(object sender, RoutedEventArgs e)
         {
-            TMDBApiHandler api = new TMDBApiHandler();
-            api.SearchMovie("Perfect Blue");
+
         }
     }
 }

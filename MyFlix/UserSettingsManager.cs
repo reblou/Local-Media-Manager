@@ -40,7 +40,9 @@ namespace MyFlix
         public void WriteSettingsToFile()
         {
             // write settings to file
-            xmlSerializer.Serialize(new StreamWriter(configFileName, false), settings);
+            using StreamWriter writer = new StreamWriter(configFileName, false);
+
+            xmlSerializer.Serialize(writer, settings);
         }
 
         public void SetRootFilePath(string rootFilePath)

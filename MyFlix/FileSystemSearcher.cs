@@ -11,6 +11,7 @@ namespace MyFlix
     {
         private readonly string[] _acceptedExtensions = { ".mkv", ".mp4", ".avi" };
         public List<Video> videos = new();
+        TMDBApiHandler apiHandler = new TMDBApiHandler();
 
         public void GetVideosInDirRecursively(string dirFilepath)
         {
@@ -26,12 +27,7 @@ namespace MyFlix
             {
                 if (!IsVideoFileExtension(file.Extension)) continue;
 
-                videos.Add(new Video() {
-                    title = TitleParser.ParseTitleFromFilename(file.Name),
-                    fileName = file.Name,
-                    filePath = file.FullName
-                }
-                );
+                videos.Add(GetVideoDetails(file));
             }
 
             foreach (DirectoryInfo dir in directory.GetDirectories())
@@ -49,6 +45,18 @@ namespace MyFlix
                 if (videoExtension == extension) return true;
             }
             return false;
+        }
+
+        private Video GetVideoDetails(FileInfo file)
+        {
+
+            string cleanedTitle = TitleParser.ParseTitleFromFilename(file.Name);
+            Video video = apiHandler.SearchMovieToVideo(cleanedTitle);
+
+            video.fileName = file.Name;
+            video.filePath = file.FullName;
+
+            return video;
         }
     }
 }

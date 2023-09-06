@@ -22,9 +22,12 @@ namespace MyFlix
 
     public class Video
     {
-        public string filePath {  get; set; }
-        public string title { get; set; }
-        public string fileName { get; set; }
+        public string filePath;
+        public string title;
+        public string fileName;
+        public string description;
+        public string posterURL;
+        public string backdropURL;
 
         public override string ToString()
         {
