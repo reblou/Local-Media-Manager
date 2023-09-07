@@ -1,12 +1,6 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using static System.Net.WebRequestMethods;
 
 namespace MyFlix
 {
@@ -50,21 +44,27 @@ namespace MyFlix
             client.DefaultRequestHeaders.Add("accept", "application/json");
         }
 
-        public Video SearchMovieToVideo(string movieName)
+        public Video SearchMovie(string movieName)
         {
             SearchResponse searchResponse = GetMovieSearchResults(movieName);
 
-            //TODO: error handling on no films found
-            if (searchResponse.results.Count <= 0) return new Video();
+            if (searchResponse.results.Count <= 0)
+            {
+                return new Video()
+                {
+                    title = movieName,
+                    description = ""
+                };
+            }
 
-            Result topResult = GetMostPopularResult(searchResponse.results);
+            Result topResult = searchResponse.results[0];
 
             Video video = new Video()
             {
                 title = topResult.title,
                 description = topResult.overview,
                 posterURL = "https://image.tmdb.org/t/p/original" + topResult.poster_path,
-                backdropURL = topResult.backdrop_path
+                backdropURL = "https://image.tmdb.org/t/p/original" + topResult.backdrop_path
             };
             return video;
         }

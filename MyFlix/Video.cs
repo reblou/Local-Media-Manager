@@ -26,7 +26,7 @@ namespace MyFlix
         public string title { get; set; }
         public string fileName;
         public string description;
-        public string posterURL { get; set; }
+        public string posterURL { get; set; } = "/images/1024px-Filmreel-icon.png";
         public string backdropURL;
 
         public override string ToString()

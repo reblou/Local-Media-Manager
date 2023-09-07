@@ -9,11 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\1024px-Filmreel-icon.png" />
     <None Remove="TESTIMG.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\1024px-Filmreel-icon.png" />
   </ItemGroup>
 
 </Project>

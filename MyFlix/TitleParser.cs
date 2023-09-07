@@ -17,9 +17,11 @@ namespace MyFlix
             string title = "";
 
             string currentWord = "";
+
             foreach (char c in filename)
             {
-                if (squareBrackets) // ignore anything contained in []
+                // ignore anything contained in []
+                if (squareBrackets) 
                 {
                     if (c == ']') squareBrackets = false;
 
@@ -29,34 +31,46 @@ namespace MyFlix
                 {
                     squareBrackets = true;
                 }
-                else if (c == ' ' || c == '.' || c == '_')
+                else if (isIgnoredChar(c))
                 {
-                    currentWord += ' ';
+                    continue;
+                }
+                else if (isWhitespaceChar(c))
+                {
+                    //TODO: extract year and use for search.
                     if (WordIsYear(currentWord) && title.Length > 0)
                     {
                         // We have full title hopefully
-                        title += currentWord;
-                        break;
+                        // TODO: check rest of title for another year? 
+                        return title.Trim();
                     }
-                    title += currentWord;
+                    title += currentWord + " ";
                     currentWord = "";
-                }
-                else if (c == '(' || c == ')')
-                {
-                    continue;
                 }
                 else
                 {
                     currentWord += c;
                 }
+
             }
 
-            return title;
+            title += currentWord;
+            return title.Trim();
         }
         public static bool WordIsYear(string word)
         {
             Regex re = new Regex(@"[0-9]{4}");
             return re.IsMatch(word);
+        }
+
+        private static bool isIgnoredChar(char c)
+        {
+            return c == '(' || c == ')';
+        }
+
+        private static bool isWhitespaceChar(char c)
+        {
+            return c == ' ' || c == '.' || c == '_';
         }
     }
 }
