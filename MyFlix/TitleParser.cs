@@ -11,6 +11,8 @@ namespace MyFlix
     {
         public static string ParseTitleFromFilename(string filename)
         {
+            //TODO: take out year
+
             bool squareBrackets = false;
             string title = "";
 

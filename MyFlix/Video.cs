@@ -23,10 +23,10 @@ namespace MyFlix
     public class Video
     {
         public string filePath;
-        public string title;
+        public string title { get; set; }
         public string fileName;
         public string description;
-        public string posterURL;
+        public string posterURL { get; set; }
         public string backdropURL;
 
         public override string ToString()

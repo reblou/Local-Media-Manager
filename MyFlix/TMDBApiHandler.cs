@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -15,25 +16,24 @@ namespace MyFlix
         public List<Result> results;
         public int total_pages;
         public int total_results;
+    }
 
-        public class Result
-        {
-
-            public bool adult;
-            public string backdrop_path;
-            public int[] genre_ids;
-            public int id;
-            public string original_language;
-            public string original_title;
-            public string overview;
-            public double popularity;
-            public string poster_path;
-            public string release_date;
-            public string title;
-            public bool video;
-            public double vote_average;
-            public double vote_count;
-        }
+    public class Result
+    {
+        public bool adult;
+        public string backdrop_path;
+        public int[] genre_ids;
+        public int id;
+        public string original_language;
+        public string original_title;
+        public string overview;
+        public double popularity;
+        public string poster_path;
+        public string release_date;
+        public string title;
+        public bool video;
+        public double vote_average;
+        public double vote_count;
     }
 
     public class TMDBApiHandler
@@ -54,12 +54,14 @@ namespace MyFlix
         {
             SearchResponse searchResponse = GetMovieSearchResults(movieName);
 
+            //TODO: error handling on no films found
             if (searchResponse.results.Count <= 0) return new Video();
 
-            SearchResponse.Result topResult = searchResponse.results[0];
+            Result topResult = GetMostPopularResult(searchResponse.results);
 
             Video video = new Video()
             {
+                title = topResult.title,
                 description = topResult.overview,
                 posterURL = "https://image.tmdb.org/t/p/original" + topResult.poster_path,
                 backdropURL = topResult.backdrop_path
@@ -75,6 +77,20 @@ namespace MyFlix
 
             string json = client.GetStringAsync(fullUrl).Result;
             return JsonConvert.DeserializeObject<SearchResponse>(json);
+        }
+
+        private Result GetMostPopularResult(List<Result> results)
+        {
+            Result mostPopularResult = new Result() { popularity = 0};
+            foreach (var result in results)
+            {
+                if (result.popularity > mostPopularResult.popularity)
+                {
+                    mostPopularResult = result;
+                }
+            }
+
+            return mostPopularResult;
         }
     }
 }
