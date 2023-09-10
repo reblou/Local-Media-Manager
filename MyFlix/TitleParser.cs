@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    internal static class TitleParser
+    internal class TitleParser
     {
-        public static string ParseTitleFromFilename(string filename)
+        bool squareBrackets = false;
+        string currentWord = "";
+
+        public string title = "";
+        public string releaseYear = "";
+
+        public void ParseTitleFromFilename(string filename)
         {
-            //TODO: take out year
-
-            bool squareBrackets = false;
-            string title = "";
-
-            string currentWord = "";
-
             foreach (char c in filename)
             {
                 // ignore anything contained in []
@@ -37,12 +36,13 @@ namespace MyFlix
                 }
                 else if (isWhitespaceChar(c))
                 {
-                    //TODO: extract year and use for search.
                     if (WordIsYear(currentWord) && title.Length > 0)
                     {
+                        releaseYear = currentWord;
                         // We have full title hopefully
                         // TODO: check rest of title for another year? 
-                        return title.Trim();
+                        title.Trim();
+                        return;
                     }
                     title += currentWord + " ";
                     currentWord = "";
@@ -55,8 +55,9 @@ namespace MyFlix
             }
 
             title += currentWord;
-            return title.Trim();
+            title.Trim();
         }
+
         public static bool WordIsYear(string word)
         {
             Regex re = new Regex(@"[0-9]{4}");

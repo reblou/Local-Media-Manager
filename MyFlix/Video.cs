@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,10 @@ namespace MyFlix
             }
         }
     }
+    public class Folder
+    {
+        List<Video> videos { get; set; }
+    }
 
     public class Video
     {
@@ -26,17 +31,55 @@ namespace MyFlix
         public string title { get; set; }
         public string fileName;
         public string description;
-        public string posterURL { get; set; } = "/images/1024px-Filmreel-icon.png";
+        public string releaseYear;
+        public string posterURL { get; set; }
         public string backdropURL;
+
+        public Video() { }
+
+        public Video(string filename, string filepath)
+        {
+            this.fileName = filename;
+            this.filePath = filepath;
+
+            TitleParser parser = new TitleParser();
+            parser.ParseTitleFromFilename(Path.ChangeExtension(fileName, ""));
+
+            this.title = parser.title;
+            this.releaseYear = parser.releaseYear;
+        }
 
         public override string ToString()
         {
             return title;
         }
+
+        public void LookupDetails(TMDBApiHandler apiHandler)
+        {
+            Video results = new Video();
+            if (String.IsNullOrEmpty(releaseYear))
+            {
+                results = apiHandler.SearchMovieTitleOnly(title);
+            }
+            else
+            {
+                results = apiHandler.SearchMovie(title, releaseYear);
+            }
+
+            title = results.title;
+            description = results.description;
+            posterURL = results.posterURL;
+            backdropURL = results.backdropURL;
+        }
     }
 
-    public class Folder
+
+    public class NoResultsVideo : Video
     {
-        List<Video> videos { get; set; }
+        public NoResultsVideo() 
+        {
+            this.title = this.fileName;
+            this.posterURL = "/images/1024px-Filmreel-icon.png";
+        }
     }
 }

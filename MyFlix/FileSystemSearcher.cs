@@ -49,12 +49,8 @@ namespace MyFlix
 
         private Video GetVideoDetails(FileInfo file)
         {
-
-            string cleanedTitle = TitleParser.ParseTitleFromFilename(Path.ChangeExtension(file.Name, ""));
-            Video video = apiHandler.SearchMovie(cleanedTitle);
-
-            video.fileName = file.Name;
-            video.filePath = file.FullName;
+            Video video = new Video(file.Name, file.FullName);
+            video.LookupDetails(apiHandler);
 
             return video;
         }
