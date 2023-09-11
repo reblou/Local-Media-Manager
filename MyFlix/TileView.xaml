@@ -18,30 +18,33 @@
             </MenuItem>
         </Menu>
 
-        <ItemsControl x:Name="mediaItemsControl" 
-                      ItemsSource="{Binding Source={StaticResource MediaList}}"
-                      DockPanel.Dock="Top"
-                      >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="5"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="mediaItemsControl" 
+              ItemsSource="{Binding Source={StaticResource MediaList}}"
+              DockPanel.Dock="Top"
+              >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <!-- ItemTemplate -->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel Height="300" Width="200">
-                        <Button DockPanel.Dock="Top"  Content="{Binding title}" Height="300" Click="Tile_Click">
-                            <Button.Background>
-                                <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform"/>
-                            </Button.Background>
-                        </Button>
-                        <Label DockPanel.Dock="Bottom" Content="{Binding fileName}"/>
-                    </DockPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                <!-- ItemTemplate -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Height="300" Width="200">
+                            <Button DockPanel.Dock="Top"  Content="{Binding title}" Height="300" Click="Tile_Click">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform"/>
+                                </Button.Background>
+                            </Button>
+                            <Label DockPanel.Dock="Bottom" Content="{Binding fileName}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
 
         <ListBox Visibility="Hidden" x:Name="lstVideos" Grid.Row="1" MaxHeight="700" SelectionMode="Single" SelectionChanged="lstVideos_SelectionChanged" ></ListBox>
         <MediaElement Visibility="Hidden" x:Name="mediaElement" Grid.Column="1" HorizontalAlignment="Left" Height="auto" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="auto"/>
