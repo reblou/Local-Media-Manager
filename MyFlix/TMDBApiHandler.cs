@@ -32,11 +32,18 @@ namespace MyFlix
         public double vote_count;
     }
 
+    public class EmptyResult : Result
+    {
+
+    }
+
     public class TMDBApiHandler
     {
         readonly string key = "1b92b708de5c7716aa1ec8ec9058687f";
         readonly string rootUrl = "https://api.themoviedb.org";
         readonly string accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjkyYjcwOGRlNWM3NzE2YWExZWM4ZWM5MDU4Njg3ZiIsInN1YiI6IjYwODk1ZTI3Y2FiZmU0MDAzZmVkOGU2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ke1D7Iht78CtySek8wIUTSQf7lPWvdqbvyZn989pwjo";
+
+        //TODO: get a smaller size
         readonly string posterRootUrl = "https://image.tmdb.org/t/p/original";
         HttpClient client;
 
@@ -47,12 +54,12 @@ namespace MyFlix
             client.DefaultRequestHeaders.Add("accept", "application/json");
         }
 
-        public Video SearchMovieTitleOnly(string title)
+        public Result SearchMovieTitleOnly(string title)
         {
             return SearchMovie(title, "");
         }
 
-        public Video SearchMovie(string title, string releaseYear)
+        public Result SearchMovie(string title, string releaseYear)
         {
             SearchResponse searchResponse = new();
 
@@ -65,10 +72,10 @@ namespace MyFlix
                 searchResponse = GetMovieSearchResultsYear(title, releaseYear);
             }
 
-            return extractVideoFromResults(searchResponse.results);
+            return extractTopResult(searchResponse.results);
         }
 
-        public SearchResponse GetMovieSearchResultsYear(string title, string releaseYear)
+        private SearchResponse GetMovieSearchResultsYear(string title, string releaseYear)
         {
             List<(string, string)> parameterPairs = new();
             parameterPairs.Add(("query", title));
@@ -83,7 +90,7 @@ namespace MyFlix
             return SearchMovieRequest(paramters);
         }
 
-        public SearchResponse GetMovieSearchResults(string title)
+        private SearchResponse GetMovieSearchResults(string title)
         {
             return GetMovieSearchResultsYear(title, "");
         }
@@ -110,23 +117,19 @@ namespace MyFlix
             return query.Remove(query.Length - 1);
         }
 
-        private Video extractVideoFromResults(List<Result> results)
+        private Result extractTopResult(List<Result> results)
         {
             if (results == null || results.Count <= 0)
             {
-                return new NoResultsVideo();
+                return new EmptyResult();
             }
 
             Result topResult = results[0];
 
-            Video video = new Video()
-            {
-                title = topResult.title,
-                description = topResult.overview,
-                posterURL = "https://image.tmdb.org/t/p/original" + topResult.poster_path,
-                backdropURL = "https://image.tmdb.org/t/p/original" + topResult.backdrop_path
-            };
-            return video;
+            topResult.poster_path = posterRootUrl + topResult.poster_path;
+            topResult.backdrop_path = posterRootUrl + topResult.backdrop_path;
+
+            return topResult;
         }
 
         private Result GetMostPopularResult(List<Result> results)

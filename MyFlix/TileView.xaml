@@ -18,8 +18,6 @@
             </MenuItem>
         </Menu>
 
-
-
         <ItemsControl x:Name="mediaItemsControl" 
                       ItemsSource="{Binding Source={StaticResource MediaList}}"
                       DockPanel.Dock="Top"
