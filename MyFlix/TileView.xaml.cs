@@ -39,25 +39,16 @@ namespace MyFlix
 
         private void PopulateMedia()
         {
+            //TODO: do this on another thread.
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(rootFilePath);
 
             videos.AddList(searcher.videos);
-
-            //AddMultipleVideosToListBox(searcher.videos, lstVideos);
         }
 
         private void ClearMedia()
         {
             videos.Clear();
-        }
-
-        private void AddMultipleVideosToListBox(List<Video> videos, ListBox control)
-        {
-            foreach (Video video in videos)
-            {
-                control.Items.Add(video);
-            }
         }
 
         private void SetMediaFolder_Click(object sender, RoutedEventArgs e)

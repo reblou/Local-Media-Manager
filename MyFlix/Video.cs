@@ -66,7 +66,10 @@ namespace MyFlix
                 results = apiHandler.SearchMovie(title, releaseYear);
             }
 
-            title = results.title;
+            if(results.GetType() != typeof(NoResultsVideo))
+            {
+                title = results.title;
+            }
             description = results.description;
             posterURL = results.posterURL;
             backdropURL = results.backdropURL;

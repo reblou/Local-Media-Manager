@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
+using System.Windows.Forms;
 
 namespace MyFlix
 {
@@ -64,25 +65,7 @@ namespace MyFlix
                 searchResponse = GetMovieSearchResultsYear(title, releaseYear);
             }
 
-            if (searchResponse.results.Count <= 0)
-            {
-                return new Video()
-                {
-                    title = title,
-                    description = ""
-                };
-            }
-
-            Result topResult = searchResponse.results[0];
-
-            Video video = new Video()
-            {
-                title = topResult.title,
-                description = topResult.overview,
-                posterURL = posterRootUrl + topResult.poster_path,
-                backdropURL = posterRootUrl + topResult.backdrop_path
-            };
-            return video;
+            return extractVideoFromResults(searchResponse.results);
         }
 
         public SearchResponse GetMovieSearchResultsYear(string title, string releaseYear)

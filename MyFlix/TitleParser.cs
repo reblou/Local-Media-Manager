@@ -40,7 +40,9 @@ namespace MyFlix
                     {
                         releaseYear = currentWord;
                         // We have full title hopefully
+
                         // TODO: check rest of title for another year? 
+
                         title.Trim();
                         return;
                     }
