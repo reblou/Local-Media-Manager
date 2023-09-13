@@ -23,6 +23,7 @@ namespace MyFlix
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
+        //TODO: sort alphabetically? 
         public MediaList videos = new();
 
         public TileView()

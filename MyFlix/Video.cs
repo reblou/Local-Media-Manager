@@ -32,7 +32,7 @@ namespace MyFlix
         public string fileName;
         public string description;
         public string releaseYear;
-        public string posterURL { get; set; }
+        public string posterURL { get; set; } = "/images/1024px-Filmreel-icon.png";
         public string backdropURL;
 
         public Video() { }
@@ -69,9 +69,9 @@ namespace MyFlix
             if(results.GetType() != typeof(EmptyResult))
             {
                 title = results.title;
+                posterURL = results.poster_path;
             }
             description = results.overview;
-            posterURL = results.poster_path;
             backdropURL = results.backdrop_path;
         }
     }

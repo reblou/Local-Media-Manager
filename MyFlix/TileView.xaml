@@ -32,13 +32,13 @@
                 <!-- ItemTemplate -->
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel Height="300" Width="200">
-                            <Button DockPanel.Dock="Top"  Content="{Binding title}" Height="300" Click="Tile_Click">
+                        <DockPanel Height="325">
+                            <Button DockPanel.Dock="Top" Height="300" Width="200" Click="Tile_Click" BorderThickness="0">
                                 <Button.Background>
                                     <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform"/>
                                 </Button.Background>
                             </Button>
-                            <Label DockPanel.Dock="Bottom" Content="{Binding fileName}"/>
+                            <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial"/>
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

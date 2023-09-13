@@ -44,7 +44,7 @@ namespace MyFlix
         readonly string accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjkyYjcwOGRlNWM3NzE2YWExZWM4ZWM5MDU4Njg3ZiIsInN1YiI6IjYwODk1ZTI3Y2FiZmU0MDAzZmVkOGU2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ke1D7Iht78CtySek8wIUTSQf7lPWvdqbvyZn989pwjo";
 
         //TODO: get a smaller size
-        readonly string posterRootUrl = "https://image.tmdb.org/t/p/original";
+        readonly string posterRootUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
         HttpClient client;
 
         public TMDBApiHandler()
