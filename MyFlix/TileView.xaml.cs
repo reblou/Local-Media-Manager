@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,26 +26,42 @@ namespace MyFlix
         UserSettingsManager userSettingsManager;
         //TODO: sort alphabetically? 
         public MediaList videos = new();
+        BackgroundWorker fileSearcherWorker;
 
         public TileView()
         {
             InitializeComponent();
 
-
             userSettingsManager = new UserSettingsManager();
             rootFilePath = userSettingsManager.settings.RootFilePath;
-            PopulateMedia();
 
             mediaItemsControl.ItemsSource = videos;
+
+            fileSearcherWorker = new BackgroundWorker();
+            fileSearcherWorker.DoWork += RetrieveMedia;
+            //TODO: report progress and add videos one at a time? 
+            fileSearcherWorker.WorkerReportsProgress = false;
+            fileSearcherWorker.RunWorkerCompleted += MediaRetrieved;
+
+            fileSearcherWorker.RunWorkerAsync();
         }
 
-        private void PopulateMedia()
+        private void RetrieveMedia(object sender, DoWorkEventArgs e)
         {
-            //TODO: do this on another thread.
+            //TODO: Disable set folder option in navbar
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(rootFilePath);
 
-            videos.AddList(searcher.videos);
+            // send searcher.vidoes back to UI thread
+            e.Result = searcher.videos;
+        }
+
+        private void MediaRetrieved(object sender, RunWorkerCompletedEventArgs e)
+        {
+            List<Video> foundVideos = (List <Video>) e.Result;
+
+            videos.AddList(foundVideos);
+            //TODO: re enable set folder option
         }
 
         private void ClearMedia()
@@ -66,7 +83,8 @@ namespace MyFlix
             }
 
             ClearMedia();
-            PopulateMedia();
+            //PopulateMedia();
+            fileSearcherWorker.RunWorkerAsync();
         }
 
         private void lstVideos_SelectionChanged(object sender, SelectionChangedEventArgs e)
