@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,20 @@ namespace MyFlix
             }
         }
     }
+
+    public class BoundVideo : INotifyPropertyChanged
+    {
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private Video _video;
+        public Video Video { get { return _video; } set
+            { 
+                _video = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(_video)));
+            }
+        }
+
+    }
     public class Folder
     {
         List<Video> videos { get; set; }
@@ -29,11 +44,11 @@ namespace MyFlix
     {
         public string filePath;
         public string title { get; set; }
-        public string fileName;
-        public string description;
-        public string releaseYear;
+        public string fileName { get; set; }
+        public string description { get; set; }
+        public string releaseYear { get; set; }
         public string posterURL { get; set; } = "/images/1024px-Filmreel-icon.png";
-        public string backdropURL;
+        public string backdropURL { get; set; }
 
         public Video() { }
 
