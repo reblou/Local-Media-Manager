@@ -21,7 +21,6 @@ namespace MyFlix
     public partial class MediaDetailsView : Page
     {
         public Video video { get; set; }
-        public BoundVideo BoundVideo { get; set; }
 
         public MediaDetailsView(Video video)
         {

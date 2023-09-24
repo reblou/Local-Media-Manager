@@ -4,42 +4,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Markup;
+using Newtonsoft.Json;
 
 namespace MyFlix
 {
-    public class MediaList : ObservableCollection<Video>
-    {
-        public MediaList() : base() { }
-
-        public void AddList(List<Video> list)
-        {
-            foreach (Video video in list)
-            {
-                this.Add(video);
-            }
-        }
-    }
-
-    public class BoundVideo : INotifyPropertyChanged
-    {
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private Video _video;
-        public Video Video { get { return _video; } set
-            { 
-                _video = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(_video)));
-            }
-        }
-
-    }
-    public class Folder
-    {
-        List<Video> videos { get; set; }
-    }
-
     public class Video
     {
         public string filePath;
@@ -47,6 +20,7 @@ namespace MyFlix
         public string fileName { get; set; }
         public string description { get; set; }
         public string releaseYear { get; set; }
+        //TODO: remove hardcoded value.
         public string posterURL { get; set; } = "/images/1024px-Filmreel-icon.png";
         public string backdropURL { get; set; }
 
@@ -88,16 +62,6 @@ namespace MyFlix
             }
             description = results.overview;
             backdropURL = results.backdrop_path;
-        }
-    }
-
-
-    public class NoResultsVideo : Video
-    {
-        public NoResultsVideo() 
-        {
-            this.title = this.fileName;
-            this.posterURL = "/images/1024px-Filmreel-icon.png";
         }
     }
 }
