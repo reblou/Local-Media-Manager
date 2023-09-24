@@ -44,9 +44,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        
-
-        <ListBox Visibility="Hidden" x:Name="lstVideos" Grid.Row="1" MaxHeight="700" SelectionMode="Single" SelectionChanged="lstVideos_SelectionChanged" ></ListBox>
-        <MediaElement Visibility="Hidden" x:Name="mediaElement" Grid.Column="1" HorizontalAlignment="Left" Height="auto" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="auto"/>
     </DockPanel>
 </Page>

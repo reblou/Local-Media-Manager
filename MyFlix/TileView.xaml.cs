@@ -24,44 +24,17 @@ namespace MyFlix
     {
         string rootFilePath = "";
         UserSettingsManager userSettingsManager;
-        //TODO: sort alphabetically? 
-        public MediaList videos = new();
-        BackgroundWorker fileSearcherWorker;
+        public MediaList videos = new MediaList();
 
         public TileView()
         {
             InitializeComponent();
+            //videos = new MediaList();
+            mediaItemsControl.ItemsSource = videos;
 
             userSettingsManager = new UserSettingsManager();
             rootFilePath = userSettingsManager.settings.RootFilePath;
-
-            mediaItemsControl.ItemsSource = videos;
-
-            fileSearcherWorker = new BackgroundWorker();
-            fileSearcherWorker.DoWork += RetrieveMedia;
-            //TODO: report progress and add videos one at a time? 
-            fileSearcherWorker.WorkerReportsProgress = false;
-            fileSearcherWorker.RunWorkerCompleted += MediaRetrieved;
-
-            fileSearcherWorker.RunWorkerAsync();
-        }
-
-        private void RetrieveMedia(object sender, DoWorkEventArgs e)
-        {
-            //TODO: Disable set folder option in navbar
-            FileSystemSearcher searcher = new();
-            searcher.GetVideosInDirRecursively(rootFilePath);
-
-            // send searcher.vidoes back to UI thread
-            e.Result = searcher.videos;
-        }
-
-        private void MediaRetrieved(object sender, RunWorkerCompletedEventArgs e)
-        {
-            List<Video> foundVideos = (List <Video>) e.Result;
-
-            videos.AddList(foundVideos);
-            //TODO: re enable set folder option
+            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
         }
 
         private void ClearMedia()
@@ -82,33 +55,7 @@ namespace MyFlix
                 userSettingsManager.SetRootFilePath(rootFilePath);
             }
 
-            ClearMedia();
-            //PopulateMedia();
-            fileSearcherWorker.RunWorkerAsync();
-        }
-
-        private void lstVideos_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Launch media player
-            Video video = (Video)((ListBox)sender).SelectedItem;
-
-
-            //PlayVideo(video);
-        }
-
-        private void PlayVideo(Video video)
-        {
-            try
-            {
-                mediaElement.Source = new Uri(video.filePath);
-            }
-            catch (NullReferenceException) { }
-        }
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new Uri("MediaDetailsView.xaml", UriKind.RelativeOrAbsolute));
+            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
         }
 
         private void Tile_Click(object sender, RoutedEventArgs e)

@@ -52,7 +52,7 @@ namespace MyFlix
         private Video GetVideoDetails(FileInfo file)
         {
             Video video = new Video(file.Name, file.FullName);
-            video.LookupDetails(apiHandler);
+            //video.LookupDetails(apiHandler);
 
             return video;
         }
