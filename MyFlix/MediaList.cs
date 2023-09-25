@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyFlix
@@ -18,22 +19,13 @@ namespace MyFlix
         public MediaList() : base()
         {
             LoadFromFile();
-
-            apiSearchWorker = new BackgroundWorker();
-            apiSearchWorker.DoWork += GetMediaDetails;
-
-            apiSearchWorker.WorkerReportsProgress = true;
-            apiSearchWorker.ProgressChanged += GetMediaDetailsProgress;
-            apiSearchWorker.RunWorkerCompleted += MediaRetrieved;
+            apiSearchWorker = BuildWorker();
         }
 
-        public void AddList(List<Video> list)
+        private void AddList(List<Video> list)
         {
             foreach (Video video in list)
             {
-                // If media already in list ignore it
-                //if (this.Items.Any(vid => vid.title == video.title)) continue;
-
                 this.Add(video);
             }
 
@@ -73,6 +65,13 @@ namespace MyFlix
 
         public void LoadMediaFromDirectoryRecursively(string directory)
         {
+            if(apiSearchWorker.IsBusy)
+            {
+                // cancel any existing background worker process
+                apiSearchWorker.CancelAsync();
+                apiSearchWorker = BuildWorker();
+            }
+
             // get list<video> from file searcher
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(directory);
@@ -80,10 +79,9 @@ namespace MyFlix
             // eliminate those already loaded from json
             List<Video> newVideos = Exclude(searcher.videos);
 
-            //  TODO: cancel any existing background worker process
-
             // new background worker -> search API for details for new files.
             // reports progress, adds vidoes as it goes
+
             apiSearchWorker.RunWorkerAsync(newVideos);
         }
 
@@ -97,6 +95,11 @@ namespace MyFlix
 
             foreach(Video video in newVideos)
             {
+                if (worker.CancellationPending)
+                {
+                    return;
+                }
+
                 video.LookupDetails(handler);
                 worker.ReportProgress(0, video);
             }
@@ -127,6 +130,19 @@ namespace MyFlix
             }
 
             return newVideos;
+        }
+
+        private BackgroundWorker BuildWorker()
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += GetMediaDetails;
+
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.ProgressChanged += GetMediaDetailsProgress;
+            worker.RunWorkerCompleted += MediaRetrieved;
+
+            return worker;
         }
     }
 }
