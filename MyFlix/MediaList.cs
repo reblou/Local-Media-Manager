@@ -26,6 +26,8 @@ namespace MyFlix
         {
             foreach (Video video in list)
             {
+                if (this.Items.Any(v => v.fileName == video.fileName)) continue;
+
                 this.Add(video);
             }
 
