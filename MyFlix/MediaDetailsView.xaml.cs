@@ -28,5 +28,12 @@ namespace MyFlix
             this.DataContext = video;
             InitializeComponent();
         }
+
+        private void ReturnButtonClicked(object sender, RoutedEventArgs e)
+        {
+            //TODO: navigate back to tile view
+            NavigationService ns = this.NavigationService;
+            ns.Navigate(new TileView());
+        }
     }
 }
