@@ -55,6 +55,7 @@ namespace MyFlix
                 userSettingsManager.SetRootFilePath(rootFilePath);
             }
 
+            videos.Clear();
             videos.LoadMediaFromDirectoryRecursively(rootFilePath);
         }
 
