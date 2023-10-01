@@ -9,7 +9,7 @@ namespace MyFlix
 {
     public class TVSeries : Media
     {
-        public List<Season> seasons;
+        public Dictionary<int, Season> seasons;
 
         public TVSeries(string filename, string filepath) 
         {
@@ -35,5 +35,13 @@ namespace MyFlix
     {
         public string name;
         public int episodeNumber;
+
+        public Episode(string filename)
+        {
+            TvTitleParser parser = new TvTitleParser();
+            parser.ParseTitleFromFilename(filename);
+            this.name = parser.title;
+            this.episodeNumber = parser.episode;
+        }
     }
 }
