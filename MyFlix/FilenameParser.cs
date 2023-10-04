@@ -24,6 +24,8 @@ namespace MyFlix
         int i = 0;
         string filename;
 
+        bool titleFound;
+
         public void ParseFilename(string filename)
         {
             this.filename = filename;
@@ -32,13 +34,21 @@ namespace MyFlix
             {
                 string word = GetNextWord();
 
-                // if year
                 if(IsYear(word))
                 {
                     this.releaseYear = word;
                 } 
-
-                if(String.IsNullOrEmpty(this.releaseYear) && this.episode == -1 && this.season == -1)
+                else if (IsSeason(word))
+                {
+                    season = ExtractNumber(word);
+                    titleFound = true;
+                }
+                else if (IsEpisode(word))
+                {
+                    episode = ExtractNumber(word);
+                    titleFound = true;
+                }
+                else
                 {
                     this.title += word;
                 }
@@ -54,28 +64,21 @@ namespace MyFlix
 
             while (i < filename.Length && !IsWhitespaceChar(filename[i]))
             {
-                if (filename[i] == '[')
+                if(squareBrackets)
+                {
+                    if (filename[i] == ']') squareBrackets = false;
+
+                    continue;
+                }
+                else if (filename[i] == '[')
                 {
                     squareBrackets = true;
                     continue;
                 }
-
-                if (squareBrackets && filename[i] == ']')
+                else
                 {
-                    squareBrackets = false;
-                    continue;
+                    word += filename[i];
                 }
-
-                if (filename[i] == 'S' || filename[i] == 's')
-                {
-                    TryToExtractSeriesInfo(SeriesInfoType.Season);
-                }
-                else if (filename[i] == 'E' || filename[i] == 'e')
-                {
-                    TryToExtractSeriesInfo(SeriesInfoType.Episode);
-                }
-
-                if(!squareBrackets) word += filename[i];
 
                 i++;
             }
@@ -83,58 +86,9 @@ namespace MyFlix
             return word;
         }
 
-        private void TryToExtractSeriesInfo(SeriesInfoType type)
-        {
-            if (type == SeriesInfoType.Season)
-            {
-                CheckForSeasonInFilename();
-            }
-            else
-            {
-                CheckForEpisodeInFilename();
-            }
-
-            i++;
-            string number = "";
-            while (Char.IsDigit(filename[i]))
-            {
-                number += filename[i];
-                i++;
-            }
-
-            if (number.Length > 0)
-            {
-                // try to parse into int
-                if(type == SeriesInfoType.Season)
-                {
-                    Int32.TryParse(number, out season);
-                }
-                else
-                {
-                    Int32.TryParse(number, out episode);
-                }         
-            }
-        }
-
-        private void CheckForSeasonInFilename()
-        {
-            if (filename[i..(i + 5)].ToLower() == "season")
-            {
-                i = i + 5;
-            }
-        }
-
-        private void CheckForEpisodeInFilename()
-        {
-            if (filename[i..(i + 6)].ToLower() == "episode")
-            {
-                i = i + 6;
-            }
-        }
-
         private static bool IsWhitespaceChar(char c)
         {
-            return c == ' ' || c == '.' || c == '_' || c == '(' || c == ')';
+            return c == ' ' || c == '.' || c == '_' || c == '(' || c == ')' || c == '-';
         }
 
         private static bool IsYear(string s)
@@ -149,6 +103,48 @@ namespace MyFlix
             }
 
             return true;
+        }
+
+        private static bool IsSeason(string s)
+        {
+            if (s[0..5].ToLower() == "season")
+            {
+                s = s.Substring(6);
+            }
+            else if (s[0] == 's' || s[0] == 'S')
+            {
+                s = s.Substring(1);
+            }
+            else
+            {
+                return false;
+            }
+
+            return IsEpisode(s);
+        }
+
+        private static bool IsEpisode(string s)
+        {
+            if (s.Length == 0 || s.Length > 3) return false;
+
+            foreach (char c in s)
+            {
+                if (!Char.IsDigit(c)) return false;
+            }
+
+            return true;
+        }
+
+        private static int ExtractNumber(string s)
+        {
+            string numberOnly = "";
+
+            foreach(char c in s)
+            {
+                if(Char.IsDigit(c)) numberOnly += c;
+            }
+
+            return Int32.Parse(numberOnly);
         }
     }
 }
