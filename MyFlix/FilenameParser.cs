@@ -34,9 +34,16 @@ namespace MyFlix
             {
                 string word = GetNextWord();
 
+                //TODO: combined s01e01 style format? 
+                if(String.IsNullOrEmpty(word) )
+                {
+                    continue;
+                }
                 if(IsYear(word))
                 {
                     this.releaseYear = word;
+                    //TODO: What if date is in title? 
+                    titleFound = true;
                 } 
                 else if (IsSeason(word))
                 {
@@ -48,13 +55,13 @@ namespace MyFlix
                     episode = ExtractNumber(word);
                     titleFound = true;
                 }
-                else
+                else if(!titleFound)
                 {
-                    this.title += word;
+                    this.title += word + " ";
                 }
             }
 
-
+            title = title.Trim();
         }
 
         private string GetNextWord()
@@ -62,18 +69,15 @@ namespace MyFlix
             string word = "";
             bool squareBrackets = false;
 
-            while (i < filename.Length && !IsWhitespaceChar(filename[i]))
+            while (i < filename.Length && (!IsWhitespaceChar(filename[i]) || squareBrackets))
             {
                 if(squareBrackets)
                 {
                     if (filename[i] == ']') squareBrackets = false;
-
-                    continue;
                 }
                 else if (filename[i] == '[')
                 {
                     squareBrackets = true;
-                    continue;
                 }
                 else
                 {
@@ -82,7 +86,7 @@ namespace MyFlix
 
                 i++;
             }
-
+            i++;
             return word;
         }
 
@@ -93,6 +97,8 @@ namespace MyFlix
 
         private static bool IsYear(string s)
         {
+            if (s.Length != 4) return false;
+
             if (s[0] != '1' || s[0] != '2') return false;
 
             if (s[1] != '9' || s[1] != '0') return false;
@@ -107,7 +113,7 @@ namespace MyFlix
 
         private static bool IsSeason(string s)
         {
-            if (s[0..5].ToLower() == "season")
+            if (s.Length >= 6 && s[0..5].ToLower() == "season")
             {
                 s = s.Substring(6);
             }
