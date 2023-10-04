@@ -46,6 +46,7 @@ namespace MyFlix
                 else if(IsSeasonEpisodeCombo(word))
                 {
                     (season, episode) = ExtractSeasonEpisode(word);
+                    titleFound = true;
                 }
                 else if (IsSeason(word))
                 {

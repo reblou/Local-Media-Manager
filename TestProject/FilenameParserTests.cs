@@ -47,6 +47,32 @@ namespace TestProject
         }
 
         [TestMethod]
+        public void TvTest2()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"The Simpsons S03E02 Mr. Lisa Goes to Washington.mp4";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("The Simpsons", parser.title);
+            Assert.AreEqual("", parser.releaseYear);
+            Assert.AreEqual(3, parser.season);
+            Assert.AreEqual(2, parser.episode);
+        }
+
+        [TestMethod]
+        public void TvTest3()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"Over the Garden Wall (2014) - S01E03 - Schooltown Follies (1080p BluRay x265 RZeroX).mkv";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("Over the Garden Wall", parser.title);
+            Assert.AreEqual("2014", parser.releaseYear);
+            Assert.AreEqual(1, parser.season);
+            Assert.AreEqual(3, parser.episode);
+        }
+
+        [TestMethod]
         public void YearInTitle()
         {
             FilenameParser parser = new FilenameParser();
@@ -71,5 +97,20 @@ namespace TestProject
             Assert.AreEqual(-1, parser.season);
             Assert.AreEqual(-1, parser.episode);
         }
+
+
+        [TestMethod]
+        public void FilmTest1()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"Arrival 2016 1080p BluRay x264 DTS-JYK.mkv";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("Arrival", parser.title);
+            Assert.AreEqual("2016", parser.releaseYear);
+            Assert.AreEqual(-1, parser.season);
+            Assert.AreEqual(-1, parser.episode);
+        }
+
     }
 }
