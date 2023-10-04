@@ -7,12 +7,6 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    internal enum SeriesInfoType
-    {
-        Season,
-        Episode
-    }
-
     public class FilenameParser
     {
         //TODO: return FilenameInfo - Film/TV type object
@@ -25,6 +19,7 @@ namespace MyFlix
         string filename;
 
         bool titleFound;
+        string reserveTitle = "";
 
         public void ParseFilename(string filename)
         {
@@ -41,8 +36,12 @@ namespace MyFlix
                 }
                 if(IsYear(word))
                 {
+                    if(!String.IsNullOrEmpty(releaseYear))
+                    {
+                        title += this.releaseYear + " " + reserveTitle;
+                        reserveTitle = "";
+                    }
                     this.releaseYear = word;
-                    //TODO: What if date is in title? 
                     titleFound = true;
                 } 
                 else if (IsSeason(word))
@@ -58,6 +57,10 @@ namespace MyFlix
                 else if(!titleFound)
                 {
                     this.title += word + " ";
+                }
+                else
+                {
+                    reserveTitle += word + " ";
                 }
             }
 
@@ -99,9 +102,9 @@ namespace MyFlix
         {
             if (s.Length != 4) return false;
 
-            if (s[0] != '1' || s[0] != '2') return false;
+            if (s[0] != '1' && s[0] != '2') return false;
 
-            if (s[1] != '9' || s[1] != '0') return false;
+            if (s[1] != '9' && s[1] != '0') return false;
 
             foreach(char c in s)
             {

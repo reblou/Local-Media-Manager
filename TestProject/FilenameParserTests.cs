@@ -45,5 +45,31 @@ namespace TestProject
             Assert.AreEqual(1, parser.season);
             Assert.AreEqual(7, parser.episode);
         }
+
+        [TestMethod]
+        public void YearInTitle()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"2001.A.Space.Odyssey.(1968).1080p.WEBRip.X264.AC3-EVO.mkv";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("2001 A Space Odyssey", parser.title);
+            Assert.AreEqual("1968", parser.releaseYear);
+            Assert.AreEqual(-1, parser.season);
+            Assert.AreEqual(-1, parser.episode);
+        }
+
+        [TestMethod]
+        public void YearInTitle2()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"Blade Runner 2049.(2017).1080p.WEBRip.X264.AC3-EVO.mkv";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("Blade Runner 2049", parser.title);
+            Assert.AreEqual("2017", parser.releaseYear);
+            Assert.AreEqual(-1, parser.season);
+            Assert.AreEqual(-1, parser.episode);
+        }
     }
 }
