@@ -29,7 +29,6 @@ namespace MyFlix
             {
                 string word = GetNextWord();
 
-                //TODO: combined s01e01 style format? 
                 if(String.IsNullOrEmpty(word) )
                 {
                     continue;
@@ -44,6 +43,10 @@ namespace MyFlix
                     this.releaseYear = word;
                     titleFound = true;
                 } 
+                else if(IsSeasonEpisodeCombo(word))
+                {
+                    (season, episode) = ExtractSeasonEpisode(word);
+                }
                 else if (IsSeason(word))
                 {
                     season = ExtractNumber(word);
@@ -116,6 +119,7 @@ namespace MyFlix
 
         private static bool IsSeason(string s)
         {
+            if (s.Length == 0) return false;
             if (s.Length >= 6 && s[0..5].ToLower() == "season")
             {
                 s = s.Substring(6);
@@ -136,12 +140,26 @@ namespace MyFlix
         {
             if (s.Length == 0 || s.Length > 3) return false;
 
+            if (s[0] == 'e' || s[0] == 'S')
+            {
+                s = s.Substring(1);
+            }
+
             foreach (char c in s)
             {
                 if (!Char.IsDigit(c)) return false;
             }
 
             return true;
+        }
+
+        private static bool IsSeasonEpisodeCombo(string s)
+        {
+            int mid = s.IndexOf('E');
+            if (mid == -1) mid = s.IndexOf('e');
+            if (mid == -1 || mid == 0) return false;
+
+            return IsSeason(s.Substring(0, mid)) && IsEpisode(s.Substring(mid+1));
         }
 
         private static int ExtractNumber(string s)
@@ -154,6 +172,15 @@ namespace MyFlix
             }
 
             return Int32.Parse(numberOnly);
+        }
+
+        private static (int, int) ExtractSeasonEpisode(string s)
+        {
+            int mid = s.IndexOf('E');
+            if (mid == -1) mid = s.IndexOf('e');
+            if (mid == -1) return (-1, -1);
+
+            return (ExtractNumber(s.Substring(0, mid)), ExtractNumber(s.Substring(mid+1)));
         }
     }
 }
