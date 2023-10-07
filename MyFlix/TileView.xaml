@@ -20,7 +20,6 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl x:Name="mediaItemsControl" 
-              ItemsSource="{Binding Source={StaticResource MediaList}}"
               DockPanel.Dock="Top"
               >
                 <ItemsControl.ItemsPanel>
