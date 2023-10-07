@@ -1,6 +1,6 @@
 using System.IO.Packaging;
 
-namespace TestProject
+namespace ParsingTests
 {
     [TestClass]
     public class FilenameParserTests
@@ -111,6 +111,17 @@ namespace TestProject
             Assert.AreEqual(-1, parser.season);
             Assert.AreEqual(-1, parser.episode);
         }
+        [TestMethod]
+        public void FilmTest32()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"Bill and Teds Excellent Adventure (1989) 1080p x264 Phun Psyz.mp4";
+            parser.ParseFilename(filename);
 
+            Assert.AreEqual("Bill and Teds Excellent Adventure", parser.title);
+            Assert.AreEqual("1989", parser.releaseYear);
+            Assert.AreEqual(-1, parser.season);
+            Assert.AreEqual(-1, parser.episode);
+        }
     }
 }

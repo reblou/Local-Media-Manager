@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
+using System.Web;
 using System.Windows.Forms;
 
 namespace MyFlix
@@ -106,9 +107,14 @@ namespace MyFlix
         {
             string query = "?";
 
+            string safeKey;
+            string safeValue;
+
             foreach((string key, string value) in parameters) 
             {
-                query += $"{key}={value}&";
+                safeKey = HttpUtility.UrlEncode(key);
+                safeValue = HttpUtility.UrlEncode(value);
+                query += $"{safeKey}={safeValue}&";
             }
 
             // remove trailing &

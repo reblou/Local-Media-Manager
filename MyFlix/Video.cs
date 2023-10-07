@@ -31,8 +31,8 @@ namespace MyFlix
             this.fileName = filename;
             this.filePath = filepath;
 
-            TitleParser parser = new TitleParser();
-            parser.ParseTitleFromFilename(Path.ChangeExtension(fileName, ""));
+            FilenameParser parser = new FilenameParser();
+            parser.ParseFilename(Path.ChangeExtension(fileName, ""));
 
             this.title = parser.title;
             this.releaseYear = parser.releaseYear;
