@@ -16,5 +16,6 @@
             <Label DockPanel.Dock="Right" Foreground="black" FontSize="23" Content="{Binding title}"/>
         </DockPanel>
         <TextBox Background="Transparent" Foreground="black" BorderThickness="0" Text="{Binding description}" TextWrapping="Wrap"/>
+        <Button DockPanel.Dock="Top" Content="Play" Click="PlayButton_Clicked" Height="100" Width="100" ></Button>
     </DockPanel>
 </Page>

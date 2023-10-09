@@ -34,5 +34,10 @@ namespace MyFlix
             NavigationService ns = this.NavigationService;
             ns.Navigate(new TileView());
         }
+
+        private void PlayButton_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
