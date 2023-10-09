@@ -30,18 +30,4 @@ namespace MyFlix
         public int seasonNumber;
         public List<Episode> episodes;
     }
-
-    public class Episode
-    {
-        public string name;
-        public int episodeNumber;
-
-        public Episode(string filename)
-        {
-            TvTitleParser parser = new TvTitleParser();
-            parser.ParseTitleFromFilename(filename);
-            this.name = parser.title;
-            this.episodeNumber = parser.episode;
-        }
-    }
 }
