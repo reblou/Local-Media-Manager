@@ -7,19 +7,16 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    public class TVSeries : Media
+    public class TVSeries : IPlayable
     {
         public Dictionary<int, Season> seasons;
 
-        public TVSeries(string filename, string filepath) 
+        public TVSeries() 
         {
-            this.fileName = filename;
-            this.filePath = filepath;
-
             // Parse title
         }
 
-        public override void LookupDetails(TMDBApiHandler handler)
+        public void LookupDetails(TMDBApiHandler handler)
         {
             throw new NotImplementedException();
         }

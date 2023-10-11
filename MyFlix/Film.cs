@@ -25,7 +25,6 @@ namespace MyFlix
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
 
-        public Film() { }
 
         public Film(string filename, string filepath, string title, string releaseYear)
         {

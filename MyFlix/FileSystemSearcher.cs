@@ -14,7 +14,6 @@ namespace MyFlix
     {
         private readonly string[] _acceptedExtensions = { ".mkv", ".mp4", ".avi" };
         public List<FileSystemVideo> videos = new();
-        TMDBApiHandler apiHandler = new TMDBApiHandler();
         public Dictionary<String, TVSeries> tvSeries = new();
 
         public void GetVideosInDirRecursively(string dirFilepath)

@@ -10,19 +10,19 @@ namespace MyFlix
 {
     class PlayableFactory
     {
-
-        public static IPlayable CreatePlayableFromFilename(string filename)
+        public static IPlayable CreatePlayableFromFilename(string filename, string filepath)
         {
             FilenameParser parser = new FilenameParser();
             parser.ParseFilename(Path.ChangeExtension(filename, ""));
 
-            if(parser.season != -1 || parser.episode != -1)
+            if(parser.episode != -1)
             {
-                return new Episode();
+                int season = parser.season == -1 ? 1 : parser.season;
+                return new Episode(parser.title, parser.releaseYear, season, parser.episode, filename, filepath);
             }
 
 
-            return new Film();
+            return new Film(filename, filepath, parser.title, parser.releaseYear);
         }
     }
 }

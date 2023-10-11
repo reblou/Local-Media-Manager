@@ -9,6 +9,5 @@ namespace MyFlix
     interface IPlayable
     {
         public string ToString();
-        public abstract void LookupDetails(TMDBApiHandler handler);
     }
 }

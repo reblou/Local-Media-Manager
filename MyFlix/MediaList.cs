@@ -101,6 +101,8 @@ namespace MyFlix
                 {
                     return;
                 }
+
+                //TODO: build IPlayable via factory
                 Video video = new Video(fsVideo.fileName, fsVideo.filePath);
                 video.ParseTitle();
                 video.LookupDetails(handler);
