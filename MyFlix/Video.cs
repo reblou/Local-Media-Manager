@@ -30,12 +30,6 @@ namespace MyFlix
         {
             this.fileName = filename;
             this.filePath = filepath;
-
-            FilenameParser parser = new FilenameParser();
-            parser.ParseFilename(Path.ChangeExtension(fileName, ""));
-
-            this.title = parser.title;
-            this.releaseYear = parser.releaseYear;
         }
 
         public override string ToString()
@@ -62,6 +56,15 @@ namespace MyFlix
             }
             description = results.overview;
             backdropURL = results.backdrop_path;
+        }
+
+        public void ParseTitle()
+        {
+            FilenameParser parser = new FilenameParser();
+            parser.ParseFilename(Path.ChangeExtension(fileName, ""));
+
+            this.title = parser.title;
+            this.releaseYear = parser.releaseYear;
         }
     }
 }

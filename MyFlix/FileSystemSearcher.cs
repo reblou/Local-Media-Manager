@@ -13,7 +13,7 @@ namespace MyFlix
     internal class FileSystemSearcher
     {
         private readonly string[] _acceptedExtensions = { ".mkv", ".mp4", ".avi" };
-        public List<Video> videos = new();
+        public List<FileSystemVideo> videos = new();
         TMDBApiHandler apiHandler = new TMDBApiHandler();
         public Dictionary<String, TVSeries> tvSeries = new();
 
@@ -31,7 +31,7 @@ namespace MyFlix
             {
                 if (!IsVideoFileExtension(file.Extension)) continue;
 
-                videos.Add(GetVideoDetails(file));
+                videos.Add(new FileSystemVideo(file.Name, file.FullName));
             }
 
             foreach (DirectoryInfo dir in directory.GetDirectories())
@@ -49,11 +49,6 @@ namespace MyFlix
                 if (videoExtension == extension) return true;
             }
             return false;
-        }
-
-        private Video GetVideoDetails(FileInfo file)
-        {
-            return new Video(file.Name, file.FullName);
         }
     }
 

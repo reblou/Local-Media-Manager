@@ -79,7 +79,7 @@ namespace MyFlix
             searcher.GetVideosInDirRecursively(directory);
 
             // eliminate those already loaded from json
-            List<Video> newVideos = Exclude(searcher.videos);
+            List<FileSystemVideo> newVideos = Exclude(searcher.videos);
 
             // new background worker -> search API for details for new files.
             // reports progress, adds vidoes as it goes
@@ -91,17 +91,18 @@ namespace MyFlix
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            List<Video> newVideos = (List<Video>)e.Argument;
+            List<FileSystemVideo> newVideos = (List<FileSystemVideo>)e.Argument;
 
             TMDBApiHandler handler = new TMDBApiHandler();
 
-            foreach(Video video in newVideos)
+            foreach(FileSystemVideo fsVideo in newVideos)
             {
                 if (worker.CancellationPending)
                 {
                     return;
                 }
-
+                Video video = new Video(fsVideo.fileName, fsVideo.filePath);
+                video.ParseTitle();
                 video.LookupDetails(handler);
                 worker.ReportProgress(0, video);
             }
@@ -119,11 +120,11 @@ namespace MyFlix
             this.SaveToFile();
         }
 
-        private List<Video> Exclude(List<Video> videos)
+        private List<FileSystemVideo> Exclude(List<FileSystemVideo> videos)
         {
-            List<Video> newVideos = new List<Video>();
+            List<FileSystemVideo> newVideos = new List<FileSystemVideo>();
 
-            foreach(Video v in videos) 
+            foreach(FileSystemVideo v in videos) 
             { 
                 if (!this.Items.Any(i => i.fileName == v.fileName))
                 {

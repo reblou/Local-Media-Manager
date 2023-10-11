@@ -37,11 +37,6 @@ namespace MyFlix
             videos.LoadMediaFromDirectoryRecursively(rootFilePath);
         }
 
-        private void ClearMedia()
-        {
-            videos.Clear();
-        }
-
         private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new()
