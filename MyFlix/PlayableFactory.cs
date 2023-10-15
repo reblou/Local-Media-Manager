@@ -21,7 +21,6 @@ namespace MyFlix
                 return new Episode(parser.title, parser.releaseYear, season, parser.episode, filename, filepath);
             }
 
-
             return new Film(filename, filepath, parser.title, parser.releaseYear);
         }
     }

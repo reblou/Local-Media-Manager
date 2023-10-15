@@ -11,22 +11,23 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    public class MediaList : ObservableCollection<Video>
+    public class MediaList : ObservableCollection<IDisplayable>
     {
         private BackgroundWorker apiSearchWorker;
         private readonly string filename = "user-media.json";
 
         public MediaList() : base()
         {
-            LoadFromFile();
+            //TODO: Fix json file saving for generic displayable media.
+            //LoadFromFile();
             apiSearchWorker = BuildWorker();
         }
 
-        private void AddList(List<Video> list)
+        private void AddList(List<IDisplayable> list)
         {
-            foreach (Video video in list)
+            foreach (IDisplayable video in list)
             {
-                if (this.Items.Any(v => v.fileName == video.fileName)) continue;
+                if (this.Items.Any(v => v.title == video.title)) continue;
 
                 this.Add(video);
             }
@@ -61,7 +62,7 @@ namespace MyFlix
                 data = reader.ReadToEnd();
             }
 
-            List<Video> savedVideos = JsonConvert.DeserializeObject<List<Video>>(data);
+            List<IDisplayable> savedVideos = JsonConvert.DeserializeObject<List<IDisplayable>>(data);
             AddList(savedVideos);
         }
 
@@ -74,12 +75,15 @@ namespace MyFlix
                 apiSearchWorker = BuildWorker();
             }
 
-            // get list<video> from file searcher
+            // get file system videos from file searcher
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(directory);
 
             // eliminate those already loaded from json
-            List<FileSystemVideo> newVideos = Exclude(searcher.videos);
+
+            //TODO: readd this
+            //List<FileSystemVideo> newVideos = Exclude(searcher.videos);
+            List<FileSystemVideo> newVideos = searcher.videos;
 
             // new background worker -> search API for details for new files.
             // reports progress, adds vidoes as it goes
@@ -95,6 +99,8 @@ namespace MyFlix
 
             TMDBApiHandler handler = new TMDBApiHandler();
 
+            TVSeriesFactory seriesFactory = new TVSeriesFactory();
+
             foreach(FileSystemVideo fsVideo in newVideos)
             {
                 if (worker.CancellationPending)
@@ -102,17 +108,37 @@ namespace MyFlix
                     return;
                 }
 
-                //TODO: build IPlayable via factory
-                Video video = new Video(fsVideo.fileName, fsVideo.filePath);
-                video.ParseTitle();
-                video.LookupDetails(handler);
-                worker.ReportProgress(0, video);
+                IPlayable playable = PlayableFactory.CreatePlayableFromFilename(fsVideo.fileName, fsVideo.filePath);
+
+                IDisplayable? displayable = playable as IDisplayable;
+                if (displayable != null)
+                {
+                    //lookup details
+                    displayable.LookupDetails(handler);
+                    worker.ReportProgress(0, displayable);
+                }
+                else
+                {
+                    Episode? ep = playable as Episode;
+                    if(ep != null)
+                    {
+                        seriesFactory.Add(ep);
+                    }
+                }
+            }
+
+            // report progess on TV series to add to ui 
+            List<TVSeries> seriesList = seriesFactory.GetSeries();
+            foreach(TVSeries series in seriesList)
+            {
+                series.LookupDetails(handler);
+                worker.ReportProgress(0, series);
             }
         }
 
         private void GetMediaDetailsProgress(object sender, ProgressChangedEventArgs e)
         {
-            Video video = (Video)e.UserState;
+            IDisplayable video = (IDisplayable)e.UserState;
 
             this.Add(video);
         }
@@ -122,13 +148,14 @@ namespace MyFlix
             this.SaveToFile();
         }
 
+        //TODO: how to handle TV series filenames?
         private List<FileSystemVideo> Exclude(List<FileSystemVideo> videos)
         {
             List<FileSystemVideo> newVideos = new List<FileSystemVideo>();
 
             foreach(FileSystemVideo v in videos) 
             { 
-                if (!this.Items.Any(i => i.fileName == v.fileName))
+                if (!this.Items.Any(i => i.title == v.fileName))
                 {
                     newVideos.Add(v);
                 }

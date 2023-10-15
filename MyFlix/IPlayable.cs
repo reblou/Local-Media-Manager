@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    interface IPlayable
+    public interface IPlayable
     {
         public string ToString();
     }

@@ -14,13 +14,12 @@ using Newtonsoft.Json;
 
 namespace MyFlix
 {
-    public class Film : IPlayable
+    public class Film : IPlayable, IDisplayable
     {
         public string filePath;
         public string fileName;
         public string title { get; set; }
         public string description { get; set; }
-
         public string posterURL { get; set; }
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
