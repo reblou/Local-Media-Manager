@@ -41,15 +41,7 @@ namespace MyFlix
 
         public void LookupDetails(TMDBApiHandler apiHandler)
         {
-            FilmResult results = new FilmResult();
-            if (String.IsNullOrEmpty(releaseYear))
-            {
-                results = apiHandler.SearchMovieTitleOnly(title);
-            }
-            else
-            {
-                results = apiHandler.SearchMovie(title, releaseYear);
-            }
+            FilmResult results = apiHandler.SearchMovie(title, releaseYear);
 
             title = results.title;
             posterURL = results.poster_path;
