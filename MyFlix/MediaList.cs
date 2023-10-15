@@ -148,13 +148,13 @@ namespace MyFlix
             this.SaveToFile();
         }
 
-        //TODO: how to handle TV series filenames?
         private List<FileSystemVideo> Exclude(List<FileSystemVideo> videos)
         {
             List<FileSystemVideo> newVideos = new List<FileSystemVideo>();
 
             foreach(FileSystemVideo v in videos) 
             { 
+                //TODO: check each episode of series for matching filepath
                 if (!this.Items.Any(i => i.title == v.fileName))
                 {
                     newVideos.Add(v);

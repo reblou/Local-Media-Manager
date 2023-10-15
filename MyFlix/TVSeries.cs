@@ -27,8 +27,13 @@ namespace MyFlix
 
         public void LookupDetails(TMDBApiHandler handler)
         {
-            this.posterURL = "/images/1024px-Filmreel-icon.png";
-            this.description = "hello world";
+            TVResult results = handler.SearchTV(title, releaseYear);
+
+            title = results.name;
+            releaseYear = results.first_air_date;
+            description = results.overview;
+            posterURL = results.poster_path;
+            backdropURL = results.backdrop_path;
         }
 
         public void AddEpisode(Episode episode)
