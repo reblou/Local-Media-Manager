@@ -46,6 +46,18 @@ namespace MyFlix
 
             seasons[season].Add(episode);
         }
+
+        public bool EpisodeHasFilename(string filename)
+        {
+            foreach(Season season in seasons.Values)
+            {
+                foreach(Episode episode in season.episodes)
+                {
+                    if(episode.fileName == filename) return true;
+                }
+            }
+            return false;
+        }
     }
 
     public class Season
