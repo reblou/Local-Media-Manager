@@ -20,9 +20,9 @@ namespace MyFlix
     /// </summary>
     public partial class MediaDetailsView : Page
     {
-        public Video video { get; set; }
+        public IDisplayable video { get; set; }
 
-        public MediaDetailsView(Video video)
+        public MediaDetailsView(IDisplayable video)
         {
             this.video = video;
             this.DataContext = video;
