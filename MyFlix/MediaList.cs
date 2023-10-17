@@ -19,7 +19,7 @@ namespace MyFlix
         public MediaList() : base()
         {
             //TODO: Fix json file saving for generic displayable media.
-            //LoadFromFile();
+            LoadFromFile();
             apiSearchWorker = BuildWorker();
         }
 
@@ -37,33 +37,12 @@ namespace MyFlix
 
         private void SaveToFile()
         {
-            string output = JsonConvert.SerializeObject(this.Items);
-
-            using StreamWriter writer = new StreamWriter(filename);
-            writer.Write(output);
+            UserMediaSaver.SaveToFile(this.Items.ToList());
         }
 
         private void LoadFromFile()
         {
-            try
-            {
-                TryToLoadFromFile();
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-        }
-        private void TryToLoadFromFile()
-        {
-            string data = "";
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                data = reader.ReadToEnd();
-            }
-
-            List<IDisplayable> savedVideos = JsonConvert.DeserializeObject<List<IDisplayable>>(data);
-            AddList(savedVideos);
+            AddList(UserMediaSaver.LoadFromFile());
         }
 
         public void LoadMediaFromDirectoryRecursively(string directory)
@@ -81,7 +60,7 @@ namespace MyFlix
 
             // eliminate those already loaded from json
 
-            //TODO: readd this
+            //TODO: re-add this
             //List<FileSystemVideo> newVideos = Exclude(searcher.videos);
             List<FileSystemVideo> newVideos = searcher.videos;
 
