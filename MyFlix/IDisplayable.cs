@@ -9,5 +9,6 @@
         public string releaseYear { get; set; }
 
         public void LookupDetails(TMDBApiHandler handler);
+        public bool RepresentsFilename(string filename);
     }
 }

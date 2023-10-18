@@ -143,15 +143,7 @@ namespace MyFlix
         {
             foreach(IDisplayable displayable in this.Items)
             {
-                //TODO: Move to IDisplayable as bool RepresentsFilename(string filename)
-                if(displayable is Film film)
-                {
-                    if (film.fileName == fileName) return true;
-                }
-                else if (displayable is TVSeries series)
-                {
-                    if(series.EpisodeHasFilename(fileName)) return true;
-                }
+                if (displayable.RepresentsFilename(fileName)) return true;
             }
             return false;
         }

@@ -48,5 +48,10 @@ namespace MyFlix
             description = results.overview;
             backdropURL = results.backdrop_path;
         }
+
+        public bool RepresentsFilename(string filename)
+        {
+            return this.fileName == filename;
+        }
     }
 }
