@@ -54,7 +54,6 @@ namespace MyFlix
 
     public class TMDBApiHandler
     {
-        readonly string key = "1b92b708de5c7716aa1ec8ec9058687f";
         readonly string rootUrl = "https://api.themoviedb.org";
         readonly string accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjkyYjcwOGRlNWM3NzE2YWExZWM4ZWM5MDU4Njg3ZiIsInN1YiI6IjYwODk1ZTI3Y2FiZmU0MDAzZmVkOGU2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ke1D7Iht78CtySek8wIUTSQf7lPWvdqbvyZn989pwjo";
         readonly string posterRootUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
@@ -68,23 +67,9 @@ namespace MyFlix
             client.DefaultRequestHeaders.Add("accept", "application/json");
         }
 
-        public FilmResult SearchMovieTitleOnly(string title)
-        {
-            return SearchMovie(title, "");
-        }
-
         public FilmResult SearchMovie(string title, string releaseYear)
         {
-            SearchResponse<FilmResult> searchResponse = new();
-
-            if (string.IsNullOrEmpty(releaseYear))
-            {
-                searchResponse = GetMovieSearchResults(title);
-            }
-            else
-            {
-                searchResponse = GetMovieSearchResultsYear(title, releaseYear);
-            }
+            SearchResponse<FilmResult> searchResponse = GetMovieSearchResultsYear(title, releaseYear);
 
             try
             {
@@ -144,11 +129,6 @@ namespace MyFlix
             return SearchMovieRequest(paramters);
         }
 
-        private SearchResponse<FilmResult> GetMovieSearchResults(string title)
-        {
-            return GetMovieSearchResultsYear(title, "");
-        }
-
         private SearchResponse<FilmResult> SearchMovieRequest(string parameters)
         {
             string method = "/3/search/movie";
@@ -172,7 +152,7 @@ namespace MyFlix
                 query += $"{safeKey}={safeValue}&";
             }
 
-            // remove trailing &
+            // removes trailing &
             return query.Remove(query.Length - 1);
         }
 

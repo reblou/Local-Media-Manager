@@ -86,7 +86,6 @@ namespace MyFlix
 
                 if (playable is IDisplayable displayable)
                 {
-                    //lookup details
                     displayable.LookupDetails(handler);
                     worker.ReportProgress(0, displayable);
                 }
