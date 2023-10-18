@@ -7,21 +7,56 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    public class TVSeries : Media
+    public class TVSeries : IDisplayable
     {
+        public string title { get; set; }
+        public string description { get; set; }
+        public string posterURL { get; set; }
+        public string backdropURL { get; set; }
+        public string releaseYear { get; set; }
+
+
         public Dictionary<int, Season> seasons;
 
-        public TVSeries(string filename, string filepath) 
+        public TVSeries(string title, string releaseYear)
         {
-            this.fileName = filename;
-            this.filePath = filepath;
-
-            // Parse title
+            this.title = title;
+            this.releaseYear = releaseYear;
+            seasons = new Dictionary<int, Season>();
         }
 
-        public override void LookupDetails(TMDBApiHandler handler)
+        public void LookupDetails(TMDBApiHandler handler)
         {
-            throw new NotImplementedException();
+            TVResult results = handler.SearchTV(title, releaseYear);
+
+            title = results.name;
+            releaseYear = results.first_air_date;
+            description = results.overview;
+            posterURL = results.poster_path;
+            backdropURL = results.backdrop_path;
+        }
+
+        public void AddEpisode(Episode episode)
+        {
+            int season = episode.seasonNumber;
+
+            if (season < 0) season = 1;
+
+            if(!seasons.ContainsKey(season)) seasons[season] = new Season();
+
+            seasons[season].Add(episode);
+        }
+
+        public bool RepresentsFilename(string filename)
+        {
+            foreach(Season season in seasons.Values)
+            {
+                foreach(Episode episode in season.episodes)
+                {
+                    if(episode.fileName == filename) return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -29,19 +64,15 @@ namespace MyFlix
     {
         public int seasonNumber;
         public List<Episode> episodes;
-    }
 
-    public class Episode
-    {
-        public string name;
-        public int episodeNumber;
-
-        public Episode(string filename)
+        public Season()
         {
-            TvTitleParser parser = new TvTitleParser();
-            parser.ParseTitleFromFilename(filename);
-            this.name = parser.title;
-            this.episodeNumber = parser.episode;
+            episodes = new List<Episode>();
+        }
+
+        public void Add(Episode episode)
+        {
+            episodes.Add(episode);
         }
     }
 }

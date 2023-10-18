@@ -57,7 +57,7 @@ namespace MyFlix
         private void Tile_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            Video clickedVideo = (Video)button.DataContext;
+            IDisplayable clickedVideo = (IDisplayable)button.DataContext;
 
             // navigate to details view & send video
             NavigationService ns = this.NavigationService;

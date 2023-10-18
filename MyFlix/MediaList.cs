@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace MyFlix
 {
-    public class MediaList : ObservableCollection<Video>
+    public class MediaList : ObservableCollection<IDisplayable>
     {
         private BackgroundWorker apiSearchWorker;
-        private readonly string filename = "user-media.json";
 
         public MediaList() : base()
         {
@@ -22,11 +21,11 @@ namespace MyFlix
             apiSearchWorker = BuildWorker();
         }
 
-        private void AddList(List<Video> list)
+        private void AddList(List<IDisplayable> list)
         {
-            foreach (Video video in list)
+            foreach (IDisplayable video in list)
             {
-                if (this.Items.Any(v => v.fileName == video.fileName)) continue;
+                if (this.Items.Any(v => v.title == video.title)) continue;
 
                 this.Add(video);
             }
@@ -36,33 +35,12 @@ namespace MyFlix
 
         private void SaveToFile()
         {
-            string output = JsonConvert.SerializeObject(this.Items);
-
-            using StreamWriter writer = new StreamWriter(filename);
-            writer.Write(output);
+            UserMediaSaver.SaveToFile(this.Items.ToList());
         }
 
         private void LoadFromFile()
         {
-            try
-            {
-                TryToLoadFromFile();
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-        }
-        private void TryToLoadFromFile()
-        {
-            string data = "";
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                data = reader.ReadToEnd();
-            }
-
-            List<Video> savedVideos = JsonConvert.DeserializeObject<List<Video>>(data);
-            AddList(savedVideos);
+            AddList(UserMediaSaver.LoadFromFile());
         }
 
         public void LoadMediaFromDirectoryRecursively(string directory)
@@ -74,7 +52,7 @@ namespace MyFlix
                 apiSearchWorker = BuildWorker();
             }
 
-            // get list<video> from file searcher
+            // get file system videos from file searcher
             FileSystemSearcher searcher = new();
             searcher.GetVideosInDirRecursively(directory);
 
@@ -95,22 +73,43 @@ namespace MyFlix
 
             TMDBApiHandler handler = new TMDBApiHandler();
 
+            TVSeriesFactory seriesFactory = new TVSeriesFactory();
+
             foreach(FileSystemVideo fsVideo in newVideos)
             {
                 if (worker.CancellationPending)
                 {
                     return;
                 }
-                Video video = new Video(fsVideo.fileName, fsVideo.filePath);
-                video.ParseTitle();
-                video.LookupDetails(handler);
-                worker.ReportProgress(0, video);
+
+                IPlayable playable = PlayableFactory.CreatePlayableFromFilename(fsVideo.fileName, fsVideo.filePath);
+
+                if (playable is IDisplayable displayable)
+                {
+                    displayable.LookupDetails(handler);
+                    worker.ReportProgress(0, displayable);
+                }
+                else
+                {
+                    if(playable is Episode ep)
+                    {
+                        seriesFactory.Add(ep);
+                    }
+                }
+            }
+
+            // report progess on TV series to add to ui 
+            List<TVSeries> seriesList = seriesFactory.GetSeries();
+            foreach(TVSeries series in seriesList)
+            {
+                series.LookupDetails(handler);
+                worker.ReportProgress(0, series);
             }
         }
 
         private void GetMediaDetailsProgress(object sender, ProgressChangedEventArgs e)
         {
-            Video video = (Video)e.UserState;
+            IDisplayable video = (IDisplayable)e.UserState;
 
             this.Add(video);
         }
@@ -125,14 +124,27 @@ namespace MyFlix
             List<FileSystemVideo> newVideos = new List<FileSystemVideo>();
 
             foreach(FileSystemVideo v in videos) 
-            { 
-                if (!this.Items.Any(i => i.fileName == v.fileName))
+            {
+                if (FileExistsInList(v.fileName))
+                {
+                    continue;
+                }
+                else
                 {
                     newVideos.Add(v);
                 }
             }
 
             return newVideos;
+        }
+
+        private bool FileExistsInList(string fileName)
+        {
+            foreach(IDisplayable displayable in this.Items)
+            {
+                if (displayable.RepresentsFilename(fileName)) return true;
+            }
+            return false;
         }
 
         private BackgroundWorker BuildWorker()

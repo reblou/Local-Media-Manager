@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
@@ -13,22 +14,24 @@ using Newtonsoft.Json;
 
 namespace MyFlix
 {
-    public class Film : Media
+    public class Film : IPlayable, IDisplayable
     {
+        public string filePath;
+        public string fileName;
+        public string title { get; set; }
+        public string description { get; set; }
+        public string posterURL { get; set; }
+        public string backdropURL { get; set; }
         public string releaseYear { get; set; }
 
-        public Film() { }
 
-        public Film(string filename, string filepath)
+        public Film(string filename, string filepath, string title, string releaseYear)
         {
             this.fileName = filename;
             this.filePath = filepath;
 
-            TitleParser parser = new TitleParser();
-            parser.ParseTitleFromFilename(Path.ChangeExtension(fileName, ""));
-
-            this.title = parser.title;
-            this.releaseYear = parser.releaseYear;
+            this.title = title;
+            this.releaseYear = releaseYear;
         }
 
         public override string ToString()
@@ -36,25 +39,19 @@ namespace MyFlix
             return title;
         }
 
-        public override void LookupDetails(TMDBApiHandler apiHandler)
+        public void LookupDetails(TMDBApiHandler apiHandler)
         {
-            Result results = new Result();
-            if (String.IsNullOrEmpty(releaseYear))
-            {
-                results = apiHandler.SearchMovieTitleOnly(title);
-            }
-            else
-            {
-                results = apiHandler.SearchMovie(title, releaseYear);
-            }
+            FilmResult results = apiHandler.SearchMovie(title, releaseYear);
 
-            if(results.GetType() != typeof(EmptyResult))
-            {
-                title = results.title;
-                posterURL = results.poster_path;
-            }
+            title = results.title;
+            posterURL = results.poster_path;
             description = results.overview;
             backdropURL = results.backdrop_path;
+        }
+
+        public bool RepresentsFilename(string filename)
+        {
+            return this.fileName == filename;
         }
     }
 }
