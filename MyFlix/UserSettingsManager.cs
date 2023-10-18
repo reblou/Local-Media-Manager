@@ -27,14 +27,18 @@ namespace MyFlix
 
         public void ReadSettingsFromFile()
         {
-            settings = new UserSettings();
-
-            //TODO: errorhandling - no file, invalid file etc
-            using (var reader = new StreamReader(configFileName))
+            try
             {
-                settings = (UserSettings) xmlSerializer.Deserialize(reader);
+                using (var reader = new StreamReader(configFileName))
+                {
+                    settings = (UserSettings)xmlSerializer.Deserialize(reader);
+                }
+
+                if (settings == null) throw new NullReferenceException("Couldn't read user settings");
+            } catch(FileNotFoundException)
+            {
+                settings = new UserSettings();
             }
-            if (settings == null) throw new NullReferenceException("Couldn't read user settings");
         }
 
         public void WriteSettingsToFile()

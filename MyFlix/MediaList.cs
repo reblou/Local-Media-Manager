@@ -45,6 +45,8 @@ namespace MyFlix
 
         public void LoadMediaFromDirectoryRecursively(string directory)
         {
+            if(String.IsNullOrEmpty(directory)) return;
+
             if(apiSearchWorker.IsBusy)
             {
                 // cancel any existing background worker process

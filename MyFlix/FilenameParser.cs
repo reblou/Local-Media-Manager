@@ -9,7 +9,6 @@ namespace MyFlix
 {
     public class FilenameParser
     {
-        //TODO: return FilenameInfo - Film/TV type object
         public string title = "";
         public string releaseYear = "";
         public int season = -1;

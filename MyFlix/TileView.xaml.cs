@@ -29,7 +29,6 @@ namespace MyFlix
         public TileView()
         {
             InitializeComponent();
-            //videos = new MediaList();
             mediaItemsControl.ItemsSource = videos;
 
             userSettingsManager = new UserSettingsManager();

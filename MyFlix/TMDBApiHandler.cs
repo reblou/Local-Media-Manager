@@ -75,7 +75,7 @@ namespace MyFlix
             {
                 return extractTopResult(searchResponse.results) as FilmResult;
             }
-            catch(IndexOutOfRangeException)
+            catch(NoMatchingResultsException)
             {
                 return new FilmResult()
                 {
@@ -160,8 +160,7 @@ namespace MyFlix
         {
             if (results == null || results.Count <= 0)
             {
-                //TODO: replace with custom exception
-                throw new IndexOutOfRangeException("No results found.");
+                throw new NoMatchingResultsException("No results found.");
             }
 
             Result topResult = results[0];
