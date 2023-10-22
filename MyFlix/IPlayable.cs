@@ -8,6 +8,7 @@ namespace MyFlix
 {
     public interface IPlayable
     {
+        string filePath { get; set;  }
         public string ToString();
     }
 }

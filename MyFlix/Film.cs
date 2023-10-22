@@ -16,8 +16,8 @@ namespace MyFlix
 {
     public class Film : IPlayable, IDisplayable
     {
-        public string filePath;
-        public string fileName;
+        public string filePath { get; set; }
+        public string fileName { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public string posterURL { get; set; }
@@ -52,6 +52,11 @@ namespace MyFlix
         public bool RepresentsFilename(string filename)
         {
             return this.fileName == filename;
+        }
+
+        public IPlayable GetPlayable()
+        {
+            return this;
         }
     }
 }

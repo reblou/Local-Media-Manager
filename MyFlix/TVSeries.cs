@@ -58,6 +58,11 @@ namespace MyFlix
             }
             return false;
         }
+
+        public IPlayable GetPlayable()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Season

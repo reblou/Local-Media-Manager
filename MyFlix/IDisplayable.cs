@@ -10,5 +10,7 @@
 
         public void LookupDetails(TMDBApiHandler handler);
         public bool RepresentsFilename(string filename);
+
+        public IPlayable GetPlayable();
     }
 }

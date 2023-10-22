@@ -21,6 +21,7 @@ namespace MyFlix
     public partial class MediaDetailsView : Page
     {
         public IDisplayable video { get; set; }
+        private PlayWindow playWindow;
 
         public MediaDetailsView(IDisplayable video)
         {
@@ -37,7 +38,14 @@ namespace MyFlix
 
         private void PlayButton_Clicked(object sender, RoutedEventArgs e)
         {
+            if(playWindow == null)
+            {
+                playWindow = new PlayWindow(video.GetPlayable());
 
+                //TODO: closed callback function -> update storage with video progress
+                playWindow.Closed += (sender, args) => this.playWindow = null;
+                playWindow.Show();
+            }
         }
     }
 }

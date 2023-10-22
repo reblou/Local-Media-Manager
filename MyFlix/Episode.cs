@@ -13,7 +13,7 @@ namespace MyFlix
         public int seasonNumber;
         public int episodeNumber;
         public string fileName;
-        public string filePath;
+        public string filePath { get; set; }
 
         public Episode(string title, string releaseYear, int seasonNumber, int episodeNumber, string fileName, string filePath)        {
             this.title = title;
@@ -23,6 +23,5 @@ namespace MyFlix
             this.fileName = fileName;
             this.filePath = filePath;
         }
-
     }
 }
