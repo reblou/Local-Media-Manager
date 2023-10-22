@@ -56,7 +56,8 @@ namespace MyFlix
     {
         readonly string rootUrl = "https://api.themoviedb.org";
         readonly string accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjkyYjcwOGRlNWM3NzE2YWExZWM4ZWM5MDU4Njg3ZiIsInN1YiI6IjYwODk1ZTI3Y2FiZmU0MDAzZmVkOGU2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ke1D7Iht78CtySek8wIUTSQf7lPWvdqbvyZn989pwjo";
-        readonly string posterRootUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
+        readonly string posterRootUrl = "https://image.tmdb.org/t/p/w780";
+        readonly string backropRootUrl = "https://image.tmdb.org/t/p/w1280";
         readonly string posterNotFoundUrl = "/images/1024px-Filmreel-icon.png";
         HttpClient client;
 
@@ -81,9 +82,9 @@ namespace MyFlix
                 {
                     title = title,
                     release_date = releaseYear,
-                    poster_path = posterRootUrl,
-                    backdrop_path = posterNotFoundUrl,
-                    overview = "",
+                    poster_path = posterNotFoundUrl,
+                    backdrop_path = "",
+                    overview = "Details not found in lookup.",
                 };
             }
         }
@@ -108,7 +109,7 @@ namespace MyFlix
                     name = title,
                     first_air_date = firstAirYear,
                     poster_path = posterNotFoundUrl,
-                    backdrop_path = posterNotFoundUrl,
+                    backdrop_path = "",
                     overview = ""
                 };
             }
@@ -166,7 +167,7 @@ namespace MyFlix
             Result topResult = results[0];
 
             topResult.poster_path = posterRootUrl + topResult.poster_path;
-            topResult.backdrop_path = posterRootUrl + topResult.backdrop_path;
+            topResult.backdrop_path = backropRootUrl + topResult.backdrop_path;
 
             return topResult;
         }

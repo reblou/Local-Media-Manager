@@ -6,16 +6,23 @@
       xmlns:local="clr-namespace:MyFlix"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MediaDetailsView">
+      Title="MediaDetailsView" Background="#151515">
+      
 
-    <DockPanel LastChildFill="False" >
-
-        <Image x:Name="Test" DockPanel.Dock="Left" Width="auto" Height="auto" Source="{Binding posterURL}"/>
-        <DockPanel DockPanel.Dock="Top">
-            <Button DockPanel.Dock="Left" Content="Return" Height="30" Width="100" Click="ReturnButtonClicked"/>
-            <Label DockPanel.Dock="Right" Foreground="black" FontSize="23" Content="{Binding title}"/>
+    <Grid>
+        <DockPanel LastChildFill="False" HorizontalAlignment="Stretch">
+            <Image DockPanel.Dock="Top" Width="auto" Height="500" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
         </DockPanel>
-        <TextBox Background="Transparent" Foreground="black" BorderThickness="0" Text="{Binding description}" TextWrapping="Wrap"/>
-        <Button DockPanel.Dock="Top" Content="Play" Click="PlayButton_Clicked" Height="100" Width="100" ></Button>
-    </DockPanel>
+        <DockPanel LastChildFill="False">
+            <DockPanel Background="#E5151515" LastChildFill="False">
+                <Image DockPanel.Dock="Left" Width="auto" Height="auto" Source="{Binding posterURL}"/>
+                <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                    <Button DockPanel.Dock="Left" Content="Return" Height="30" Width="100" Click="ReturnButtonClicked"/>
+                    <Label DockPanel.Dock="Left" Foreground="white" FontSize="23" Content="{Binding title}" HorizontalAlignment="Center"/>
+                </DockPanel>
+                <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
+                <Button DockPanel.Dock="Top" Content="Play" Click="PlayButton_Clicked" Height="50" Width="100" ></Button>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
 </Page>

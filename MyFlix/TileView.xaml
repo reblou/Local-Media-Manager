@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:MyFlix"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1000"
-      Title="TileView">
+      Title="TileView"  Background="#151515">
     <Page.Resources>
         <local:MediaList x:Key="MediaList"/>
     </Page.Resources>
@@ -37,7 +37,7 @@
                                     <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform"/>
                                 </Button.Background>
                             </Button>
-                            <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial"/>
+                            <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial" Foreground="White"/>
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
