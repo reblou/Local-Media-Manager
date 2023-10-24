@@ -7,21 +7,21 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MediaDetailsView" Background="#151515">
-      
 
     <Grid>
         <DockPanel LastChildFill="False" HorizontalAlignment="Stretch">
-            <Image DockPanel.Dock="Top" Width="auto" Height="500" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
+            <Image DockPanel.Dock="Top" Width="auto" Height="auto" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
         </DockPanel>
         <DockPanel LastChildFill="False">
-            <DockPanel Background="#E5151515" LastChildFill="False">
-                <Image DockPanel.Dock="Left" Width="auto" Height="auto" Source="{Binding posterURL}"/>
+            <DockPanel Background="#E5151515" LastChildFill="False" HorizontalAlignment="Stretch">
+                <Image DockPanel.Dock="Left" Width="auto" Height="600" Source="{Binding posterURL}" VerticalAlignment="Top" Margin="10"/>
                 <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-                    <Button DockPanel.Dock="Left" Content="Return" Height="30" Width="100" Click="ReturnButtonClicked"/>
-                    <Label DockPanel.Dock="Left" Foreground="white" FontSize="23" Content="{Binding title}" HorizontalAlignment="Center"/>
+                    <Button DockPanel.Dock="Left" Content="Return" Height="30" Width="50" Click="ReturnButtonClicked"/>
+                    <Label DockPanel.Dock="Left" Foreground="white" FontSize="23" Content="{Binding title}" HorizontalAlignment="Center" BorderThickness="10"/>
+                    <Button DockPanel.Dock="Right" Content="Play" Click="PlayButton_Clicked" Height="30" Width="100" />
+                    <Label DockPanel.Dock="Right" Foreground="white" FontSize="23" Content="{Binding releaseYear}" ContentStringFormat="{}({0})" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </DockPanel>
                 <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
-                <Button DockPanel.Dock="Top" Content="Play" Click="PlayButton_Clicked" Height="50" Width="100" ></Button>
             </DockPanel>
         </DockPanel>
     </Grid>
