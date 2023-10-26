@@ -26,6 +26,11 @@ namespace MyFlix
         UserSettingsManager userSettingsManager;
         public MediaList videos = new MediaList();
 
+        public TileView(double scrollOffset) : this()
+        {
+            this.scrollViewer.ScrollToVerticalOffset(scrollOffset);
+        }
+
         public TileView()
         {
             InitializeComponent();
@@ -60,7 +65,8 @@ namespace MyFlix
 
             // navigate to details view & send video
             NavigationService ns = this.NavigationService;
-            MediaDetailsView detailsPage = new MediaDetailsView(clickedVideo);
+            MediaDetailsView detailsPage = new MediaDetailsView(clickedVideo, this.scrollViewer.VerticalOffset);
+            
             ns.Navigate(detailsPage);
         }
     }

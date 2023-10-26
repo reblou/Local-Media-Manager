@@ -22,11 +22,13 @@ namespace MyFlix
     {
         public IDisplayable video { get; set; }
         private PlayWindow playWindow;
+        private double scrollOffset;
 
-        public MediaDetailsView(IDisplayable video)
+        public MediaDetailsView(IDisplayable video, double scrollOffset)
         {
             this.video = video;
             this.DataContext = video;
+            this.scrollOffset = scrollOffset;
 
             InitializeComponent();
 
@@ -40,7 +42,7 @@ namespace MyFlix
         private void ReturnButtonClicked(object sender, RoutedEventArgs e)
         {
             NavigationService ns = this.NavigationService;
-            ns.Navigate(new TileView());
+            ns.Navigate(new TileView(scrollOffset));
         }
 
         private void PlayButton_Clicked(object sender, RoutedEventArgs e)
