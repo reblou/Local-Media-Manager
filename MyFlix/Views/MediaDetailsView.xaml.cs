@@ -27,7 +27,14 @@ namespace MyFlix
         {
             this.video = video;
             this.DataContext = video;
+
             InitializeComponent();
+
+            if (String.IsNullOrEmpty(this.video.releaseYear))
+            {
+                this.releaseYear.Visibility = Visibility.Hidden;
+            }
+
         }
 
         private void ReturnButtonClicked(object sender, RoutedEventArgs e)

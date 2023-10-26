@@ -30,7 +30,7 @@ namespace MyFlix
             TVResult results = handler.SearchTV(title, releaseYear);
 
             title = results.name;
-            releaseYear = results.first_air_date;
+            releaseYear = GetYearFromAirDate(results.first_air_date);
             description = results.overview;
             posterURL = results.poster_path;
             backdropURL = results.backdrop_path;
@@ -62,6 +62,11 @@ namespace MyFlix
         public IPlayable GetPlayable()
         {
             throw new NotImplementedException();
+        }
+
+        private string GetYearFromAirDate(string first_air_date)
+        {
+            return first_air_date.Substring(0, 4);
         }
     }
 }
