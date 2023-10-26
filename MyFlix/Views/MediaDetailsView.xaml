@@ -15,15 +15,15 @@
         <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" Background="#E5151515" >
             <DockPanel  LastChildFill="False" HorizontalAlignment="Stretch">
                 <Button DockPanel.Dock="Top" Content="Return" Height="30" Width="50" Click="ReturnButtonClicked" HorizontalAlignment="Left" Margin="5"/>
-                <Image DockPanel.Dock="Left" Width="auto" Height="500" Source="{Binding posterURL}" VerticalAlignment="Top" Margin="10"/>
+                <Image DockPanel.Dock="Left" Width="auto" Height="400" Source="{Binding posterURL}" VerticalAlignment="Top" Margin="10"/>
                 <Border DockPanel.Dock="Top" Height="400" Width="0"/>
-                <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-                    <Label DockPanel.Dock="Left" Foreground="white" FontSize="23" Content="{Binding title}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
+                <DockPanel DockPanel.Dock="Top" LastChildFill="False" >
+                    <Label DockPanel.Dock="Left" Foreground="white" FontSize="40" Content="{Binding title}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
                     <Button DockPanel.Dock="Right" Content="Play" Click="PlayButton_Clicked" Height="30" Width="75
                             "  Margin="10"/>
-                    <Label x:Name="releaseYear" DockPanel.Dock="Right" Foreground="white" FontSize="23" Content="{Binding releaseYear}" ContentStringFormat="{}({0})" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5"/>
+                    <Label x:Name="releaseYear" DockPanel.Dock="Right" Foreground="white" FontSize="40" Content="{Binding releaseYear}" ContentStringFormat="{}({0})" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5"/>
                 </DockPanel>
-                <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
+                <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" FontSize="18" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
             </DockPanel>
         </DockPanel>
     </Grid>

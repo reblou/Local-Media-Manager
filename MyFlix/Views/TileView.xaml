@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyFlix"
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1000"
+      d:DesignHeight="700" d:DesignWidth="1100"
       Title="TileView"  Background="#151515">
     <Page.Resources>
         <local:MediaList x:Key="MediaList"/>
