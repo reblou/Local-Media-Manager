@@ -24,15 +24,25 @@ namespace MyFlix
         private IPlayable playable;
         private bool fullscreen = false;
         private bool playing = false;
+        ProgressSaver progressSaver;
 
         public PlayWindow(IPlayable playable)
         {
             InitializeComponent();
             this.playable = playable;
+            this.progressSaver = new ProgressSaver();
             mediaPlayer.Source = new Uri(this.playable.filePath);
+            mediaPlayer.Loaded += LoadProgress;
+
+            this.DataContext = new PlayViewModel();
+
+        }
+
+        private void LoadProgress(object sender, RoutedEventArgs e)
+        {
+            mediaPlayer.Position = progressSaver.GetProgress(playable.filePath);
 
             PlayToggle();
-            this.DataContext = new PlayViewModel();
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
@@ -56,9 +66,9 @@ namespace MyFlix
 
         public void Close(object sender, CancelEventArgs e)
         {
-            this.mediaPlayer.Stop();
+            this.progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
 
-            //TODO: track progress here
+            this.mediaPlayer.Stop();
         }
 
         private void Fullscreen_Click(object sender, RoutedEventArgs e)
