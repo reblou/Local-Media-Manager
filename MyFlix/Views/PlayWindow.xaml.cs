@@ -24,6 +24,7 @@ namespace MyFlix
         private IPlayable playable;
         private bool fullscreen = false;
         private bool playing = false;
+        private bool dragging = false;
         ProgressSaver progressSaver;
 
         public PlayWindow(IPlayable playable)
@@ -35,7 +36,6 @@ namespace MyFlix
             mediaPlayer.Loaded += LoadProgress;
 
             this.DataContext = new PlayViewModel();
-
         }
 
         private void LoadProgress(object sender, RoutedEventArgs e)
@@ -84,6 +84,39 @@ namespace MyFlix
                 this.WindowState = WindowState.Normal;
             }
             fullscreen = !fullscreen;
+        }
+
+        private void timeline_Drag(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            Console.Write(mediaPlayer.Position);
+        }
+
+        public void tileline_DragEnter(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            this.dragging = true;
+        }
+        public void tileline_DragLeave(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            this.dragging = false;
+            Slider slider = sender as Slider;
+            SetMediaPositionToValue(slider.Value);
+        }
+
+        private void timeline_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider slider = sender as Slider;
+            SetMediaPositionToValue(slider.Value);
+        }
+
+        private void SetMediaPositionToValue(double value)
+        {
+            if (dragging) return;
+
+            TimeSpan fullLength = mediaPlayer.NaturalDuration.TimeSpan;
+
+            TimeSpan test = fullLength * value;
+
+            mediaPlayer.Position = test;
         }
     }
 }
