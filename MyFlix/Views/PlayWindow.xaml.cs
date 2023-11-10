@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,6 +37,22 @@ namespace MyFlix
             mediaPlayer.Loaded += LoadProgress;
 
             this.DataContext = new PlayViewModel();
+
+        }
+
+        private void CheckMediaProgress()
+        {
+            if(mediaPlayer.NaturalDuration.HasTimeSpan && !dragging)
+            {
+                // check video progress and set slidebar
+                TimeSpan progress = mediaPlayer.Position;
+                TimeSpan fullLength = mediaPlayer.NaturalDuration.TimeSpan;
+
+                timeline.Value = progress / fullLength;
+            }
+
+            Thread.Sleep(1000);
+            timeline.Dispatcher.Invoke(CheckMediaProgress, System.Windows.Threading.DispatcherPriority.SystemIdle);
         }
 
         private void LoadProgress(object sender, RoutedEventArgs e)
@@ -43,6 +60,9 @@ namespace MyFlix
             mediaPlayer.Position = progressSaver.GetProgress(playable.filePath);
 
             PlayToggle();
+
+
+            timeline.Dispatcher.Invoke(CheckMediaProgress, System.Windows.Threading.DispatcherPriority.SystemIdle);
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
