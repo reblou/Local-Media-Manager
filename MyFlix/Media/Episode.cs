@@ -8,7 +8,7 @@ namespace MyFlix
 {
     public class Episode : IPlayable
     {
-        public string title;
+        public string title { get; set; }
         public string releaseYear;
         public int seasonNumber;
         public int episodeNumber;
