@@ -29,6 +29,7 @@ namespace MyFlix
         ProgressSaver progressSaver;
 
         BackgroundWorker progressUpdateWorker;
+        Timer controlHideTimer;
 
         public PlayWindow(IPlayable playable)
         {
@@ -45,6 +46,8 @@ namespace MyFlix
                 WorkerSupportsCancellation = true
             };
             progressUpdateWorker.DoWork += ProgressUpdateWorker_DoWork;
+
+            controlHideTimer = new Timer(HideControls, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         private void ProgressUpdateWorker_DoWork(object? sender, DoWorkEventArgs e)
@@ -150,6 +153,24 @@ namespace MyFlix
             TimeSpan test = fullLength * value;
 
             mediaPlayer.Position = test;
+        }
+
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            PlayControls.Visibility = Visibility.Visible;
+            this.Cursor = Cursors.Arrow;
+            // Set timer to hide play controls
+            // Disable any active timer
+            controlHideTimer.Change(2000, Timeout.Infinite);
+        }
+
+        private void HideControls(object? state)
+        {
+            PlayControls.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                PlayControls.Visibility = Visibility.Hidden;
+                this.Cursor = Cursors.None;
+            }));
         }
     }
 }

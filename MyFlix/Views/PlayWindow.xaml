@@ -8,17 +8,18 @@
         Title="PlayWindow" Height="450" Width="800"
         Background="Black"
         Closing="Close"
+        MouseMove="Window_MouseMove"
         >
     <Window.InputBindings>
         <KeyBinding Command="{Binding FullscreenCommand}" Key="F5"/>
     </Window.InputBindings>
     <Grid>
         <MediaElement DockPanel.Dock="Top" x:Name="mediaPlayer"  Height="auto" Width="auto" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
-        <DockPanel DockPanel.Dock="Bottom" Height="50" VerticalAlignment="Bottom" LastChildFill="True" Margin="5">
+        
+        <DockPanel x:Name="PlayControls" DockPanel.Dock="Bottom" Height="50" VerticalAlignment="Bottom" LastChildFill="True" Margin="5">
             <Button DockPanel.Dock="Left" Content="Play" Click="Play_Click" Height="25" Width="50"  Margin="5"/>
             <Button DockPanel.Dock="Right" Content="Fullscreen" Click="Fullscreen_Click" Height="25" Width="60" Margin="5"/>
             <Slider DockPanel.Dock="Left" Name="timeline" Width="auto" Height="25" Thumb.DragStarted="tileline_DragEnter" Thumb.DragCompleted="tileline_DragLeave" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" ValueChanged="timeline_ValueChanged" Maximum="1" LargeChange="0.1" SmallChange="0.01"/>
-            
         </DockPanel>
     </Grid>
 </Window>
