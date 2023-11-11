@@ -28,6 +28,8 @@ namespace MyFlix
         private bool dragging = false;
         ProgressSaver progressSaver;
 
+        BackgroundWorker progressUpdateWorker;
+
         public PlayWindow(IPlayable playable)
         {
             InitializeComponent();
@@ -38,31 +40,41 @@ namespace MyFlix
 
             this.DataContext = new PlayViewModel();
 
-        }
-
-        private void CheckMediaProgress()
-        {
-            if(mediaPlayer.NaturalDuration.HasTimeSpan && !dragging)
+            progressUpdateWorker = new BackgroundWorker()
             {
-                // check video progress and set slidebar
-                TimeSpan progress = mediaPlayer.Position;
-                TimeSpan fullLength = mediaPlayer.NaturalDuration.TimeSpan;
-
-                timeline.Value = progress / fullLength;
-            }
-
-            Thread.Sleep(1000);
-            timeline.Dispatcher.Invoke(CheckMediaProgress, System.Windows.Threading.DispatcherPriority.SystemIdle);
+                WorkerSupportsCancellation = true
+            };
+            progressUpdateWorker.DoWork += ProgressUpdateWorker_DoWork;
         }
 
+        private void ProgressUpdateWorker_DoWork(object? sender, DoWorkEventArgs e)
+        {
+            while(!progressUpdateWorker.CancellationPending)
+            {
+                timeline.Dispatcher.BeginInvoke(SetThumbToMediaPercentage, System.Windows.Threading.DispatcherPriority.SystemIdle);
+
+                Thread.Sleep(2000);
+            }
+        }
+
+        private void SetThumbToMediaPercentage()
+        {
+            if (!mediaPlayer.NaturalDuration.HasTimeSpan || dragging) return;
+
+            // check video progress and set slidebar
+            TimeSpan progress = mediaPlayer.Position;
+            TimeSpan fullLength = mediaPlayer.NaturalDuration.TimeSpan;
+
+            timeline.Value = progress / fullLength;
+        }
         private void LoadProgress(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Position = progressSaver.GetProgress(playable.filePath);
 
             PlayToggle();
+            SetThumbToMediaPercentage();
 
-
-            timeline.Dispatcher.Invoke(CheckMediaProgress, System.Windows.Threading.DispatcherPriority.SystemIdle);
+            progressUpdateWorker.RunWorkerAsync();
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
@@ -86,6 +98,7 @@ namespace MyFlix
 
         public void Close(object sender, CancelEventArgs e)
         {
+            progressUpdateWorker.CancelAsync();
             this.progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
 
             this.mediaPlayer.Stop();
