@@ -10,11 +10,16 @@
         Closing="Close"
         MouseMove="Window_MouseMove"
         >
+    <Window.CommandBindings>
+        <CommandBinding Command="MediaCommands.TogglePlayPause" Executed="TogglePlayPauseBinding_Executed" CanExecute="TogglePlayPauseBinding_CanExecute"/>
+    </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Command="{Binding FullscreenCommand}" Key="F5"/>
+        <KeyBinding Command="MediaCommands.TogglePlayPause" Gesture="Space" />
     </Window.InputBindings>
     <Grid>
-        <MediaElement DockPanel.Dock="Top" x:Name="mediaPlayer"  Height="auto" Width="auto" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
+        <MediaElement DockPanel.Dock="Top" x:Name="mediaPlayer"  Height="auto" Width="auto" LoadedBehavior="Manual" UnloadedBehavior="Stop" >
+        </MediaElement>
         
         <DockPanel x:Name="PlayControls" DockPanel.Dock="Bottom" Height="50" VerticalAlignment="Bottom" LastChildFill="True" Margin="5">
             <Button DockPanel.Dock="Left" Content="Play" Click="Play_Click" Height="25" Width="50"  Margin="5"/>

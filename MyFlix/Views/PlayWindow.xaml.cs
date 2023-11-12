@@ -42,6 +42,8 @@ namespace MyFlix
             this.Title = playable.title;
             this.DataContext = new PlayViewModel();
 
+            Keyboard.Focus(mediaPlayer);
+
             progressUpdateWorker = new BackgroundWorker()
             {
                 WorkerSupportsCancellation = true
@@ -83,6 +85,7 @@ namespace MyFlix
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            //TODO: move to command binding
             PlayToggle();
         }
 
@@ -172,6 +175,16 @@ namespace MyFlix
                 PlayControls.Visibility = Visibility.Hidden;
                 this.Cursor = Cursors.None;
             }));
+        }
+
+        private void TogglePlayPauseBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            PlayToggle();
+        }
+
+        private void TogglePlayPauseBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !dragging;
         }
     }
 }
