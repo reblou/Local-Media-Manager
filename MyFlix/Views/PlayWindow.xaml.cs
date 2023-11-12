@@ -31,6 +31,12 @@ namespace MyFlix
         BackgroundWorker progressUpdateWorker;
         Timer controlHideTimer;
 
+        const int SkipDurationSecs = 10;
+
+        public static RoutedCommand fullScreenCommand = new RoutedCommand();
+        public static RoutedCommand seekForwardCommand = new RoutedCommand();
+        public static RoutedCommand seekBackCommand = new RoutedCommand();
+
         public PlayWindow(IPlayable playable)
         {
             InitializeComponent();
@@ -40,7 +46,7 @@ namespace MyFlix
             mediaPlayer.Loaded += LoadProgress;
 
             this.Title = playable.title;
-            this.DataContext = new PlayViewModel();
+            //this.DataContext = new PlayViewModel();
 
             Keyboard.Focus(mediaPlayer);
 
@@ -83,12 +89,6 @@ namespace MyFlix
             progressUpdateWorker.RunWorkerAsync();
         }
 
-        private void Play_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO: move to command binding
-            PlayToggle();
-        }
-
         private void PlayToggle()
         {
             if (playing)
@@ -124,11 +124,6 @@ namespace MyFlix
                 this.WindowState = WindowState.Normal;
             }
             fullscreen = !fullscreen;
-        }
-
-        private void timeline_Drag(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            Console.Write(mediaPlayer.Position);
         }
 
         public void tileline_DragEnter(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -184,7 +179,48 @@ namespace MyFlix
 
         private void TogglePlayPauseBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !dragging;
+            e.CanExecute = mediaPlayer.IsLoaded && !dragging;
+        }
+
+        private void ExecutedFullscreenCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!fullscreen)
+            {
+                this.WindowStyle = WindowStyle.None;
+                this.WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                this.WindowStyle = WindowStyle.SingleBorderWindow;
+                this.WindowState = WindowState.Normal;
+            }
+            fullscreen = !fullscreen;
+        }
+
+        private void CanExecuteFullscreenCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+
+        private void ExecutedSeekForwardCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            mediaPlayer.Position += TimeSpan.FromSeconds(SkipDurationSecs);
+        }
+
+        private void CanExecuteSeekForwardCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = mediaPlayer.IsLoaded;
+        }
+
+        private void ExecutedSeekBackCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            mediaPlayer.Position -= TimeSpan.FromSeconds(SkipDurationSecs);
+        }
+
+        private void CanExecuteSeekBackCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = mediaPlayer.IsLoaded;
         }
     }
 }
