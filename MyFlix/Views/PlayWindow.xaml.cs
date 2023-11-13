@@ -106,7 +106,10 @@ namespace MyFlix
         public void Close(object sender, CancelEventArgs e)
         {
             progressUpdateWorker.CancelAsync();
-            this.progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
+            if(mediaPlayer.IsLoaded)
+            {
+                this.progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position, mediaPlayer.NaturalDuration.TimeSpan);
+            }
 
             this.mediaPlayer.Stop();
         }

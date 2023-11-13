@@ -18,16 +18,25 @@ namespace MyFlix.Player
             LoadFromFile();
         }
 
-        public void SaveProgress(string title, TimeSpan progress)
+        public void SaveProgress(string filePath, TimeSpan progress, TimeSpan fullDuration)
         {
-            playableProgress[title] = progress;
+            double completionPercentage = progress / fullDuration;
+            if(completionPercentage > 0.9)
+            {
+                // Mark as complete and progress history
+                playableProgress.Remove(filePath);
+            }
+            else
+            {
+                playableProgress[filePath] = progress;
+            }
             SaveToFile();
         }
 
-        public TimeSpan GetProgress(string title)
+        public TimeSpan GetProgress(string filePath)
         {
             TimeSpan progress = new TimeSpan();
-            playableProgress.TryGetValue(title, out progress);
+            playableProgress.TryGetValue(filePath, out progress);
             return progress;
 
         }
