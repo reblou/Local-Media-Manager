@@ -54,5 +54,11 @@ namespace MyFlix
             settings.RootFilePath = rootFilePath;
             WriteSettingsToFile();
         }
+
+        public void WipeSettings()
+        {
+            this.settings = new UserSettings();
+            WriteSettingsToFile();
+        }
     }
 }

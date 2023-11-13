@@ -32,6 +32,12 @@ namespace MyFlix
                 return new List<IDisplayable>();
             }
         }
+
+        public static void WipeData()
+        {
+            SaveToFile(new List<IDisplayable>());
+        }
+
         private static List<IDisplayable> TryToLoadFromFile()
         {
             string data = "";

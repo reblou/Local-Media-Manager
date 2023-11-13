@@ -50,6 +50,8 @@ namespace MyFlix
             if(apiSearchWorker.IsBusy)
             {
                 // cancel any existing background worker process
+
+                // TODO: find a way to do this that ensures first thread has finished before another can start.
                 apiSearchWorker.CancelAsync();
                 apiSearchWorker = BuildWorker();
             }
@@ -160,6 +162,12 @@ namespace MyFlix
             worker.RunWorkerCompleted += MediaRetrieved;
 
             return worker;
+        }
+
+        public void Wipe()
+        {
+            this.Clear();
+            UserMediaSaver.WipeData();
         }
     }
 }
