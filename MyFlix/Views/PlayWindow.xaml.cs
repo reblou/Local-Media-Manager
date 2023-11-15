@@ -46,9 +46,6 @@ namespace MyFlix
             mediaPlayer.Loaded += LoadProgress;
 
             this.Title = playable.title;
-            //this.DataContext = new PlayViewModel();
-
-            Keyboard.Focus(mediaPlayer);
 
             progressUpdateWorker = new BackgroundWorker()
             {

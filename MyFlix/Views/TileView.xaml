@@ -20,25 +20,24 @@
         </Menu>
 
         <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl x:Name="mediaItemsControl" 
-              DockPanel.Dock="Top"
-              >
+            <ItemsControl x:Name="mediaItemsControl" DockPanel.Dock="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="5"/>
+                        <local:MaxHeightUniformGrid Columns="7"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <!-- ItemTemplate -->
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel Height="325">
-                            <Button DockPanel.Dock="Top" Height="300" Width="200" Click="Tile_Click" BorderThickness="0">
+                        <DockPanel Margin="1" Height="auto" Width="auto">
+
+                            <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial" Foreground="White"/>
+                            <Button DockPanel.Dock="Top" Click="Tile_Click" BorderThickness="0" Height="auto" Width="auto" >
                                 <Button.Background>
                                     <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform"/>
                                 </Button.Background>
                             </Button>
-                            <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial" Foreground="White"/>
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
