@@ -14,8 +14,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Options">
-                <MenuItem Header="Set Root Media Folder..." Click="SetMediaFolder_Click"/>
-                <MenuItem Header="Wipe Saved Media Data" Click="WipeMediaData_Click" />
+                <MenuItem Header="Set Root Folder..." Click="SetMediaFolder_Click"/>
+                <MenuItem Header="Clear Saved Data" Click="WipeMediaData_Click" />
+                <MenuItem Header="Refresh" Click="Refresh_Click"/>
             </MenuItem>
         </Menu>
 

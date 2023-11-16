@@ -67,6 +67,11 @@ namespace MyFlix
             videos.Wipe();
         }
 
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            videos.Clear();
+            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
+        }
         private void Tile_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
