@@ -13,6 +13,11 @@
             <Image DockPanel.Dock="Top" Width="auto" Height="auto" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
         </DockPanel>
         <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" Background="#E5151515" >
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="File">
+                    <MenuItem Header="Info" Click="FileInfo_Click"/>
+                </MenuItem>
+            </Menu>
             <DockPanel  LastChildFill="False" HorizontalAlignment="Stretch">
                 <Button DockPanel.Dock="Top" Content="Return" Height="30" Width="50" Click="ReturnButtonClicked" HorizontalAlignment="Left" Margin="5"/>
                 <Image DockPanel.Dock="Left" Width="auto" Height="400" Source="{Binding posterURL}" VerticalAlignment="Top" Margin="10"/>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyFlix.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,11 @@ namespace MyFlix
     public partial class MediaDetailsView : Page
     {
         public IDisplayable video { get; set; }
+
         private PlayWindow playWindow;
         private double scrollOffset;
+        private FileInfoWindow fileInfoWindow;
+
 
         public MediaDetailsView(IDisplayable video, double scrollOffset)
         {
@@ -42,6 +46,9 @@ namespace MyFlix
         private void ReturnButtonClicked(object sender, RoutedEventArgs e)
         {
             NavigationService ns = this.NavigationService;
+
+            if(fileInfoWindow != null) fileInfoWindow.Close();
+            if (playWindow != null) playWindow.Close();
             ns.Navigate(new TileView(scrollOffset));
         }
 
@@ -55,6 +62,18 @@ namespace MyFlix
                 playWindow.Closed += (sender, args) => this.playWindow = null;
                 playWindow.Show();
             }
+        }
+
+        private void FileInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if(fileInfoWindow != null)
+            {
+                fileInfoWindow.Activate();
+                return;
+            }
+            fileInfoWindow = new FileInfoWindow(video.GetPlayable());
+
+            fileInfoWindow.Show();
         }
     }
 }
