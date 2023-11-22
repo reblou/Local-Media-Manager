@@ -6,10 +6,11 @@
       xmlns:local="clr-namespace:MyFlix"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MediaDetailsView" Background="#151515">
+      Title="MediaDetailsView" Background="#151515"
+      x:Name="Page">
 
-    <Grid>
-        <DockPanel LastChildFill="False" HorizontalAlignment="Stretch">
+    <Grid DataContext="{Binding displayable}">
+        <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" >
             <Image DockPanel.Dock="Top" Width="auto" Height="auto" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
         </DockPanel>
         <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" Background="#E5151515" >
@@ -29,6 +30,22 @@
                     <Label x:Name="releaseYear" DockPanel.Dock="Right" Foreground="white" FontSize="40" Content="{Binding releaseYear}" ContentStringFormat="{}({0})" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5"/>
                 </DockPanel>
                 <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" FontSize="18" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
+                <Label DockPanel.Dock="Top" Content="Videos:" Foreground="white" FontSize="30"/>
+                <ScrollViewer DockPanel.Dock="Top" Margin="15" HorizontalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding ElementName=Page, Path=DataContext.playables}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" Background="SlateGray"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding filePath}" FontSize="18" Foreground="white" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </DockPanel>
         </DockPanel>
     </Grid>

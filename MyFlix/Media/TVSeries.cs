@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace MyFlix
 {
@@ -14,7 +16,6 @@ namespace MyFlix
         public string posterURL { get; set; }
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
-
 
         public Dictionary<int, Season> seasons;
 
@@ -59,14 +60,22 @@ namespace MyFlix
             return false;
         }
 
-        public IPlayable GetPlayable()
+        public IPlayable GetNextPlayable()
         {
-            throw new NotImplementedException();
+            //TODO: store watched episodes, get next unwatched.
+            return seasons[1].episodes[0];
         }
 
         private string GetYearFromAirDate(string first_air_date)
         {
             return first_air_date.Substring(0, 4);
+        }
+
+        public List<IPlayable> GetPlayables()
+        {
+            //TODO: iterate over seasons, add episodes to list.
+            //TODO: calculate once and store results once in private var
+            return new List<IPlayable>() { seasons[1].episodes[1] };
         }
     }
 }

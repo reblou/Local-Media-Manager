@@ -1,4 +1,8 @@
-﻿namespace MyFlix
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Windows.Documents;
+
+namespace MyFlix
 {
     public interface IDisplayable
     {
@@ -11,6 +15,8 @@
         public void LookupDetails(TMDBApiHandler handler);
         public bool RepresentsFilename(string filename);
 
-        public IPlayable GetPlayable();
+        public IPlayable GetNextPlayable();
+
+        public List<IPlayable> GetPlayables();
     }
 }

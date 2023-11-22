@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using Newtonsoft.Json;
@@ -23,7 +24,6 @@ namespace MyFlix
         public string posterURL { get; set; }
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
-
 
         public Film(string filename, string filepath, string title, string releaseYear)
         {
@@ -54,9 +54,14 @@ namespace MyFlix
             return this.fileName == filename;
         }
 
-        public IPlayable GetPlayable()
+        public IPlayable GetNextPlayable()
         {
             return this;
+        }
+
+        public List<IPlayable> GetPlayables()
+        {
+            return new List<IPlayable>() { this };
         }
     }
 }

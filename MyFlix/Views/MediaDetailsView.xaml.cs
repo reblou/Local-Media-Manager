@@ -26,12 +26,15 @@ namespace MyFlix
         private PlayWindow playWindow;
         private double scrollOffset;
         private FileInfoWindow fileInfoWindow;
+        MediaDetailsViewModel viewModel;
 
 
         public MediaDetailsView(IDisplayable video, double scrollOffset)
         {
             this.video = video;
-            this.DataContext = video;
+
+            this.viewModel = new MediaDetailsViewModel(video);
+            this.DataContext = viewModel;
             this.scrollOffset = scrollOffset;
 
             InitializeComponent();
@@ -40,7 +43,6 @@ namespace MyFlix
             {
                 this.releaseYear.Visibility = Visibility.Hidden;
             }
-
         }
 
         private void ReturnButtonClicked(object sender, RoutedEventArgs e)
@@ -56,7 +58,7 @@ namespace MyFlix
         {
             if(playWindow == null)
             {
-                playWindow = new PlayWindow(video.GetPlayable());
+                playWindow = new PlayWindow(video.GetNextPlayable());
 
                 //TODO: closed callback function -> update storage with video progress
                 playWindow.Closed += (sender, args) => this.playWindow = null;
@@ -71,7 +73,7 @@ namespace MyFlix
                 fileInfoWindow.Activate();
                 return;
             }
-            fileInfoWindow = new FileInfoWindow(video.GetPlayable());
+            fileInfoWindow = new FileInfoWindow(video.GetNextPlayable());
 
             fileInfoWindow.Show();
         }
