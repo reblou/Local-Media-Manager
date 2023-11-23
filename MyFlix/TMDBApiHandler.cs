@@ -93,7 +93,7 @@ namespace MyFlix
         {
             List<(string, string)> parameterPairs = new();
             parameterPairs.Add(("query", title));
-            parameterPairs.Add(("first_air_date_year", firstAirYear));
+            parameterPairs.Add(("year", firstAirYear));
             parameterPairs.Add(("page", "1"));
             string parameters = ParamStringBuilder(parameterPairs);
 
@@ -166,8 +166,8 @@ namespace MyFlix
 
             Result topResult = results[0];
 
-            topResult.poster_path = posterRootUrl + topResult.poster_path;
-            topResult.backdrop_path = backropRootUrl + topResult.backdrop_path;
+            topResult.poster_path = SafeReturnPosterUrl(posterRootUrl, topResult.poster_path);
+            topResult.backdrop_path = SafeReturnPosterUrl(backropRootUrl, topResult.backdrop_path);
 
             return topResult;
         }
@@ -179,6 +179,13 @@ namespace MyFlix
 
             string json = client.GetStringAsync(fullUrl).Result;
             return JsonConvert.DeserializeObject<SearchResponse<TVResult>>(json);
+        }
+
+        private string SafeReturnPosterUrl(string rootUrl, string posterPath)
+        {
+            if (posterPath == null) return posterNotFoundUrl;
+
+            return rootUrl + posterPath;
         }
     }
 }

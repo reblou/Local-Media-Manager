@@ -73,9 +73,15 @@ namespace MyFlix
 
         public List<IPlayable> GetPlayables()
         {
-            //TODO: iterate over seasons, add episodes to list.
-            //TODO: calculate once and store results once in private var
-            return new List<IPlayable>() { seasons[1].episodes[1] };
+            List<IPlayable> episodes = new List<IPlayable>();
+            if (seasons == null) return episodes;
+
+            foreach (Season season in seasons.Values)
+            {
+                episodes.AddRange(season.episodes);
+            }
+
+            return episodes;
         }
     }
 }

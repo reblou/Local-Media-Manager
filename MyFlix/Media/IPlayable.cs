@@ -4,6 +4,7 @@
     {
         string title { get; set; }
         string filePath { get; set;  }
+        //TODO: add filename
         public string ToString();
     }
 }
