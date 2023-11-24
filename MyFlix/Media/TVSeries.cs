@@ -62,8 +62,18 @@ namespace MyFlix
 
         public IPlayable GetNextPlayable()
         {
-            //TODO: store watched episodes, get next unwatched.
-            return seasons[1].episodes[0];
+            if (seasons == null) throw new NullReferenceException("No playables to return.");
+
+            foreach(Season season in seasons.Values)
+            {
+                foreach (Episode episode in season.episodes)
+                {
+                    //TODO: store watched bool and return first unwatched. 
+                    return episode;
+                }
+            }
+
+            throw new NullReferenceException("No playables to return.");
         }
 
         private string GetYearFromAirDate(string first_air_date)

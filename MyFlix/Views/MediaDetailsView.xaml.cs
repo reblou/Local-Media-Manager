@@ -56,7 +56,10 @@ namespace MyFlix
 
         private void PlayButton_Clicked(object sender, RoutedEventArgs e)
         {
-            OpenPlayWindow(video.GetNextPlayable());
+            //TODO: error handling, what if we don't have a video to play? Is that possible
+            IPlayable playable = video.GetNextPlayable();
+
+            OpenPlayWindow(playable);
         }
 
         private void FileInfo_Click(object sender, RoutedEventArgs e)
@@ -88,7 +91,6 @@ namespace MyFlix
             {
                 playWindow = new PlayWindow(video);
 
-                //TODO: closed callback function -> update storage with video progress
                 playWindow.Closed += (sender, args) => this.playWindow = null;
                 playWindow.Show();
             }
