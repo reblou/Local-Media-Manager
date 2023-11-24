@@ -12,10 +12,11 @@ namespace MyFlix
         public string releaseYear;
         public int seasonNumber;
         public int episodeNumber;
-        public string fileName;
+        public string fileName { get; set; }
         public string filePath { get; set; }
 
-        public Episode(string title, string releaseYear, int seasonNumber, int episodeNumber, string fileName, string filePath)        {
+        public Episode(string title, string releaseYear, int seasonNumber, int episodeNumber, string fileName, string filePath)
+        {
             this.title = title;
             this.releaseYear = releaseYear;
             this.seasonNumber = seasonNumber;
