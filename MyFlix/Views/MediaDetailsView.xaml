@@ -41,7 +41,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding fileName}" FontSize="18" Foreground="white" />
+                                <Label Content="{Binding fileName}" FontSize="18" Foreground="white" MouseLeftButtonDown="File_MouseLeftButtonDown"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

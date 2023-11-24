@@ -56,14 +56,7 @@ namespace MyFlix
 
         private void PlayButton_Clicked(object sender, RoutedEventArgs e)
         {
-            if(playWindow == null)
-            {
-                playWindow = new PlayWindow(video.GetNextPlayable());
-
-                //TODO: closed callback function -> update storage with video progress
-                playWindow.Closed += (sender, args) => this.playWindow = null;
-                playWindow.Show();
-            }
+            OpenPlayWindow(video.GetNextPlayable());
         }
 
         private void FileInfo_Click(object sender, RoutedEventArgs e)
@@ -76,6 +69,29 @@ namespace MyFlix
             fileInfoWindow = new FileInfoWindow(video.GetNextPlayable());
 
             fileInfoWindow.Show();
+        }
+
+        private void File_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Label label = sender as Label;
+            IPlayable playable = label.DataContext as IPlayable; 
+
+            if (playable != null)
+            {
+                OpenPlayWindow(playable);
+            }
+        }
+
+        private void OpenPlayWindow(IPlayable video)
+        {
+            if (playWindow == null)
+            {
+                playWindow = new PlayWindow(video);
+
+                //TODO: closed callback function -> update storage with video progress
+                playWindow.Closed += (sender, args) => this.playWindow = null;
+                playWindow.Show();
+            }
         }
     }
 }
