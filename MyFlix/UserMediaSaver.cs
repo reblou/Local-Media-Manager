@@ -33,6 +33,36 @@ namespace MyFlix
             }
         }
 
+        public static void SavePlayable(IPlayable playable)
+        {
+            List<IDisplayable> displayables = LoadFromFile();
+
+            foreach(IDisplayable displayable in displayables)
+            {
+                if(displayable.RepresentsFilename(playable.fileName))
+                {
+                    displayable.SetPlayable(playable);
+                    break;
+                }
+            }
+            SaveToFile(displayables);
+        }
+
+        public static void SaveDisplayable(IDisplayable newDisplayable)
+        {
+            List<IDisplayable> displayables = LoadFromFile();
+
+            for (int i = 0; i < displayables.Count; i++)
+            {
+                if (displayables[i].title == newDisplayable.title)
+                {
+                    displayables[i] = newDisplayable;
+                    break;
+                }
+            }
+            SaveToFile(displayables);
+        }
+
         public static void WipeData()
         {
             SaveToFile(new List<IDisplayable>());

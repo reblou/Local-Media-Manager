@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyFlix.Player;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Windows.Documents;
 
@@ -16,7 +17,7 @@ namespace MyFlix
         public bool RepresentsFilename(string filename);
 
         public IPlayable GetNextPlayable();
-
+        public void SetPlayable(IPlayable playable);
         public List<IPlayable> GetPlayables();
     }
 }

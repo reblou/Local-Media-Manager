@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyFlix.Player
 {
-    internal class ProgressSaver
+    public class ProgressSaver
     {
         private const string fileName = "user-progress.json";
         Dictionary<string, TimeSpan> playableProgress;
@@ -18,18 +18,16 @@ namespace MyFlix.Player
             LoadFromFile();
         }
 
-        public void SaveProgress(string filePath, TimeSpan progress, TimeSpan fullDuration)
+        public void SaveProgress(string filePath, TimeSpan progress)
         {
-            double completionPercentage = progress / fullDuration;
-            if(completionPercentage > 0.9)
-            {
-                // Mark as complete and progress history
-                playableProgress.Remove(filePath);
-            }
-            else
-            {
-                playableProgress[filePath] = progress;
-            }
+            playableProgress[filePath] = progress;
+
+            SaveToFile();
+        }
+
+        public void CompleteProgress(string filePath)
+        {
+            playableProgress.Remove(filePath);
             SaveToFile();
         }
 
@@ -37,6 +35,7 @@ namespace MyFlix.Player
         {
             TimeSpan progress = new TimeSpan();
             playableProgress.TryGetValue(filePath, out progress);
+
             return progress;
 
         }

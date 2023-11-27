@@ -14,6 +14,7 @@ namespace MyFlix
         public int episodeNumber;
         public string fileName { get; set; }
         public string filePath { get; set; }
+        public bool watched { get; set; }
 
         public Episode(string title, string releaseYear, int seasonNumber, int episodeNumber, string fileName, string filePath)
         {
@@ -23,6 +24,7 @@ namespace MyFlix
             this.episodeNumber = episodeNumber;
             this.fileName = fileName;
             this.filePath = filePath;
+            this.watched = false;
         }
     }
 }

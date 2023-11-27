@@ -4,8 +4,9 @@
     {
         string title { get; set; }
         string filePath { get; set;  }
-        //TODO: add filename
         string fileName { get; set; }
+        public bool watched { get; set; }
+
         public string ToString();
     }
 }

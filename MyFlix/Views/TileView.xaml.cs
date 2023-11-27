@@ -80,7 +80,7 @@ namespace MyFlix
             // navigate to details view & send video
             NavigationService ns = this.NavigationService;
             MediaDetailsView detailsPage = new MediaDetailsView(clickedVideo, this.scrollViewer.VerticalOffset);
-            
+
             ns.Navigate(detailsPage);
         }
     }

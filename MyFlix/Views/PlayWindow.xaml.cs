@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace MyFlix
     /// </summary>
     public partial class PlayWindow : Window
     {
-        private IPlayable playable;
+        public IPlayable playable;
         private bool fullscreen = false;
         private bool playing = false;
         private bool dragging = false;
@@ -45,7 +46,7 @@ namespace MyFlix
             mediaPlayer.Source = new Uri(this.playable.filePath);
             mediaPlayer.Loaded += LoadProgress;
 
-            this.Title = playable.title;
+            this.Title = playable.fileName;
 
             progressUpdateWorker = new BackgroundWorker()
             {
@@ -105,10 +106,26 @@ namespace MyFlix
             progressUpdateWorker.CancelAsync();
             if(mediaPlayer.IsLoaded)
             {
-                this.progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position, mediaPlayer.NaturalDuration.TimeSpan);
+                if(WasWatchedToCompletion())
+                {
+                    progressSaver.CompleteProgress(playable.filePath);
+                    playable.watched = true;
+                }
+                else
+                {
+                    progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
+                }
             }
 
             this.mediaPlayer.Stop();
+        }
+
+        private bool WasWatchedToCompletion()
+        {
+            if (!mediaPlayer.IsLoaded) return false;
+
+            double completionPercentage = mediaPlayer.Position / mediaPlayer.NaturalDuration.TimeSpan;
+            return completionPercentage > 0.9;
         }
 
         private void Fullscreen_Click(object sender, RoutedEventArgs e)

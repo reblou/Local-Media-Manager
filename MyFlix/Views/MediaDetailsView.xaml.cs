@@ -1,4 +1,5 @@
-﻿using MyFlix.Views;
+﻿using MyFlix.Player;
+using MyFlix.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,7 +92,15 @@ namespace MyFlix
             {
                 playWindow = new PlayWindow(video);
 
-                playWindow.Closed += (sender, args) => this.playWindow = null;
+                playWindow.Closed += (sender, args) => 
+                {
+                    PlayWindow playWindow = sender as PlayWindow;
+
+                    IPlayable playable = playWindow.playable;
+
+                    UserMediaSaver.SavePlayable(playable);
+                    this.playWindow = null;
+                };
                 playWindow.Show();
             }
         }

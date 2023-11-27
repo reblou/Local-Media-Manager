@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyFlix.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.RightsManagement;
@@ -64,16 +65,27 @@ namespace MyFlix
         {
             if (seasons == null) throw new NullReferenceException("No playables to return.");
 
-            foreach(Season season in seasons.Values)
+            if(seasons.Values.Count < 1) throw new NullReferenceException("No playables to return.");
+
+            foreach (Season season in seasons.Values)
             {
                 foreach (Episode episode in season.episodes)
                 {
-                    //TODO: store watched bool and return first unwatched. 
-                    return episode;
+                    if (!episode.watched) return episode;
                 }
             }
 
-            throw new NullReferenceException("No playables to return.");
+            //If all playables have been watched reset and return from the start again.
+            foreach (Season season in seasons.Values)
+            {
+                foreach (Episode episode in season.episodes)
+                {
+                    episode.watched = false;
+                }
+            }
+            UserMediaSaver.SaveDisplayable(this);
+
+            return GetNextPlayable();
         }
 
         private string GetYearFromAirDate(string first_air_date)
@@ -92,6 +104,25 @@ namespace MyFlix
             }
 
             return episodes;
+        }
+
+        public void SetPlayable(IPlayable playable)
+        {
+            if (playable is not Episode) return;
+
+            Episode newEpisode = playable as Episode;
+
+            foreach (Season season in seasons.Values)
+            {
+                for(int i=0; i<season.episodes.Count; i++)
+                {
+                    if (season.episodes[i].filePath == newEpisode.filePath)
+                    {
+                        season.episodes[i] = newEpisode;
+                        return;
+                    }
+                }
+            }
         }
     }
 }
