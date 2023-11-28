@@ -9,6 +9,10 @@
       Title="MediaDetailsView" Background="#151515"
       x:Name="Page">
 
+    <Page.Resources>
+
+    </Page.Resources>
+    
     <Grid DataContext="{Binding displayable}">
         <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" >
             <Image DockPanel.Dock="Top" Width="auto" Height="auto" Source="{Binding backdropURL}" HorizontalAlignment="Stretch"/>
@@ -41,7 +45,18 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding fileName}" FontSize="18" Foreground="white" MouseLeftButtonDown="File_MouseLeftButtonDown"/>
+                                <Label Content="{Binding fileName}" FontSize="18" MouseLeftButtonDown="File_MouseLeftButtonDown">
+                                    <Label.Style>
+                                        <Style TargetType="Label">
+                                            <Setter Property="Label.Foreground" Value="white"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding watched}" Value="True">
+                                                    <Setter Property="Label.Foreground" Value="Gray"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
