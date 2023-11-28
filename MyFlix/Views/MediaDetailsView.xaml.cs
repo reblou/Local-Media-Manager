@@ -22,9 +22,8 @@ namespace MyFlix
     /// </summary>
     public partial class MediaDetailsView : Page
     {
-        public IDisplayable video { get; set; }
-
         private PlayWindow playWindow;
+
         private double scrollOffset;
         private FileInfoWindow fileInfoWindow;
         MediaDetailsViewModel viewModel;
@@ -32,15 +31,13 @@ namespace MyFlix
 
         public MediaDetailsView(IDisplayable video, double scrollOffset)
         {
-            this.video = video;
-
             this.viewModel = new MediaDetailsViewModel(video);
             this.DataContext = viewModel;
             this.scrollOffset = scrollOffset;
 
             InitializeComponent();
 
-            if (String.IsNullOrEmpty(this.video.releaseYear))
+            if (String.IsNullOrEmpty(this.viewModel.displayable.releaseYear))
             {
                 this.releaseYear.Visibility = Visibility.Hidden;
             }
@@ -58,7 +55,8 @@ namespace MyFlix
         private void PlayButton_Clicked(object sender, RoutedEventArgs e)
         {
             //TODO: error handling, what if we don't have a video to play? Is that possible
-            IPlayable playable = video.GetNextPlayable();
+
+            IPlayable playable = viewModel.displayable.GetNextPlayable();
 
             OpenPlayWindow(playable);
         }
@@ -70,7 +68,7 @@ namespace MyFlix
                 fileInfoWindow.Activate();
                 return;
             }
-            fileInfoWindow = new FileInfoWindow(video.GetNextPlayable());
+            fileInfoWindow = new FileInfoWindow(viewModel.displayable.GetNextPlayable());
 
             fileInfoWindow.Show();
         }
@@ -96,9 +94,7 @@ namespace MyFlix
                 {
                     PlayWindow playWindow = sender as PlayWindow;
 
-                    IPlayable playable = playWindow.playable;
-
-                    UserMediaSaver.SavePlayable(playable);
+                    UserMediaSaver.SavePlayable(playWindow.playable);
                     this.playWindow = null;
                 };
                 playWindow.Show();

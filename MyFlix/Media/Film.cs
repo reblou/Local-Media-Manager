@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace MyFlix
         public string posterURL { get; set; }
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
-        public bool watched { get; set; }
+        private bool watched;
+        public bool BeenWatched { get => watched; set => watched = value; }
 
         public Film(string filename, string filepath, string title, string releaseYear)
         {
@@ -36,6 +38,8 @@ namespace MyFlix
             this.releaseYear = releaseYear;
             this.watched = false;
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public void AssignValues(Film film)
         {
@@ -87,6 +91,11 @@ namespace MyFlix
             if (playable is not Film) return;
 
             AssignValues(playable as Film);
+        }
+
+        public void MarkAsWatched()
+        {
+            this.watched = true;
         }
     }
 }

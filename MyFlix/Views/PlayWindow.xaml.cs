@@ -109,7 +109,7 @@ namespace MyFlix
                 if(WasWatchedToCompletion())
                 {
                     progressSaver.CompleteProgress(playable.filePath);
-                    playable.watched = true;
+                    playable.BeenWatched = true;
                 }
                 else
                 {

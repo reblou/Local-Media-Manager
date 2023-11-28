@@ -50,7 +50,7 @@
                                         <Style TargetType="Label">
                                             <Setter Property="Label.Foreground" Value="white"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding watched}" Value="True">
+                                                <DataTrigger Binding="{Binding BeenWatched}" Value="True">
                                                     <Setter Property="Label.Foreground" Value="Gray"/>
                                                 </DataTrigger>
                                             </Style.Triggers>

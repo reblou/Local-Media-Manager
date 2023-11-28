@@ -71,7 +71,7 @@ namespace MyFlix
             {
                 foreach (Episode episode in season.episodes)
                 {
-                    if (!episode.watched) return episode;
+                    if (!episode.BeenWatched) return episode;
                 }
             }
 
@@ -80,7 +80,7 @@ namespace MyFlix
             {
                 foreach (Episode episode in season.episodes)
                 {
-                    episode.watched = false;
+                    episode.BeenWatched = false;
                 }
             }
             UserMediaSaver.SaveDisplayable(this);
