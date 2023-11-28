@@ -73,9 +73,9 @@
                 <MenuItem Header="Refresh" Click="Refresh_Click"/>
             </MenuItem>
         </Menu>
-        
 
-        <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+        <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource PlayableScrollViewer}" >
             <ItemsControl x:Name="mediaItemsControl" DockPanel.Dock="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
