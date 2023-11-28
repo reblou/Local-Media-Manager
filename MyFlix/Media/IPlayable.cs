@@ -10,7 +10,5 @@ namespace MyFlix
         public bool BeenWatched { get; set; }
 
         public string ToString();
-
-        public void MarkAsWatched();
     }
 }

@@ -273,17 +273,17 @@
                 <Border DockPanel.Dock="Top" Height="200" Width="0"/>
                 <DockPanel DockPanel.Dock="Top" LastChildFill="False" >
                     <Label DockPanel.Dock="Left" Foreground="white" FontSize="40" Content="{Binding title}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
-                    <Button DockPanel.Dock="Right" Content="Play" Click="PlayButton_Clicked" Height="30" Width="75
-                            "  Margin="10"/>
+                    <Button DockPanel.Dock="Right" Content="Play" Click="PlayButton_Clicked" Height="30" Width="75"  Margin="10"/>
                     <Label x:Name="releaseYear" DockPanel.Dock="Right" Foreground="white" FontSize="40" Content="{Binding releaseYear}" ContentStringFormat="{}({0})" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5"/>
                 </DockPanel>
                 <TextBox DockPanel.Dock="Top"  Height="auto" Foreground="white" BorderThickness="0" FontSize="18" Text="{Binding description}" TextWrapping="Wrap" Background="Transparent"/>
+                <Border DockPanel.Dock="Top" Height="40"/>
                 <Label DockPanel.Dock="Top" Content="Videos:" Foreground="white" FontSize="30"/>
-                <ScrollViewer Style="{DynamicResource PlayableScrollViewer}" DockPanel.Dock="Top" Margin="15" HorizontalAlignment="Center" VerticalScrollBarVisibility="Auto"> 
+                <ScrollViewer Style="{DynamicResource PlayableScrollViewer}" DockPanel.Dock="Top" Margin="15" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Width="auto" > 
                     <ItemsControl ItemsSource="{Binding ElementName=Page, Path=DataContext.playables}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" Background="black"/>
+                                <StackPanel Orientation="Vertical" Background="#50000000" Width="auto"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 

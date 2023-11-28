@@ -34,14 +34,6 @@ namespace MyFlix
             this.filePath = filePath;
             this.watched = false;
         }
-
-        
-        public void MarkAsWatched()
-        {
-            watched = true;
-            OnPropertyChanged();
-        }
-
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             if (PropertyChanged == null) return;

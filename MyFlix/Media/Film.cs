@@ -27,7 +27,7 @@ namespace MyFlix
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
         private bool watched;
-        public bool BeenWatched { get => watched; set => watched = value; }
+        public bool BeenWatched { get => watched; set { watched = value; OnPropertyChanged(); } }
 
         public Film(string filename, string filepath, string title, string releaseYear)
         {
@@ -93,9 +93,10 @@ namespace MyFlix
             AssignValues(playable as Film);
         }
 
-        public void MarkAsWatched()
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            this.watched = true;
+            if (PropertyChanged == null) return;
+            PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
     }
 }
