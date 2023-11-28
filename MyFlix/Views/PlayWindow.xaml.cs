@@ -104,28 +104,30 @@ namespace MyFlix
         public void Close(object sender, CancelEventArgs e)
         {
             progressUpdateWorker.CancelAsync();
-            if(mediaPlayer.IsLoaded)
+            double watchPercentage = GetWatchPercentage();
+            if(watchPercentage > 0.9)
             {
-                if(WasWatchedToCompletion())
-                {
-                    progressSaver.CompleteProgress(playable.filePath);
-                    playable.BeenWatched = true;
-                }
-                else
-                {
-                    progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
-                }
+                progressSaver.RemoveProgress(playable.filePath);
+                playable.BeenWatched = true;
+            }
+            else if(watchPercentage < 0.05)
+            {
+                progressSaver.RemoveProgress(playable.filePath);
+                playable.BeenWatched = false;
+            }
+            else
+            { 
+                progressSaver.SaveProgress(playable.filePath, mediaPlayer.Position);
             }
 
             this.mediaPlayer.Stop();
         }
 
-        private bool WasWatchedToCompletion()
+        private double GetWatchPercentage()
         {
-            if (!mediaPlayer.IsLoaded) return false;
+            if (!mediaPlayer.IsLoaded) return 0;
 
-            double completionPercentage = mediaPlayer.Position / mediaPlayer.NaturalDuration.TimeSpan;
-            return completionPercentage > 0.9;
+            return mediaPlayer.Position / mediaPlayer.NaturalDuration.TimeSpan;
         }
 
         private void Fullscreen_Click(object sender, RoutedEventArgs e)

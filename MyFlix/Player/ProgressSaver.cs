@@ -25,7 +25,7 @@ namespace MyFlix.Player
             SaveToFile();
         }
 
-        public void CompleteProgress(string filePath)
+        public void RemoveProgress(string filePath)
         {
             playableProgress.Remove(filePath);
             SaveToFile();
