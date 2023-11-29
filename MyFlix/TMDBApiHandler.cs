@@ -102,7 +102,7 @@ namespace MyFlix
             try
             {
                 return extractTopResult(response.results) as TVResult;
-            } catch(IndexOutOfRangeException)
+            } catch(NoMatchingResultsException)
             {
                 return new TVResult()
                 {

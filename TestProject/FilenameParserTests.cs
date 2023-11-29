@@ -59,6 +59,8 @@ namespace ParsingTests
             Assert.AreEqual(2, parser.episode);
         }
 
+        //The.Sopranos.S01E01.1080p.BluRay.x265-RARBG.mp4
+
         [TestMethod]
         public void TvTest3()
         {
@@ -70,6 +72,19 @@ namespace ParsingTests
             Assert.AreEqual("2014", parser.releaseYear);
             Assert.AreEqual(1, parser.season);
             Assert.AreEqual(3, parser.episode);
+        }
+
+        [TestMethod]
+        public void TvTest4()
+        {
+            FilenameParser parser = new FilenameParser();
+            string filename = @"The.Sopranos.S01E01.1080p.BluRay.x265-RARBG.mp4";
+            parser.ParseFilename(filename);
+
+            Assert.AreEqual("The Sopranos", parser.title);
+            Assert.AreEqual("", parser.releaseYear);
+            Assert.AreEqual(1, parser.season);
+            Assert.AreEqual(1, parser.episode);
         }
 
         [TestMethod]

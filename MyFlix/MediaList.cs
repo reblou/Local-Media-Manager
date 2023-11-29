@@ -106,6 +106,10 @@ namespace MyFlix
             List<TVSeries> seriesList = seriesFactory.GetSeries();
             foreach(TVSeries series in seriesList)
             {
+                if (worker.CancellationPending)
+                {
+                    return;
+                }
                 series.LookupDetails(handler);
                 worker.ReportProgress(0, series);
             }

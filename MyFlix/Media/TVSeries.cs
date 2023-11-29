@@ -90,6 +90,7 @@ namespace MyFlix
 
         private string GetYearFromAirDate(string first_air_date)
         {
+            if (String.IsNullOrEmpty(first_air_date)) return String.Empty;
             return first_air_date.Substring(0, 4);
         }
 
