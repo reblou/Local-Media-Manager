@@ -71,6 +71,7 @@
                 <MenuItem Header="Set Root Folder..." Click="SetMediaFolder_Click"/>
                 <MenuItem Header="Clear Saved Data" Click="WipeMediaData_Click" />
                 <MenuItem Header="Refresh" Click="Refresh_Click"/>
+                <MenuItem Header="Manage Excluded Files" Click="ExcludeFolder_Click"/>
             </MenuItem>
         </Menu>
 

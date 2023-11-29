@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyFlix.Views;
 
 namespace MyFlix
 {
@@ -56,6 +57,13 @@ namespace MyFlix
 
             videos.Clear();
             videos.LoadMediaFromDirectoryRecursively(rootFilePath);
+        }
+
+        private void ExcludeFolder_Click(object sender, RoutedEventArgs e)
+        {
+            ExcludeFilesWindow excludeWindow = new ExcludeFilesWindow();
+
+            excludeWindow.Show();
         }
 
         private void WipeMediaData_Click(object sender, RoutedEventArgs e)
