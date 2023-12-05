@@ -40,6 +40,7 @@ namespace MyFlix
 
         public PlayWindow(IPlayable playable)
         {
+            //TODO: error handling on opening for invalid video for e.g. might have moved
             InitializeComponent();
             this.playable = playable;
             this.progressSaver = new ProgressSaver();

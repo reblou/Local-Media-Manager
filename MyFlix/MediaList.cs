@@ -25,7 +25,8 @@ namespace MyFlix
         {
             foreach (IDisplayable video in list)
             {
-                if (this.Items.Any(v => v.title == video.title)) continue;
+                //TODO: change to filepath
+                if (this.Items.Any(v => v.title.ToLower() == video.title.ToLower())) continue;
 
                 this.Add(video);
             }

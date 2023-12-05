@@ -12,7 +12,7 @@ namespace MyFlix
 
         public TVSeriesFactory()
         {
-            series = new Dictionary<string, TVSeries>();
+            series = new Dictionary<string, TVSeries>(StringComparer.InvariantCultureIgnoreCase);
         }
 
         public void Add(Episode episode)

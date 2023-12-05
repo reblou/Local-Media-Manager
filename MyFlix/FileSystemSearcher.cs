@@ -16,6 +16,8 @@ namespace MyFlix
         public List<FileSystemVideo> videos = new();
         public Dictionary<String, TVSeries> tvSeries = new();
 
+        //TODO: error handling in the case that root folder is invalid
+
         public void GetVideosInDirRecursively(string dirFilepath)
         {
             if (String.IsNullOrEmpty(dirFilepath)) return;
