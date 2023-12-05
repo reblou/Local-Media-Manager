@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
-namespace MyFlix.Views
+namespace MyFlix.ViewModels
 {
     public class MediaDetailsViewModel
     {

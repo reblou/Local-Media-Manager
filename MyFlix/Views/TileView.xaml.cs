@@ -35,11 +35,8 @@ namespace MyFlix
         public TileView()
         {
             InitializeComponent();
-            mediaItemsControl.ItemsSource = videos;
 
             userSettingsManager = new UserSettingsManager();
-            rootFilePath = userSettingsManager.settings.RootFilePath;
-            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
         }
 
         private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
@@ -54,6 +51,8 @@ namespace MyFlix
                 rootFilePath = dialog.SelectedPath;
                 userSettingsManager.SetRootFilePath(rootFilePath);
             }
+
+            //TODO: relay command to view model? or just hold a reference and set context in code
 
             videos.Clear();
             videos.LoadMediaFromDirectoryRecursively(rootFilePath);

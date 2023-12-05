@@ -1,4 +1,5 @@
 ﻿using MyFlix.Player;
+using MyFlix.ViewModels;
 using MyFlix.Views;
 using System;
 using System.Collections.Generic;

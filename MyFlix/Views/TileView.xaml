@@ -4,9 +4,13 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyFlix"
+      xmlns:vm="clr-namespace:MyFlix.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1100"
       Title="TileView"  Background="#151515">
+    <Page.DataContext>
+        <vm:TileViewModel/>
+    </Page.DataContext>
     <Page.Resources>
         <local:MediaList x:Key="MediaList"/>
         <Style x:Key="FocusVisual">
@@ -77,7 +81,7 @@
 
 
         <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Style="{DynamicResource PlayableScrollViewer}" >
-            <ItemsControl x:Name="mediaItemsControl" DockPanel.Dock="Top">
+            <ItemsControl x:Name="mediaItemsControl" ItemsSource="{Binding displayables}" DockPanel.Dock="Top" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <local:MaxHeightUniformGrid Columns="7"/>
