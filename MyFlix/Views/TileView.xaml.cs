@@ -23,8 +23,6 @@ namespace MyFlix
     /// </summary>
     public partial class TileView : Page
     {
-        string rootFilePath = "";
-        UserSettingsManager userSettingsManager;
         public MediaList videos = new MediaList();
 
         public TileView(double scrollOffset) : this()
@@ -35,60 +33,6 @@ namespace MyFlix
         public TileView()
         {
             InitializeComponent();
-
-            userSettingsManager = new UserSettingsManager();
-        }
-
-        private void SetMediaFolder_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.FolderBrowserDialog dialog = new()
-            {
-                //options here
-            };
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                rootFilePath = dialog.SelectedPath;
-                userSettingsManager.SetRootFilePath(rootFilePath);
-            }
-
-            //TODO: relay command to view model? or just hold a reference and set context in code
-
-            videos.Clear();
-            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
-        }
-
-        private void ExcludeFolder_Click(object sender, RoutedEventArgs e)
-        {
-            ExcludeFilesWindow excludeWindow = new ExcludeFilesWindow();
-
-            excludeWindow.Show();
-        }
-
-        private void WipeMediaData_Click(object sender, RoutedEventArgs e)
-        {
-            // wipe save data
-            userSettingsManager.WipeSettings();
-
-            // clear media details items
-            videos.Wipe();
-        }
-
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            videos.Clear();
-            videos.LoadMediaFromDirectoryRecursively(rootFilePath);
-        }
-        private void Tile_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            IDisplayable clickedVideo = (IDisplayable)button.DataContext;
-
-            // navigate to details view & send video
-            NavigationService ns = this.NavigationService;
-            MediaDetailsView detailsPage = new MediaDetailsView(clickedVideo, this.scrollViewer.VerticalOffset);
-
-            ns.Navigate(detailsPage);
         }
     }
 }

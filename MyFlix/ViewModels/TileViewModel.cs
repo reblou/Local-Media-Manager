@@ -1,4 +1,6 @@
-﻿using MyFlix.Lookup;
+﻿using GalaSoft.MvvmLight.Command;
+using MyFlix.Lookup;
+using MyFlix.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace MyFlix.ViewModels
 {
@@ -14,16 +18,48 @@ namespace MyFlix.ViewModels
     {
         public ObservableCollection<IDisplayable> displayables { get; set; }
         private BackgroundWorker mediaLookupWorker;
+        UserSettingsManager userSettingsManager;
 
+        public ICommand lookupCommand { get; }
+        public ICommand excludeCommand { get; }
+        public ICommand refreshCommand { get; }
+        public ICommand wipeCommand { get; }
+        public ICommand tileCommand { get; }
 
         public TileViewModel()
         {
+            userSettingsManager = new UserSettingsManager();
             displayables = new ObservableCollection<IDisplayable>();
             mediaLookupWorker = MediaLookupWorker.GetMediaLookupWorker(MediaLookupWorker_Progress, MediaLookupWorker_Completed);
+
+            lookupCommand = new RelayCommand(SetFolderClick);
+            excludeCommand = new RelayCommand(ExcludeClick);
+            refreshCommand = new RelayCommand(RefreshClick);
+            wipeCommand = new RelayCommand(WipeClick);
+            tileCommand = new RelayCommand<IDisplayable>(TileClick);
+
             LoadDisplayablesFromFile();
         }
 
-        public void SetRootFolder(string rootFolder)
+        private void SetFolderClick()
+        {
+            System.Windows.Forms.FolderBrowserDialog dialog = new()
+            {
+                //options here
+            };
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string rootFilePath = dialog.SelectedPath;
+                userSettingsManager.SetRootFilePath(rootFilePath);
+
+                SetRootFolder(rootFilePath);
+            }
+
+        }
+
+        //TODO: move to another class
+        private void SetRootFolder(string rootFolder)
         {
             if (String.IsNullOrEmpty(rootFolder)) return;
 
@@ -49,6 +85,42 @@ namespace MyFlix.ViewModels
             // reports progress, adds vidoes as it goes
 
             mediaLookupWorker.RunWorkerAsync(newVideos);
+        }
+
+        private void ExcludeClick()
+        {
+            ExcludeFilesWindow excludeWindow = new ExcludeFilesWindow();
+
+            excludeWindow.Show();
+        }
+
+        private void WipeClick()
+        {
+            // wipe save data
+            userSettingsManager.WipeSettings();
+
+            // clear media details items
+            displayables.Clear();
+        }
+
+        private void RefreshClick()
+        {
+            SetRootFolder(userSettingsManager.settings.RootFilePath);
+        }
+
+        private void TileClick(IDisplayable tile)
+        {
+            // navigate to details view & send video
+            Console.WriteLine(tile.title);
+
+
+            //TODO: raise navigation request to change page
+
+
+            //NavigationService ns = this.NavigationService;
+            //MediaDetailsView detailsPage = new MediaDetailsView(tile, this.scrollViewer.VerticalOffset);
+
+            //ns.Navigate(detailsPage);
         }
 
         private void LoadDisplayablesFromFile()
