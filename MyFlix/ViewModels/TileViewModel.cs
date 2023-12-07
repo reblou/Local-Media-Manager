@@ -24,7 +24,6 @@ namespace MyFlix.ViewModels
         public ICommand excludeCommand { get; }
         public ICommand refreshCommand { get; }
         public ICommand wipeCommand { get; }
-        public ICommand tileCommand { get; }
 
         public TileViewModel()
         {
@@ -36,7 +35,6 @@ namespace MyFlix.ViewModels
             excludeCommand = new RelayCommand(ExcludeClick);
             refreshCommand = new RelayCommand(RefreshClick);
             wipeCommand = new RelayCommand(WipeClick);
-            tileCommand = new RelayCommand<IDisplayable>(TileClick);
 
             LoadDisplayablesFromFile();
         }
@@ -108,20 +106,7 @@ namespace MyFlix.ViewModels
             SetRootFolder(userSettingsManager.settings.RootFilePath);
         }
 
-        private void TileClick(IDisplayable tile)
-        {
-            // navigate to details view & send video
-            Console.WriteLine(tile.title);
 
-
-            //TODO: raise navigation request to change page
-
-
-            //NavigationService ns = this.NavigationService;
-            //MediaDetailsView detailsPage = new MediaDetailsView(tile, this.scrollViewer.VerticalOffset);
-
-            //ns.Navigate(detailsPage);
-        }
 
         private void LoadDisplayablesFromFile()
         {

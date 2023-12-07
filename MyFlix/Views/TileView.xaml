@@ -93,7 +93,7 @@
                         <DockPanel Margin="1" Height="auto" Width="auto">
 
                             <Label DockPanel.Dock="Bottom" Content="{Binding title}" HorizontalAlignment="Center" FontFamily="Arial" Foreground="White"/>
-                            <Button Style="{DynamicResource PosterButton}" DockPanel.Dock="Top" Command="{Binding Path=DataContext.tileCommand,RelativeSource={RelativeSource AncestorType={x:Type Page}}}" CommandParameter="{Binding}" BorderThickness="0" Height="auto" Width="auto">
+                            <Button Style="{DynamicResource PosterButton}" DockPanel.Dock="Top" Click="Tile_Click" BorderThickness="0" Height="auto" Width="auto">
                                 <Button.Background>
                                     <ImageBrush ImageSource="{Binding posterURL}" Stretch="Uniform" />
                                 </Button.Background>

@@ -34,5 +34,16 @@ namespace MyFlix
         {
             InitializeComponent();
         }
+        private void Tile_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            IDisplayable displayable = button.DataContext as IDisplayable;
+
+            // navigate to details view & send video
+            NavigationService ns = this.NavigationService;
+            MediaDetailsView detailsPage = new MediaDetailsView(displayable, this.scrollViewer.VerticalOffset);
+
+            ns.Navigate(detailsPage);
+        }
     }
 }
