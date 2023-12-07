@@ -29,6 +29,8 @@ namespace MyFlix
         private bool watched;
         public bool BeenWatched { get => watched; set { watched = value; OnPropertyChanged(); } }
 
+        public string type { get => this.GetType().Name; }
+
         public Film(string filename, string filepath, string title, string releaseYear)
         {
             this.fileName = filename;

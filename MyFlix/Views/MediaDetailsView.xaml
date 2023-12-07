@@ -25,6 +25,7 @@
             <DockPanel  LastChildFill="False" HorizontalAlignment="Stretch">
                 <Button DockPanel.Dock="Top" Content="Return" Height="30" Width="50" Click="ReturnButtonClicked" HorizontalAlignment="Left" Margin="5"/>
                 <Image DockPanel.Dock="Left" Width="auto" Height="400" Source="{Binding posterURL}" VerticalAlignment="Top" Margin="10"/>
+                <Label DockPanel.Dock="Top" HorizontalAlignment="Right" Content="{Binding type}" Foreground="White"/>
                 <Border DockPanel.Dock="Top" Height="200" Width="0"/>
                 <DockPanel DockPanel.Dock="Top" LastChildFill="False" >
                     <Label DockPanel.Dock="Left" Foreground="white" FontSize="40" Content="{Binding title}" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>

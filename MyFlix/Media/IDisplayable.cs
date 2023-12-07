@@ -12,6 +12,7 @@ namespace MyFlix
         public string posterURL { get; set; }
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
+        public string type { get; }
 
         public void LookupDetails(TMDBApiHandler handler);
         public bool RepresentsFilename(string filename);

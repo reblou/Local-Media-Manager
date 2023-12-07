@@ -18,6 +18,8 @@ namespace MyFlix
         public string backdropURL { get; set; }
         public string releaseYear { get; set; }
 
+        public string type { get => this.GetType().Name; }
+
         public Dictionary<int, Season> seasons;
 
         public TVSeries(string title, string releaseYear)
