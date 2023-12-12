@@ -42,6 +42,10 @@ namespace MyFlix
                     this.releaseYear = word;
                     titleFound = true;
                 } 
+                else if(IsTechnicalInfo(word))
+                {
+                    break;
+                }
                 else if(IsSeasonEpisodeCombo(word))
                 {
                     (season, episode) = ExtractSeasonEpisode(word);
@@ -52,18 +56,18 @@ namespace MyFlix
                     season = ExtractNumber(word);
                     titleFound = true;
                 }
-                else if (IsEpisode(word))
+                else if (IsEpisode(word)) //TODO: number in title can be flagged as episode
                 {
                     episode = ExtractNumber(word);
                     titleFound = true;
                 }
-                else if(!titleFound)
+                else if (titleFound) // check if title found first so random junk isn't picked up as an episode number
                 {
-                    this.title += word + " ";
+                    reserveTitle += word + " ";
                 }
                 else
                 {
-                    reserveTitle += word + " ";
+                    this.title += word + " ";
                 }
             }
 
@@ -160,6 +164,31 @@ namespace MyFlix
             if (mid == -1 || mid == 0) return false;
 
             return IsSeason(s.Substring(0, mid)) && IsEpisode(s.Substring(mid+1));
+        }
+
+        private static bool IsTechnicalInfo(string s)
+        {
+            List<string> technicalTerms = new List<string>()
+            {
+                "1080p",
+                "720p",
+                "360p",
+                "420p",
+                "BluRay",
+                "x265",
+                "HEVC",
+                "10bit",
+                "AAC",
+                "ATVP",
+                "WEB-DL",
+                "DDP5",
+                "H264-MIXED",
+                "WEBRip",
+                "DDP2",
+                "x264"
+            };
+
+            return technicalTerms.Contains(s);
         }
 
         private static int ExtractNumber(string s)
