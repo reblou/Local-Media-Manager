@@ -9,9 +9,11 @@ namespace MyFlix.Lookup.Parser
     public class YearParserState : ParserState
     {
         ParserState nextState;
+        StringBuilder reserveTitle;
 
         public YearParserState(Parser parser) : base(parser)
         {
+            reserveTitle = new StringBuilder();
         }
 
         public override void ParseWord(string word)
@@ -33,9 +35,30 @@ namespace MyFlix.Lookup.Parser
             }
             else if (IsYear(word)) 
             {
-                // TODO: handle if we've already found the year 
+                // if we've already found the year 
+                if(!String.IsNullOrEmpty(this.parser.parsedInfo.year))
+                {
+                    // we want to re add reserve words back to title, the first year was actually part of the title.
+                    if(String.IsNullOrEmpty(this.parser.parsedInfo.title))
+                    {
+                        this.parser.parsedInfo.title += reserveTitle.ToString();
+                    }
+                    else
+                    {
+                        // append space before the reserve words if title isn't empty
+                        this.parser.parsedInfo.title += ' ' + reserveTitle.ToString();
+                    }
+                    this.parser.parsedInfo.year = word;
+                }
 
                 this.parser.parsedInfo.year = word;
+                reserveTitle.Append(word);
+            }
+            else
+            {
+                // Store any uncategorized words in case we find a second year
+                reserveTitle.Append(' ');
+                reserveTitle.Append(word);
             }
         }
     }

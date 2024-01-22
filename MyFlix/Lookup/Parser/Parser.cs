@@ -38,7 +38,7 @@ namespace MyFlix.Lookup.Parser
 
         public void ChangeState(ParserState state)
         {
-            //TODO: everytime we change state do we want to reprosses the word? If so add word param and call state.parseword here
+            //TODO: everytime we change state do we want to reprocess the word? If so add word param and call state.parseword here
             this.state = state;
         }
 
