@@ -43,30 +43,24 @@ namespace MyFlix.Lookup
 
                 IPlayable playable = PlayableFactory.CreatePlayableFromFilename(fsVideo.fileName, fsVideo.filePath);
 
+                // If displayable and not part of a series
                 if (playable is IDisplayable displayable)
                 {
                     displayable.LookupDetails(handler);
                     worker.ReportProgress(0, displayable);
                 }
-                else
+                else if(playable is Episode ep)
                 {
-                    if (playable is Episode ep)
+                    bool exists = seriesFactory.AddIfSeriesExists(ep);
+                    // If series not created yet lookup details
+                    if(!exists) 
                     {
-                        seriesFactory.Add(ep);
+                        TVSeries series = seriesFactory.CreateSeriesAndAdd(ep);
+
+                        series.LookupDetails(handler);
+                        worker.ReportProgress(0, series);
                     }
                 }
-            }
-
-            // report progess on TV series to add to ui 
-            List<TVSeries> seriesList = seriesFactory.GetSeries();
-            foreach (TVSeries series in seriesList)
-            {
-                if (worker.CancellationPending)
-                {
-                    return;
-                }
-                series.LookupDetails(handler);
-                worker.ReportProgress(0, series);
             }
         }
     }

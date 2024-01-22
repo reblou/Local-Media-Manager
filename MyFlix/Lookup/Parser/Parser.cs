@@ -18,6 +18,7 @@ namespace MyFlix.Lookup.Parser
         {
             // set to title state initialy
             state = new TitleParserState(this);
+            parsedInfo = new ParsedInformation();
         }
 
         public ParsedInformation ParseFilename(string filename)
@@ -42,6 +43,7 @@ namespace MyFlix.Lookup.Parser
             this.state = state;
         }
 
+        //TODO: move to ParserState and have behaviour change between states? 
         private string GetNextWord()
         {
             StringBuilder sb = new StringBuilder();
@@ -63,6 +65,7 @@ namespace MyFlix.Lookup.Parser
                     continue;
                 }
 
+                //TODO: use - as an indicator of episode? 
                 if (ParseSettings.wordDivider.Contains(workingFilename[i]))
                 {
                     // If only whitespace/ ignored brackets so far, continue until we have a word

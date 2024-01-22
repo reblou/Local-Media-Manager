@@ -98,7 +98,7 @@ namespace MyFlix
                 {
                     if(playable is Episode ep)
                     {
-                        seriesFactory.Add(ep);
+                        seriesFactory.AddIfSeriesExists(ep);
                     }
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyFlix.Lookup.Parser;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -12,16 +13,17 @@ namespace MyFlix
     {
         public static IPlayable CreatePlayableFromFilename(string filename, string filepath)
         {
-            FilenameParser parser = new FilenameParser();
-            parser.ParseFilename(Path.ChangeExtension(filename, ""));
+            Parser parser = new Parser();
+            ParsedInformation parsedInfo = parser.ParseFilename(Path.ChangeExtension(filename, ""));
 
-            if(parser.episode != -1)
+            if(parsedInfo.isEpisode)
             {
-                int season = parser.season == -1 ? 1 : parser.season;
-                return new Episode(parser.title, parser.releaseYear, season, parser.episode, filename, filepath);
+                return new Episode(parsedInfo.title, parsedInfo.year, filename, filepath);
             }
-
-            return new Film(filename, filepath, parser.title, parser.releaseYear);
+            else
+            {
+                return new Film(filename, filepath, parsedInfo.title, parsedInfo.year);
+            }
         }
     }
 }

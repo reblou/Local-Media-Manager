@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestProject
+namespace ParsingTests
 {
     [TestClass]
     public class StateParserTests
@@ -145,6 +145,20 @@ namespace TestProject
 
             Assert.AreEqual("Bill and Teds Excellent Adventure", info.title);
             Assert.AreEqual("1989", info.year);
+            Assert.AreEqual(false, info.isEpisode);
+        }
+
+        [TestMethod]
+        public void FilmTest3()
+        {
+            string filename = @"Apollo 13 1995 1080p BluRay x264 DTS-JYK.mkv";
+
+            Parser parser = new Parser();
+
+            ParsedInformation info = parser.ParseFilename(filename);
+
+            Assert.AreEqual("Apollo 13", info.title);
+            Assert.AreEqual("1995", info.year);
             Assert.AreEqual(false, info.isEpisode);
         }
     }

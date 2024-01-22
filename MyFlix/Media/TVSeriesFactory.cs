@@ -15,19 +15,22 @@ namespace MyFlix
             series = new Dictionary<string, TVSeries>(StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public void Add(Episode episode)
+        public bool AddIfSeriesExists(Episode episode)
         {
-            if (series.ContainsKey(episode.title))
-            {
-                series[episode.title].AddEpisode(episode);
-            }
-            else
-            {
-                TVSeries newSeries = new TVSeries(episode.title, episode.releaseYear);
-                series.Add(newSeries.title, newSeries);
+            if (!series.ContainsKey(episode.title)) return false;
 
-                series[newSeries.title].AddEpisode(episode);
-            }
+
+            series[episode.title].AddEpisode(episode);
+            return true;
+        }
+
+        public TVSeries CreateSeriesAndAdd(Episode episode)
+        {
+            TVSeries newSeries = new TVSeries(episode.title, episode.releaseYear);
+            series.Add(newSeries.title, newSeries);
+
+            series[newSeries.title].AddEpisode(episode);
+            return series[newSeries.title];
         }
 
         public List<TVSeries> GetSeries()

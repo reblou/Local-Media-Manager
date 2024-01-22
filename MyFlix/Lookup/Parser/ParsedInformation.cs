@@ -11,5 +11,11 @@ namespace MyFlix.Lookup.Parser
         public string title;
         public string year;
         public bool isEpisode;
+
+        public ParsedInformation()
+        {
+            this.title = "";
+            this.isEpisode = false;
+        }
     }
 }

@@ -99,6 +99,7 @@ namespace MyFlix.ViewModels
 
             // clear media details items
             displayables.Clear();
+            UserMediaSaver.SaveToFile(this.displayables.ToList());
         }
 
         private void RefreshClick()

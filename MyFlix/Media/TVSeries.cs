@@ -22,11 +22,15 @@ namespace MyFlix
 
         public Dictionary<int, Season> seasons;
 
+        private List<Episode> episodes;
+        public List<Episode> Episodes { get => episodes.OrderBy(e => e.fileName).ToList(); set => episodes = value; }
+
         public TVSeries(string title, string releaseYear)
         {
             this.title = title;
             this.releaseYear = releaseYear;
             seasons = new Dictionary<int, Season>();
+            episodes = new List<Episode>();
         }
 
         public void LookupDetails(TMDBApiHandler handler)
@@ -42,49 +46,36 @@ namespace MyFlix
 
         public void AddEpisode(Episode episode)
         {
-            int season = episode.seasonNumber;
-
-            if (season < 0) season = 1;
-
-            if(!seasons.ContainsKey(season)) seasons[season] = new Season();
-
-            seasons[season].Add(episode);
+            episodes.Add(episode);
         }
 
         public bool RepresentsFilename(string filename)
         {
-            foreach(Season season in seasons.Values)
+            foreach(Episode episode in episodes)
             {
-                foreach(Episode episode in season.episodes)
-                {
-                    if(episode.fileName == filename) return true;
-                }
+                if(episode.fileName == filename) return true;
             }
             return false;
         }
 
         public IPlayable GetNextPlayable()
         {
-            if (seasons == null) throw new NullReferenceException("No playables to return.");
+            if (episodes == null) throw new NullReferenceException("No playables to return.");
 
-            if(seasons.Values.Count < 1) throw new NullReferenceException("No playables to return.");
+            if(episodes.Count < 1) throw new NullReferenceException("No playables to return.");
 
-            foreach (Season season in seasons.Values)
+            foreach (Episode episode in Episodes)
             {
-                foreach (Episode episode in season.episodes)
-                {
-                    if (!episode.BeenWatched) return episode;
-                }
+                if (!episode.BeenWatched) return episode;
             }
 
             //If all playables have been watched reset and return from the start again.
-            foreach (Season season in seasons.Values)
+
+            foreach (Episode episode in Episodes)
             {
-                foreach (Episode episode in season.episodes)
-                {
-                    episode.BeenWatched = false;
-                }
+                episode.BeenWatched = false;
             }
+            
             UserMediaSaver.SaveDisplayable(this);
 
             return GetNextPlayable();
@@ -98,15 +89,12 @@ namespace MyFlix
 
         public List<IPlayable> GetPlayables()
         {
-            List<IPlayable> episodes = new List<IPlayable>();
-            if (seasons == null) return episodes;
+            List<IPlayable> playables = new List<IPlayable>();
+            if (episodes == null) return playables;
 
-            foreach (Season season in seasons.Values)
-            {
-                episodes.AddRange(season.episodes);
-            }
+            playables.AddRange(Episodes);
 
-            return episodes;
+            return playables;
         }
 
         public void SetPlayable(IPlayable playable)
@@ -115,15 +103,12 @@ namespace MyFlix
 
             Episode newEpisode = playable as Episode;
 
-            foreach (Season season in seasons.Values)
+            for(int i=0; i<episodes.Count; i++)
             {
-                for(int i=0; i<season.episodes.Count; i++)
+                if (episodes[i].filePath == newEpisode.filePath)
                 {
-                    if (season.episodes[i].filePath == newEpisode.filePath)
-                    {
-                        season.episodes[i] = newEpisode;
-                        return;
-                    }
+                    episodes[i] = newEpisode;
+                    return;
                 }
             }
         }

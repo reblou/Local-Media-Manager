@@ -36,9 +36,8 @@ namespace MyFlix.Lookup.Parser
 
         protected bool IsSeriesInfo(string word)
         {
-            Regex regex = new Regex("[sS][0-9]{1,2}[eE][0-9]{1,4}");
-
-            //If S0XE0X Format:
+            //If S01E01 Format:
+            Regex regex = new Regex(@"[sS][0-9]{1,2}[\s-]*[eE][0-9]{1,4}");
             if(regex.IsMatch(word)) return true;
 
             //TODO: Check for Just number format ?

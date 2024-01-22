@@ -24,16 +24,15 @@ namespace MyFlix
         private bool watched;
         public bool BeenWatched { get => watched ; set { watched = value; OnPropertyChanged(); } }
 
-        public Episode(string title, string releaseYear, int seasonNumber, int episodeNumber, string fileName, string filePath)
+
+        public Episode(string title, string releaseYear, string fileName, string filePath)
         {
             this.title = title;
             this.releaseYear = releaseYear;
-            this.seasonNumber = seasonNumber;
-            this.episodeNumber = episodeNumber;
             this.fileName = fileName;
             this.filePath = filePath;
-            this.watched = false;
         }
+
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             if (PropertyChanged == null) return;
