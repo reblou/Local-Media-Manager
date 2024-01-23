@@ -17,14 +17,13 @@ namespace MyFlix.Lookup.Parser
         public Parser()
         {
             // set to title state initialy
-            state = new TitleParserState(this);
             parsedInfo = new ParsedInformation();
+            state = new TitleParserState(this);
         }
 
         public ParsedInformation ParseFilename(string filename)
         {
             this.workingFilename = filename;
-            this.parsedInfo = new ParsedInformation();
 
             while(this.workingFilename.Length > 0)
             {

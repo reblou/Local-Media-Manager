@@ -11,7 +11,7 @@ namespace MyFlix.Lookup.Parser
         string title;
         public TitleParserState(Parser parser) : base(parser)
         {
-            title = "";
+            title = parser.parsedInfo.title;
         }
 
         public override void ParseWord(string word)

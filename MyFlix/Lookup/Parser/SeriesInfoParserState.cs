@@ -22,8 +22,19 @@ namespace MyFlix.Lookup.Parser
 
         public override void ParseWord(string word)
         {
-
-            if ((dashPredicate && IsEpisodeNumber(word)) || IsSeriesInfo(word))
+            if(dashPredicate)
+            {
+                if(IsEpisodeNumber(word) || IsSeriesInfo(word))
+                {
+                    this.parser.parsedInfo.isEpisode = true;
+                }
+                else
+                {
+                    this.parser.ChangeState(new TitleParserState(parser), word);
+                }
+                dashPredicate = false;
+            }
+            else if (IsSeriesInfo(word))
             {
                 this.parser.parsedInfo.isEpisode = true;
             }
@@ -35,7 +46,7 @@ namespace MyFlix.Lookup.Parser
             {
                 this.parser.ChangeState(new JunkParserState(this.parser), word);
             }
-            else if (word == "-")
+            else if (word == "-" && !this.parser.parsedInfo.isEpisode)
             {
                 dashPredicate = true;
             }
