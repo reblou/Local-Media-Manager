@@ -77,6 +77,10 @@
                 <MenuItem Header="Refresh" Command="{Binding refreshCommand}"/>
                 <MenuItem Header="Manage Excluded Files" Command="{Binding excludeCommand}"/>
             </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Bulk Video Rename Tool" Command="{Binding renameToolCommand}"/>
+                <MenuItem Header="Manage Ignored Content" Command="{Binding ignoreToolCommand}"/>
+            </MenuItem>
         </Menu>
 
 

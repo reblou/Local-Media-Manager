@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -20,10 +21,14 @@ namespace MyFlix.ViewModels
         private BackgroundWorker mediaLookupWorker;
         UserSettingsManager userSettingsManager;
 
+        RenameToolWindow renameToolWindow;
+
         public ICommand lookupCommand { get; }
         public ICommand excludeCommand { get; }
         public ICommand refreshCommand { get; }
         public ICommand wipeCommand { get; }
+        public ICommand renameToolCommand { get; }
+        public ICommand ignoreToolCommand { get; }
 
         public TileViewModel()
         {
@@ -35,6 +40,9 @@ namespace MyFlix.ViewModels
             excludeCommand = new RelayCommand(ExcludeClick);
             refreshCommand = new RelayCommand(RefreshClick);
             wipeCommand = new RelayCommand(WipeClick);
+
+            renameToolCommand = new RelayCommand(RenameToolClick);
+            ignoreToolCommand = new RelayCommand(IgnoreToolClick);
 
             LoadDisplayablesFromFile();
         }
@@ -107,6 +115,25 @@ namespace MyFlix.ViewModels
             SetRootFolder(userSettingsManager.settings.RootFilePath);
         }
 
+        private void RenameToolClick()
+        {
+            if (renameToolWindow == null)
+            {
+                renameToolWindow = new RenameToolWindow();
+
+                // Wipe this reference when the window is closed
+                renameToolWindow.Closed += (sender, args) =>
+                {
+                    this.renameToolWindow = null;
+                };
+                renameToolWindow.Show();
+            }
+        }
+
+        private void IgnoreToolClick()
+        {
+            //TODO: implement ignore video management options
+        }
 
 
         private void LoadDisplayablesFromFile()
