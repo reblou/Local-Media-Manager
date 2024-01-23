@@ -8,7 +8,6 @@ namespace MyFlix.Lookup.Parser
 {
     public class YearParserState : ParserState
     {
-        ParserState nextState;
         StringBuilder reserveTitle;
 
         public YearParserState(Parser parser) : base(parser)
@@ -27,17 +26,11 @@ namespace MyFlix.Lookup.Parser
 
             if (IsSeriesInfo(word))
             {
-                nextState = new SeriesInfoParserState(this.parser);
-
-                this.parser.ChangeState(nextState);
-
-                nextState.ParseWord(word);
+                this.parser.ChangeState(new SeriesInfoParserState(this.parser), word);
             }
             else if (IsJunk(word))
             {
-                this.parser.ChangeState(new JunkParserState(this.parser));
-
-                return;
+                this.parser.ChangeState(new JunkParserState(this.parser), word);
             }
             else if (IsYear(word)) 
             {

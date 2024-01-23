@@ -8,7 +8,7 @@ namespace MyFlix.Lookup.Parser
 {
     public static class ParseSettings
     {
-        public static readonly char[] wordDivider = { ' ',  '\t', '_', '.', '(', ')', '-' };
+        public static readonly char[] wordDivider = { ' ',  '\t', '_', '.', '(', ')' };
 
         public static readonly string[] technicalInfo = { "1080p",
                 "720p",

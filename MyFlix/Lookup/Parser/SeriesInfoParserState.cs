@@ -8,39 +8,43 @@ namespace MyFlix.Lookup.Parser
 {
     public class SeriesInfoParserState : ParserState
     {
-        ParserState nextState;
+        bool dashPredicate;
+
         public SeriesInfoParserState(Parser parser) : base(parser)
         {
-
+            dashPredicate = false;
         }
         public override void EndParsing()
         {
             //Do nothing
             return;
         }
+
         public override void ParseWord(string word)
         {
-            // Check for year
-            if (IsYear(word))
+
+            if ((dashPredicate && IsEpisodeNumber(word)) || IsSeriesInfo(word))
             {
-                nextState = new YearParserState(this.parser);
+                this.parser.parsedInfo.isEpisode = true;
+            }
+            else if (IsYear(word)) 
+            {
+                this.parser.ChangeState(new YearParserState(this.parser), word);
             }
             else if (IsJunk(word))
             {
-                nextState = new JunkParserState(this.parser);
+                this.parser.ChangeState(new JunkParserState(this.parser), word);
             }
-
-            if(nextState != null)
+            else if (word == "-")
             {
-                this.parser.ChangeState(nextState);
-
-                nextState.ParseWord(word);
+                dashPredicate = true;
             }
+        }
 
-
-            // Otherwise we assume this is an episode.
-
-            this.parser.parsedInfo.isEpisode = true;
+        private bool IsEpisodeNumber(string word)
+        {
+            int i = 0;
+            return int.TryParse(word, out i);
         }
     }
 }

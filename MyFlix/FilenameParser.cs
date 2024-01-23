@@ -56,7 +56,7 @@ namespace MyFlix
                     season = ExtractNumber(word);
                     titleFound = true;
                 }
-                else if (IsEpisode(word)) //TODO: number in title can be flagged as episode
+                else if (IsEpisode(word)) 
                 {
                     episode = ExtractNumber(word);
                     titleFound = true;

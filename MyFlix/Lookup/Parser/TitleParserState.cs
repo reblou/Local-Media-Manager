@@ -9,7 +9,6 @@ namespace MyFlix.Lookup.Parser
     public class TitleParserState : ParserState
     {
         string title;
-        ParserState nextState;
         public TitleParserState(Parser parser) : base(parser)
         {
             title = "";
@@ -21,30 +20,21 @@ namespace MyFlix.Lookup.Parser
             //check if year or season episode info
             if(IsYear(word))
             {
-                nextState = new YearParserState(this.parser);
+                this.parser.parsedInfo.title = this.title;
+                this.parser.ChangeState(new YearParserState(this.parser), word);
             }
-            else if (IsSeriesInfo(word))
+            else if (IsSeriesInfo(word) || word == "-")
             {                
-                nextState = new SeriesInfoParserState(this.parser);
+                this.parser.parsedInfo.title = this.title;
+                this.parser.ChangeState(new SeriesInfoParserState(this.parser), word);
             }
             else if (IsJunk(word))
             {
                 // assume we're at the end of useful information
-                nextState = new JunkParserState(this.parser);
-            }
-
-            if(nextState != null)
-            {
-                // if non title word detected, set title in parser and change its state.
                 this.parser.parsedInfo.title = this.title;
-                this.parser.ChangeState(nextState);
-                nextState.ParseWord(word);
-
-                return;
+                this.parser.ChangeState(new JunkParserState(this.parser), word);
             }
-
-            // Otherwise assume this is part of the title
-            if (String.IsNullOrEmpty(title))
+            else if (String.IsNullOrEmpty(title)) // Otherwise assume this is part of the title
             {
                 title += word;
             }

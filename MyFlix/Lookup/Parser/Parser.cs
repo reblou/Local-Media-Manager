@@ -38,13 +38,15 @@ namespace MyFlix.Lookup.Parser
             return parsedInfo;
         }
 
-        public void ChangeState(ParserState state)
+        public void ChangeState(ParserState state, string word)
         {
-            //TODO: everytime we change state do we want to reprocess the word? If so add word param and call state.parseword here
             this.state = state;
+
+            // reprocess the word using the next state
+            this.state.ParseWord(word);
         }
 
-        //TODO: move to ParserState and have behaviour change between states? 
+
         private string GetNextWord()
         {
             StringBuilder sb = new StringBuilder();
@@ -66,7 +68,6 @@ namespace MyFlix.Lookup.Parser
                     continue;
                 }
 
-                //TODO: use - as an indicator of episode? 
                 if (ParseSettings.wordDivider.Contains(workingFilename[i]))
                 {
                     // If only whitespace/ ignored brackets so far, continue until we have a word
