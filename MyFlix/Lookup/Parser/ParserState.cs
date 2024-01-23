@@ -18,6 +18,8 @@ namespace MyFlix.Lookup.Parser
 
         public abstract void ParseWord(string word);
 
+        public abstract void EndParsing();
+
         protected bool IsYear(string word)
         {
             if (word.Length != 4) return false;
@@ -51,5 +53,6 @@ namespace MyFlix.Lookup.Parser
         {
             return ParseSettings.technicalInfo.Contains(word);
         }
+
     }
 }

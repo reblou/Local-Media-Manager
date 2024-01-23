@@ -17,5 +17,10 @@ namespace MyFlix.Lookup.Parser
             // Do nothing
             return;
         }
+        public override void EndParsing()
+        {
+            //Do nothing
+            return;
+        }
     }
 }

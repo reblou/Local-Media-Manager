@@ -43,8 +43,6 @@ namespace MyFlix.Lookup.Parser
                 return;
             }
 
-            // TODO: If we never change state we never save the title, need condition that if we are still in TitleState at the end of the word -> Save title.
-
             // Otherwise assume this is part of the title
             if (String.IsNullOrEmpty(title))
             {
@@ -54,6 +52,12 @@ namespace MyFlix.Lookup.Parser
             {
                 this.title += ' ' + word;
             }
+        }
+
+        public override void EndParsing()
+        {
+            //if we are still in TitleState at the end of the word->Save title.
+            this.parser.parsedInfo.title = this.title;
         }
 
     }

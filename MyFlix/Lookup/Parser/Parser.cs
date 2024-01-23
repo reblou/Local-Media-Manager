@@ -33,6 +33,7 @@ namespace MyFlix.Lookup.Parser
                 this.state.ParseWord(word);
             }
 
+            this.state.EndParsing();
 
             return parsedInfo;
         }

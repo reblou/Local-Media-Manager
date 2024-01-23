@@ -16,6 +16,12 @@ namespace MyFlix.Lookup.Parser
             reserveTitle = new StringBuilder();
         }
 
+        public override void EndParsing()
+        {
+            //Do nothing
+            return;
+        }
+
         public override void ParseWord(string word)
         {
 

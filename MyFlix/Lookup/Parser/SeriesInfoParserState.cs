@@ -13,7 +13,11 @@ namespace MyFlix.Lookup.Parser
         {
 
         }
-
+        public override void EndParsing()
+        {
+            //Do nothing
+            return;
+        }
         public override void ParseWord(string word)
         {
             // Check for year
