@@ -3,11 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MyFlix.ViewModels"
         xmlns:local="clr-namespace:MyFlix.Views"
         mc:Ignorable="d"
         Title="RenameToolWindow" Height="450" Width="800"
         WindowStartupLocation="CenterOwner"
         >
+    <Window.DataContext>
+        <vm:RenameToolViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -23,11 +27,25 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Height="50" Width="100" Content="Choose Folder" />
-            <TextBox Grid.Column="1" Background="#FFC5C5C5" Height="30"/>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Grid.RowSpan="2" Height="50" Width="100" Content="Choose Folder" Command="{Binding folderPickerCommand}"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Background="#FFC5C5C5" Height="30" Text="{Binding SearchRegex}"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Background="#FFC5C5C5" Height="30" Text="{Binding ReplaceRegex}"/>
         </Grid>
 
-        <TextBlock Grid.Row="1">Test</TextBlock>
+        <ScrollViewer Style="{DynamicResource PlayableScrollViewer}" Grid.Row="1" Margin="15" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Width="auto" >
+            <ItemsControl ItemsSource="{Binding renamingVideos}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding fileName}" Foreground="Black" Height="auto" Width="auto"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <Button Grid.Row="2" Content="Go" Height="50" Width="50" HorizontalAlignment="Left"></Button>
+        <Button Grid.Row="2" Content="Undo" Height="50" Width="50" HorizontalAlignment="Right"></Button>
     </Grid>
 </Window>
