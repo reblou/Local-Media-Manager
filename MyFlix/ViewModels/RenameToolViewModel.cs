@@ -84,14 +84,23 @@ namespace MyFlix.ViewModels
 
                 //TODO: error handling 
                 File.Move(video.filePath, newPath);
+
+                video.filePath = newPath;
             }
         }
 
         private void UndoCommand()
         {
-            // go through rename videos 
+            foreach(RenameToolVideo video in renamingVideos)
+            {
+                string original = Path.Combine(Path.GetDirectoryName(video.filePath), video.fileName);
 
-            // rename newName -> filename
+                // Not been renamed yet
+                if (original == video.filePath) continue;
+
+                File.Move(video.filePath, original);
+                video.filePath = original;
+            }
         }
     }
 }
