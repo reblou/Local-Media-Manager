@@ -23,5 +23,10 @@ namespace MyFlix.Views
         {
             InitializeComponent();
         }
+
+        private void TextBox_TextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
     }
 }
