@@ -16,8 +16,10 @@ namespace MyFlix.ViewModels
 {
     public class RenameToolViewModel
     {
-        public string SearchRegex { get; set; }
-        public string ReplaceRegex { get; set; }
+        private string _searchRegex;
+        private string _replaceRegex;
+        public string SearchRegex { get => _searchRegex; set { _searchRegex = value;  UpdateRegex(); } }
+        public string ReplaceRegex { get => _replaceRegex; set { _replaceRegex = value; UpdateRegex(); } }
 
         public ICommand folderPickerCommand { get; }
         public ICommand renameCommand { get; }
@@ -35,6 +37,7 @@ namespace MyFlix.ViewModels
             SearchRegex = "";
             ReplaceRegex = "";
         }
+
 
         private void FolderPicker()
         {
@@ -72,6 +75,21 @@ namespace MyFlix.ViewModels
                     filePath = video.filePath,
                     NewName = newName,
                 });
+            }
+        }
+
+        private void UpdateRegex()
+        {
+            try
+            {
+                foreach (RenameToolVideo video in renamingVideos)
+                { 
+                    video.NewName = Regex.Replace(video.FileName, SearchRegex, ReplaceRegex);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Catch exceptions from invalid formatting while typing them out
             }
         }
 
