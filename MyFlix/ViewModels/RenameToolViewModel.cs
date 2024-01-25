@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using System.Windows.Input;
 
 namespace MyFlix.ViewModels
@@ -67,9 +68,9 @@ namespace MyFlix.ViewModels
                 string newName = Regex.Replace(video.fileName, SearchRegex, ReplaceRegex);
 
                 renamingVideos.Add(new RenameToolVideo() { 
-                    fileName = video.fileName,
+                    FileName = video.fileName,
                     filePath = video.filePath,
-                    newName = newName,
+                    NewName = newName,
                 });
             }
         }
@@ -78,14 +79,17 @@ namespace MyFlix.ViewModels
         {
             foreach (RenameToolVideo video in renamingVideos)
             {
-                if (video.fileName == video.newName) continue;
+                if (video.FileName == video.NewName) continue;
 
-                string newPath = Path.Combine(Path.GetDirectoryName(video.filePath), video.newName);
+                string newPath = Path.Combine(Path.GetDirectoryName(video.filePath), video.NewName);
 
                 //TODO: error handling 
                 File.Move(video.filePath, newPath);
 
                 video.filePath = newPath;
+                video.oldName = video.FileName;
+                video.FileName = video.NewName;
+                video.NewName = "";
             }
         }
 
@@ -93,13 +97,15 @@ namespace MyFlix.ViewModels
         {
             foreach(RenameToolVideo video in renamingVideos)
             {
-                string original = Path.Combine(Path.GetDirectoryName(video.filePath), video.fileName);
+                if (String.IsNullOrEmpty(video.oldName)) continue;
 
-                // Not been renamed yet
-                if (original == video.filePath) continue;
+                string oldPath = Path.Combine(Path.GetDirectoryName(video.filePath), video.oldName);
 
-                File.Move(video.filePath, original);
-                video.filePath = original;
+                File.Move(video.filePath, oldPath);
+
+                video.NewName = video.FileName;
+                video.FileName = video.oldName;
+                video.filePath = oldPath;
             }
         }
     }
