@@ -15,6 +15,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -22,10 +23,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -36,16 +37,26 @@
             <TextBox Grid.Column="1" Grid.Row="1" Background="#FFC5C5C5" Height="30" Text="{Binding ReplaceRegex}"/>
         </Grid>
 
-        <ScrollViewer Style="{DynamicResource PlayableScrollViewer}" Grid.Row="1" Margin="15" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Width="auto" >
+        <ScrollViewer Style="{DynamicResource PlayableScrollViewer}" Grid.Row="1" Grid.ColumnSpan="2" Margin="15" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Width="auto">
             <ItemsControl ItemsSource="{Binding renamingVideos}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding fileName}" Foreground="Black" Height="auto" Width="auto"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{Binding fileName}" Foreground="Black"/>
+                            <Label Grid.Column="1" Content="->" Foreground="Black"/>
+                            <Label Grid.Column="2" Content="{Binding newName}" Foreground="Black" />
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Button Grid.Row="2" Content="Go" Height="50" Width="50" HorizontalAlignment="Left"></Button>
-        <Button Grid.Row="2" Content="Undo" Height="50" Width="50" HorizontalAlignment="Right"></Button>
+
+        <Button Grid.Row="2" Grid.Column="0" Content="Undo" Height="50" Width="50" Command="{Binding undoCommand}"></Button>
+        <Button Grid.Row="2" Grid.Column="1" Content="Go" Height="50" Width="50" Command="{Binding renameCommand}"></Button>
     </Grid>
 </Window>
