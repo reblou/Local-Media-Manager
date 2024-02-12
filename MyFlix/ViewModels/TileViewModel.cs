@@ -22,6 +22,7 @@ namespace MyFlix.ViewModels
         UserSettingsManager userSettingsManager;
 
         RenameToolWindow renameToolWindow;
+        IgnoreToolWindow ignoreToolWindow;
 
         public ICommand lookupCommand { get; }
         public ICommand excludeCommand { get; }
@@ -132,7 +133,17 @@ namespace MyFlix.ViewModels
 
         private void IgnoreToolClick()
         {
-            //TODO: implement ignore video management options
+            if (ignoreToolWindow == null)
+            {
+                ignoreToolWindow = new IgnoreToolWindow();
+
+                // Wipe this reference when the window is closed
+                ignoreToolWindow.Closed += (sender, args) =>
+                {
+                    this.ignoreToolWindow = null;
+                };
+                ignoreToolWindow.Show();
+            }
         }
 
 
