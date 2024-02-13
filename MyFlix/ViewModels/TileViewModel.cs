@@ -38,7 +38,6 @@ namespace MyFlix.ViewModels
             mediaLookupWorker = MediaLookupWorker.GetMediaLookupWorker(MediaLookupWorker_Progress, MediaLookupWorker_Completed);
 
             lookupCommand = new RelayCommand(SetFolderClick);
-            excludeCommand = new RelayCommand(ExcludeClick);
             refreshCommand = new RelayCommand(RefreshClick);
             wipeCommand = new RelayCommand(WipeClick);
 
@@ -92,13 +91,6 @@ namespace MyFlix.ViewModels
             // reports progress, adds vidoes as it goes
 
             mediaLookupWorker.RunWorkerAsync(newVideos);
-        }
-
-        private void ExcludeClick()
-        {
-            ExcludeFilesWindow excludeWindow = new ExcludeFilesWindow();
-
-            excludeWindow.Show();
         }
 
         private void WipeClick()

@@ -75,7 +75,6 @@
                 <MenuItem Header="Set Root Folder..." Command="{Binding lookupCommand}"/>
                 <MenuItem Header="Clear Saved Data" Command="{Binding wipeCommand}" />
                 <MenuItem Header="Refresh" Command="{Binding refreshCommand}"/>
-                <MenuItem Header="Manage Excluded Files" Command="{Binding excludeCommand}"/>
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Bulk Video Rename Tool" Command="{Binding renameToolCommand}"/>

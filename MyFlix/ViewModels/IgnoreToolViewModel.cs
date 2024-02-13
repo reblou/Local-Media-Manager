@@ -30,11 +30,15 @@ namespace MyFlix.ViewModels
             UserSettingsManager userSettings = new UserSettingsManager();
             string libraryRoot = userSettings.settings.RootFilePath;
 
-            this.extrasPath = Path.Combine(libraryRoot, "Extras");
+            extrasPath = Path.Combine(libraryRoot, "Extras");
+
+            // Create extras folder if it doesn't already exist
+            Directory.CreateDirectory(extrasPath);
         }
         public void FolderPicker()
         {
             //TODO possible to select and move multiple? 
+            //TODO: allow picking files and folders here? 
             System.Windows.Forms.FolderBrowserDialog dialog = new()
             {
                 //options here
@@ -48,9 +52,8 @@ namespace MyFlix.ViewModels
                 return;
             }
 
-            string rootFilePath = dialog.SelectedPath;
-
-            MoveFolder(rootFilePath, extrasPath);
+            DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
+            MoveFolder(di.FullName, Path.Combine(extrasPath, di.Name));
         }
 
         public void RemoveFolder()
@@ -60,7 +63,10 @@ namespace MyFlix.ViewModels
 
         private void MoveFolder(string folder, string newFolder)
         {
+            if (String.IsNullOrEmpty(folder) || String.IsNullOrEmpty(newFolder)) return;
 
+            
+            Directory.Move(folder, newFolder);
         }
     }
 }
