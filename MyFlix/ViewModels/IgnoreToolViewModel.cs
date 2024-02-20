@@ -19,6 +19,7 @@ namespace MyFlix.ViewModels
 
         public List<string> ignoredFolders { get; set; }
         public string extrasPath { get; set; }
+        //TODO nice to have autodetect "Featurettes/ Extras" folders and suggest moving automatically
 
         public IgnoreToolViewModel()
         {
@@ -53,7 +54,11 @@ namespace MyFlix.ViewModels
             }
 
             DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
-            MoveFolder(di.FullName, Path.Combine(extrasPath, di.Name));
+
+            string extrasRootFolder = Path.Combine(extrasPath, di.Parent.Name);
+            Directory.CreateDirectory(extrasRootFolder);
+
+            MoveFolder(di.FullName, Path.Combine(extrasRootFolder, di.Name));
         }
 
         public void RemoveFolder()

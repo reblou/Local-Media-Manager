@@ -9,6 +9,6 @@
         WindowStartupLocation="CenterOwner">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="1">
         <Label Content="{Binding title}" FontWeight="Bold" />
-        <TextBlock Text="{Binding fileName}" TextWrapping="Wrap"/>
+        <TextBlock Text="{Binding filePath}" TextWrapping="Wrap"/>
     </StackPanel>
 </Window>
