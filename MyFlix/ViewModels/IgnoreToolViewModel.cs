@@ -15,18 +15,20 @@ namespace MyFlix.ViewModels
     internal class IgnoreToolViewModel
     {
         public ICommand folderPickerCommand { get; }
-        public ICommand removeFolderCommand { get; }
 
-        public List<string> ignoredFolders { get; set; }
+        public ICommand searchCommand { get; }
+        public ICommand commitCommand { get; }
+
+        
+        public List<string> ignoredFolders { get; set; } //TODO: make observable collection
         public string extrasPath { get; set; }
-        //TODO nice to have autodetect "Featurettes/ Extras" folders and suggest moving automatically
 
         public IgnoreToolViewModel()
         {
             folderPickerCommand = new RelayCommand(FolderPicker);
-            removeFolderCommand = new RelayCommand(RemoveFolder);
+            searchCommand = new RelayCommand(Search);
+            commitCommand = new RelayCommand(Commit);
 
-            ignoredFolders = new List<string>() { "test1", "test2", "test3" };
             //extrasPath = Path.Combine(libraryRootFolder, "Extras");
             UserSettingsManager userSettings = new UserSettingsManager();
             string libraryRoot = userSettings.settings.RootFilePath;
@@ -53,25 +55,36 @@ namespace MyFlix.ViewModels
                 return;
             }
 
-            DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
+            MoveFolderToExtras(new DirectoryInfo(dialog.SelectedPath));
+        }
 
+        private void MoveFolderToExtras(DirectoryInfo di)
+        {
             string extrasRootFolder = Path.Combine(extrasPath, di.Parent.Name);
             Directory.CreateDirectory(extrasRootFolder);
 
-            MoveFolder(di.FullName, Path.Combine(extrasRootFolder, di.Name));
+            string newFolder = Path.Combine(extrasRootFolder, di.Name);
+
+            Directory.Move(di.FullName, newFolder);
         }
 
-        public void RemoveFolder()
+        public void Search()
         {
-            //TODO: store old path? or use folder picker to move back? 
+            // TODO search folders recursively for extras/ featurettes folders
+            // and add to ignoredFolders
+            FileSystemSearcher searcher = new FileSystemSearcher();
+
+            UserSettingsManager userSettingsManager = new UserSettingsManager();
+
+            ignoredFolders = searcher.FindExtrasFolders(new DirectoryInfo(userSettingsManager.settings.RootFilePath));
         }
 
-        private void MoveFolder(string folder, string newFolder)
+        public void Commit()
         {
-            if (String.IsNullOrEmpty(folder) || String.IsNullOrEmpty(newFolder)) return;
-
-            
-            Directory.Move(folder, newFolder);
+            foreach(string folder in ignoredFolders)
+            {
+                MoveFolderToExtras(new DirectoryInfo(folder));
+            }
         }
     }
 }

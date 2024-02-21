@@ -30,7 +30,7 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Button Grid.Column="0" Grid.RowSpan="2" Height="50" Width="100" Content="Choose Folder" Command="{Binding folderPickerCommand}"/>
+            <Button Grid.Column="0" Grid.RowSpan="2" Height="50" Width="100" Content="Move Folder" Command="{Binding folderPickerCommand}"/>
             <Label Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">Current Extras Folder Location:</Label>
             <Label Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding extrasPath}"></Label>
         </Grid>
@@ -53,7 +53,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Button Grid.Row="2" Grid.Column="0" Content="Undo" Height="40" Width="60"></Button>
-        <Button Grid.Row="2" Grid.Column="1" Content="Rename" Height="40" Width="60"></Button>
+        <Button Grid.Row="2" Grid.Column="0" Content="Search" Height="40" Width="60" Command="{Binding searchCommand}"></Button>
+        <Button Grid.Row="2" Grid.Column="1" Content="Move All" Height="40" Width="60" Command="{Binding commitCommand}"></Button>
     </Grid>
 </Window>

@@ -13,7 +13,7 @@ namespace MyFlix
     internal class FileSystemSearcher
     {
         private readonly string[] _acceptedExtensions = { ".mkv", ".mp4", ".avi" };
-        private readonly string extrasFolder = "Extras";
+        private readonly string[] extrasFolders = { "Extras", "Featurettes" };
         public List<FileSystemVideo> videos = new();
         public Dictionary<String, TVSeries> tvSeries = new();
 
@@ -39,7 +39,7 @@ namespace MyFlix
             foreach (DirectoryInfo dir in directory.GetDirectories())
             {
                 // Ignore extras folder
-                if(dir.Name == extrasFolder) continue;
+                if(extrasFolders.Contains(dir.Name)) continue;
 
                 StepThroughDirectory(dir);
             }
@@ -54,6 +54,21 @@ namespace MyFlix
                 if (videoExtension == extension) return true;
             }
             return false;
+        }
+
+        public List<string> FindExtrasFolders(DirectoryInfo directory)
+        {
+            List<string> folders = new List<string>();
+
+            foreach (DirectoryInfo dir in directory.GetDirectories())
+            {
+                // add extras folders
+                if (extrasFolders.Contains(dir.Name)) folders.Add(dir.FullName);
+
+                folders.AddRange(FindExtrasFolders(dir));
+            }
+
+            return folders;
         }
     }
 
