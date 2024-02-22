@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
@@ -20,7 +21,7 @@ namespace MyFlix.ViewModels
         public ICommand commitCommand { get; }
 
         
-        public List<string> ignoredFolders { get; set; } //TODO: make observable collection
+        public ObservableCollection<string> ignoredFolders { get; set; }
         public string extrasPath { get; set; }
 
         public IgnoreToolViewModel()
@@ -29,7 +30,6 @@ namespace MyFlix.ViewModels
             searchCommand = new RelayCommand(Search);
             commitCommand = new RelayCommand(Commit);
 
-            //extrasPath = Path.Combine(libraryRootFolder, "Extras");
             UserSettingsManager userSettings = new UserSettingsManager();
             string libraryRoot = userSettings.settings.RootFilePath;
 
@@ -68,15 +68,21 @@ namespace MyFlix.ViewModels
             Directory.Move(di.FullName, newFolder);
         }
 
+        // search folders recursively for extras/ featurettes folders
+        // and add to ignoredFolders
         public void Search()
         {
-            // TODO search folders recursively for extras/ featurettes folders
-            // and add to ignoredFolders
+            ignoredFolders = new ObservableCollection<string>();
             FileSystemSearcher searcher = new FileSystemSearcher();
 
             UserSettingsManager userSettingsManager = new UserSettingsManager();
 
-            ignoredFolders = searcher.FindExtrasFolders(new DirectoryInfo(userSettingsManager.settings.RootFilePath));
+            List<string> extras = searcher.FindExtrasFolders(new DirectoryInfo(userSettingsManager.settings.RootFilePath));
+
+            foreach(string extrasPath in extras) 
+            { 
+                ignoredFolders.Add(extrasPath);
+            }
         }
 
         public void Commit()

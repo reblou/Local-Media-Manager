@@ -26,7 +26,7 @@ namespace MyFlix
             DirectoryInfo rootDirectory = new DirectoryInfo(dirFilepath);
             StepThroughDirectory(rootDirectory);
         }
-        
+
         private void StepThroughDirectory(DirectoryInfo directory)
         {
             foreach (FileInfo file in directory.EnumerateFiles())
@@ -39,7 +39,7 @@ namespace MyFlix
             foreach (DirectoryInfo dir in directory.GetDirectories())
             {
                 // Ignore extras folder
-                if(extrasFolders.Contains(dir.Name)) continue;
+                if (extrasFolders.Contains(dir.Name)) continue;
 
                 StepThroughDirectory(dir);
             }
@@ -56,7 +56,22 @@ namespace MyFlix
             return false;
         }
 
-        public List<string> FindExtrasFolders(DirectoryInfo directory)
+        public List<string> FindExtrasFolders(DirectoryInfo rootDirtectory)
+        {
+            List<string> folders = new List<string>();
+
+            foreach (DirectoryInfo dir in rootDirtectory.GetDirectories())
+            {
+                // ignore root level extras folder
+                if (extrasFolders.Contains(dir.Name)) continue;
+
+                folders.AddRange(RecFindExtrasFolders(dir));
+            }
+
+            return folders;
+        }
+
+        private List<string> RecFindExtrasFolders(DirectoryInfo directory)
         {
             List<string> folders = new List<string>();
 
@@ -65,11 +80,10 @@ namespace MyFlix
                 // add extras folders
                 if (extrasFolders.Contains(dir.Name)) folders.Add(dir.FullName);
 
-                folders.AddRange(FindExtrasFolders(dir));
+                folders.AddRange(RecFindExtrasFolders(dir));
             }
 
             return folders;
         }
     }
-
 }
