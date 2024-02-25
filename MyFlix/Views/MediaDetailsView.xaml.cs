@@ -35,6 +35,7 @@ namespace MyFlix
             this.viewModel = new MediaDetailsViewModel(video);
             this.DataContext = viewModel;
             this.scrollOffset = scrollOffset;
+            this.Title = video.title;
 
             InitializeComponent();
 

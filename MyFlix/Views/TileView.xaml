@@ -7,7 +7,7 @@
       xmlns:vm="clr-namespace:MyFlix.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1100"
-      Title="TileView"  Background="#151515">
+      Title="MyFlix"  Background="#151515">
     <Page.DataContext>
         <vm:TileViewModel/>
     </Page.DataContext>

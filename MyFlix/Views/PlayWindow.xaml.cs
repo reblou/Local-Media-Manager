@@ -47,7 +47,7 @@ namespace MyFlix
             mediaPlayer.Source = new Uri(this.playable.filePath);
             mediaPlayer.Loaded += LoadProgress;
 
-            this.Title = playable.fileName;
+            this.Title = $"Now Playing: {playable.fileName}";
 
             progressUpdateWorker = new BackgroundWorker()
             {
